@@ -2,8 +2,10 @@
 
 #include "framework/memory/framework_memory.h"
 #include "layer/layer_acc_obj_base.h"
+#include "mm_math/mm_mat44.h"
 #include "ui/plugin/ui_object_plugin_util.h"
 #include "ui/ui_object.h"
+#include "ui/ui_object_acc.h"
 #include "ui/ui_util.h"
 
 namespace ui {
@@ -24,6 +26,14 @@ UIObjectWorldPosPlugin *UIObjectWorldPosPlugin::create(u32 handle) {
     plugin = nullptr;
   }
   return plugin;
+}
+
+void UIObjectWorldPosPlugin::execute(UIObjectAcc &acc) {
+  UIObjectPosPlugin::execute(acc);
+  UIUtil::getObject(acc.unknown10);
+  mm::Mat44 matrix;
+  matrix.unknown007(unknowna0);
+  acc.setMatrix(matrix);
 }
 
 const mm::mtl::RTTI *UIObjectWorldPosPlugin::getRTTI() const { return &m_rtti; }
