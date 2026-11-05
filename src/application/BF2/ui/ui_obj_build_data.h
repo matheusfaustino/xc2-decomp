@@ -28,9 +28,11 @@ public:
   UIObjBuildData(mm::mtl::IAllocator *allocator);
   virtual ~UIObjBuildData();
 
+  static void initialize();
   void clear();
   u32 getObjectNum() const;
   u32 searchObject(const char *name);
+  u32 getParamType(const char *name) const;
 
   mm::mtl::Vector<ObjData> unknown08;      // Inferred role: objects; original member name unknown.
   mm::mtl::Vector<const char *> unknown30; // Inferred role: object and string names; original member name unknown.
