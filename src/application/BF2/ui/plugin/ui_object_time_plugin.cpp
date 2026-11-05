@@ -1,6 +1,8 @@
 #include "ui/plugin/ui_object_time_plugin.h"
 
+#include "framework/lang_util.h"
 #include "framework/memory/framework_memory.h"
+#include "mm_mtl/fixstr.h"
 #include "ui/plugin/ui_object_plugin_util.h"
 #include "ui/ui_object_acc.h"
 #include "ui/ui_util.h"
@@ -138,6 +140,47 @@ void UIObjectTimePlugin::reload(UIObjectAcc &acc) {
     unknown88 = nullptr;
   }
   unknown18 |= true;
+}
+
+void UIObjectTimePlugin::execute(UIObjectAcc &acc) {
+  mm::mtl::FixStr<128> text;
+  if (unknown88 != nullptr) {
+    switch (unknown90) {
+    case TIME_TYPE_DATE:
+      if (fw::LangUtil::getLangType() == 0 || fw::LangUtil::getLangType() == 6 || fw::LangUtil::getLangType() == 11) {
+        text.format(unknown88, unknown80.unknown00_0, unknown80.unknown01_5, unknown80.unknown03_2);
+      } else {
+        text.format(unknown88, unknown80.unknown03_2, unknown80.unknown01_5, unknown80.unknown00_0);
+      }
+      break;
+    case TIME_TYPE_MONTH_DAY:
+      if (fw::LangUtil::getLangType() == 0 || fw::LangUtil::getLangType() == 6 || fw::LangUtil::getLangType() == 11) {
+        text.format(unknown88, unknown80.unknown01_5, unknown80.unknown03_2);
+      } else {
+        text.format(unknown88, unknown80.unknown03_2, unknown80.unknown01_5);
+      }
+      break;
+    case TIME_TYPE_HOUR_MIN_SEC:
+      text.format(unknown88, unknown80.unknown03_7, unknown80.unknown04_6, unknown80.unknown05_5);
+      break;
+    case TIME_TYPE_MIN_SEC:
+      text.format(unknown88, unknown80.unknown04_6, unknown80.unknown05_5);
+      break;
+    case TIME_TYPE_SEC_MSEC:
+      text.format(unknown88, unknown80.unknown05_5, unknown80.unknown06_3);
+      break;
+    case TIME_TYPE_HOUR_MIN:
+      text.format(unknown88, unknown80.unknown03_7, unknown80.unknown04_6);
+      break;
+    case TIME_TYPE_ELAPSE:
+      text.format(unknown88, unknown92, unknown80.unknown04_6, unknown80.unknown05_5);
+      break;
+    }
+    if (text.c_str()[0] != '\0') {
+      acc.applyText(text.c_str());
+    }
+    UIObjectDispPlugin::execute(acc);
+  }
 }
 
 const mm::mtl::RTTI *UIObjectTimePlugin::getRTTI() const { return &m_rtti; }
