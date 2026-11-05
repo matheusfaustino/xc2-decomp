@@ -6,6 +6,14 @@
 
 namespace ui {
 
+// Inferred role: returns the input handle of a valid object, or 0. Original name unknown.
+static u32 unknown001(u32 handle) {
+  if (handle == 0 || !UIObjectAcc(handle).isValid()) {
+    return 0;
+  }
+  return UIInputManager::get()->searchInputHandle(handle);
+}
+
 UIInputSwitcher::UIInputSwitcher(u32 size) : unknown20(-1) {
   unknown08.setAllocator(UIUtil::getProgAllocator());
   unknown08.reserve(size);
@@ -20,6 +28,29 @@ UIInputSwitcher::~UIInputSwitcher() {
 void UIInputSwitcher::clearInputObject() {
   for (u32 i = 0; i < unknown08.size(); i++) {
     unknown08[i] = 0;
+  }
+}
+
+void UIInputSwitcher::enable(u32 index) {
+  if (UIInputManager::get() == nullptr || index >= unknown08.size()) {
+    return;
+  }
+
+  if (unknown08[index] == 0) {
+    return;
+  }
+
+  if (unknown20 != -1) {
+    u32 input = unknown001(unknown08[unknown20]);
+    if (input != 0) {
+      UIInputManager::get()->disableInput(input);
+    }
+  }
+
+  u32 input = unknown001(unknown08[index]);
+  if (input != 0) {
+    UIInputManager::get()->enableInput(input);
+    unknown20 = index;
   }
 }
 
