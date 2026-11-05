@@ -38,6 +38,7 @@ public:
   virtual ~UICtrlRevolveSelect();
 
   void reset();
+  f32 getAngleStep();
   void resetAngelRange(u16 range);
   void getCenterPos(mm::Pnt<s16> &pos) const;
   bool isRolling() const;

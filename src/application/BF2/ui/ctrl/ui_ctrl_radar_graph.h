@@ -26,6 +26,7 @@ public:
   UICtrlRadarGraph(u32 object);
   virtual ~UICtrlRadarGraph();
   virtual void update(const fw::UpdateInfo &info);
+  void setNumberPlugin(u32 index, u32 handle);
 
   mm::mtl::Array<Value> unknown30; // Inferred role: values; original member name unknown.
   Setting unknown48;               // Inferred role: setting; original member name unknown.

@@ -8,6 +8,7 @@
 #include "mm_mtl/rtti.h"
 #include "ui/plugin/ui_object_number_plugin.h"
 #include "ui/shape/ui_shape_simple_face.h"
+#include "ui/ui_object.h"
 #include "ui/ui_object_acc.h"
 #include "ui/ui_util.h"
 
@@ -18,6 +19,19 @@ UICtrlRadarGraph::UICtrlRadarGraph(u32 object) : UICtrlObject(object), unknown30
 UICtrlRadarGraph::~UICtrlRadarGraph() {
   if (unknown30.size() != 0) {
     unknown30.destroy();
+  }
+}
+
+void UICtrlRadarGraph::setNumberPlugin(u32 index, u32 handle) {
+  if (index < unknown30.size()) {
+    UIObject *object = UIUtil::getObject(handle);
+    if (object != nullptr && object->unknowne0 != nullptr) {
+      UIObjectNumberPlugin *plugin = mm::mtl::dynamicCast<UIObjectNumberPlugin>(object->unknowne0);
+      if (plugin != nullptr) {
+        unknown30[index].unknown00 = plugin->unknown7c;
+        unknown30[index].unknown08 = plugin;
+      }
+    }
   }
 }
 
