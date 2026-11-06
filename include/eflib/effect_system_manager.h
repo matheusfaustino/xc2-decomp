@@ -1,6 +1,7 @@
 #pragma once
 #include <stddef.h>
 
+#include "eflib/effect_send_param.h"
 #include "mm_mtl/fixed_vector.h"
 #include "ptlib/forcefield/particle_force_field.h"
 #include "types.h"
@@ -16,12 +17,56 @@ struct DrDrawWorkInfoEF;
 namespace effect {
 
 class IEffectCallBack;
-struct SendParam;
 
 class SystemManager {
 public:
+  // Layout from the copy in addCommand (1.0.0: 0x710091a2b8): it copies the first 0x14 bytes as three
+  // scalars, the 0xb0 bytes at 0x20 as one block, and the four words at 0xd0.
+  //
+  // The block is copied with memcpy when a command is pushed into a command list: SendParam's copy
+  // constructor asserts that its matrix is 16-byte aligned, which a command buffer entry need not keep.
+  union alignas(16) CommandParam {
+    CommandParam() : value() {}
+    CommandParam(const CommandParam &other) {
+      if (this != &other) {
+        __builtin_memcpy(raw, other.raw, sizeof(raw));
+      }
+    }
+    CommandParam &operator=(const CommandParam &) = default;
+
+    SendParam value;
+    u8 raw[sizeof(SendParam)];
+  };
+
   struct alignas(16) EsCommand {
-    u8 _00[0xf0 - 0x00];
+    EsCommand() = default;
+
+    u32 unknown00; // Inferred role: command type; original member name unknown.
+    u8 _04[4];
+    union {
+      void *data;
+      u64 value;
+    } unknown08;   // Inferred role: effect data or pack handle; original member name unknown.
+    u32 unknown10; // Inferred role: handle or create key; original member name unknown.
+    CommandParam unknown20;
+    // Inferred role: command payload; original member names unknown. The payload is read back with a
+    // different member for each command type in es_command_core.
+    union {
+      const void *callback;
+      u8 isLoop;
+      u32 disp;
+    } unknownd0;
+    union {
+      const void *callback;
+      int frame;
+    } unknownd8;
+    union {
+      char name[16];
+      struct {
+        u32 unknown;
+        f32 value;
+      } createCas;
+    } unknowne0;
   };
 
   using CommandList = mm::mtl::FixedVector<EsCommand, 0x400>;
@@ -59,12 +104,13 @@ public:
   void MainDraw(const ptlib::DrDrawWorkInfoEF *info, int viewIndex, bool isBlur);
   void MainLoop(const ptlib::DrDrawWorkInfoEF *info);
   void es_command_core();
+  void addCommand(const EsCommand &command);
   void es_pause(bool isPause);
   void es_pack_free_(u64 pack);
   void es_pack_free(u64 pack);
   void es_pack_regist(const char *name, void *data, u32 size);
-  void es_pack_regist(void *data, u32 size);
-  u64 es_regist(void *data, u32 size);
+  void *es_pack_regist(void *data, u32 size);
+  void *es_regist(void *data, u32 size);
   void *es_regist(const char *name, void *data, u32 size);
   void es_free(void *data);
   u32 es_create(void *data, bool isLoop);
@@ -72,6 +118,8 @@ public:
   void es_set_param_pos_only2(u32 handle, const SendParam *param);
   void es_set_category(u32 handle, u32 category);
   void es_set_param(u32 handle, const SendParam *param);
+  void es_set_param(void *data, const SendParam *param);
+  u32 es_create_cas(void *data, const IEffectCallBack *callback, int unknown, float value, bool isLoop);
   void es_set_alpha(u32 handle, f32 alpha);
   void es_set_speed(u32 handle, f32 speed);
   void es_set_viewnum(u32 handle, int viewnum);
@@ -127,6 +175,14 @@ public:
   u8 unknown7824f;   // Inferred role: clear count; original member name unknown.
 };
 
+static_assert(sizeof(SystemManager::CommandParam) == 0xb0, "");
+static_assert(offsetof(SystemManager::EsCommand, unknown08) == 0x08, "");
+static_assert(offsetof(SystemManager::EsCommand, unknown10) == 0x10, "");
+static_assert(offsetof(SystemManager::EsCommand, unknown20) == 0x20, "");
+static_assert(offsetof(SystemManager::EsCommand, unknownd0) == 0xd0, "");
+static_assert(offsetof(SystemManager::EsCommand, unknownd8) == 0xd8, "");
+static_assert(offsetof(SystemManager::EsCommand, unknowne0) == 0xe0, "");
+static_assert(sizeof(SystemManager::EsCommand) == 0xf0, "");
 static_assert(offsetof(SystemManager, unknown09) == 0x09, "");
 static_assert(offsetof(SystemManager, unknown0b) == 0x0b, "");
 static_assert(offsetof(SystemManager, unknown10) == 0x10, "");

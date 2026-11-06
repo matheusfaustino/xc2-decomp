@@ -33,7 +33,7 @@ struct alignas(16) SendParam {
     unknown88 = -1.0f;
     unknown8c = -1.0f;
     unknown98 = -1.0f;
-    unknown9c = 0.0f;
+    unknown9c = 0;
     unknowna8 = 0;
   }
 
@@ -52,7 +52,7 @@ struct alignas(16) SendParam {
   f32 unknown90; // Role and original member name unknown.
   f32 unknown94; // Role and original member name unknown.
   f32 unknown98; // Role and original member name unknown.
-  f32 unknown9c; // Role and original member name unknown.
+  u32 unknown9c; // Inferred role: category, an integer copied to the emitter; original member name unknown.
   u16 unknowna0; // Role and original member name unknown.
   u8 unknowna2;  // Role and original member name unknown.
   u8 unknowna3;  // Role and original member name unknown.

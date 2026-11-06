@@ -57,6 +57,7 @@ public:
   void emitter_set_free_all_sub(bool isForce);
   void emitter_set_link(FxHeader *header);
   void emitter_create_local_common_life(EmitterObj *emitter, ParticleObj *particle, EmitterArg *arg);
+  void emitter_create_local_common_update_kfinit(EmitterObj *emitter, ParticleObj *particle, EmitterArg *arg);
   void emitter_pack_free(u64 pack);
   EmitterObj *emitter_alloc01(FxHeader *header, EmitterGroup *group, u32 key, ParticleObj *parent, int index, bool option, EmitterParam *param, f32 scale, int flags);
   void emitter_set_free(FxHeader *header, int frame);

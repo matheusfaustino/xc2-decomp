@@ -27,6 +27,7 @@
 #include "ptlib/emitter/particle_emitter_particle.h"
 #include "ptlib/emitter/particle_emitter_set_node.h"
 #include "ptlib/forcefield/particle_force_field.h"
+#include "ptlib/math/particle_keyframe_ip.h"
 #include "ptlib/particle_math.h"
 #include "ptlib/particle_system.h"
 #include "ptlib/renderer/particle_renderer_eff_state.h"
@@ -385,6 +386,17 @@ ParticleObj *EmitterManager::createCommon(EmitterObj *emitter) {
     particle->getExtParam().unknown110 = nullptr;
   }
   return particle;
+}
+
+void EmitterManager::emitter_create_local_common_update_kfinit(EmitterObj *emitter, ParticleObj *particle, EmitterArg *arg) {
+  if (arg->unknown00 == 4) {
+    ParticleManager::get()->update_model(particle, emitter, arg);
+  }
+  if (arg->unknown00 == 5) {
+    ParticleManager::get()->update_plight(particle, emitter);
+  }
+  memset(particle->getExtParam().unknown190, 0xff, sizeof(particle->getExtParam().unknown190));
+  memset(particle->getExtParam().unknown214, 0, sizeof(particle->getExtParam().unknown214));
 }
 
 void EmitterManager::emitter_create_local_common_life(EmitterObj *emitter, ParticleObj *particle, EmitterArg *arg) {

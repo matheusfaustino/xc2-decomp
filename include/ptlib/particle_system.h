@@ -20,6 +20,7 @@ namespace ptlib {
 namespace emitter {
 struct EmitterArg;
 class EmitterObj;
+class ParticleObj;
 struct EmitterParam;
 } // namespace emitter
 
@@ -308,6 +309,8 @@ public:
   void set_pause(bool isPause);
   void emitter_pack_free(u64 pack);
   void emitter_set_free(FxHeader *header, int frame);
+  void update_model(emitter::ParticleObj *particle, emitter::EmitterObj *emitter, emitter::EmitterArg *arg);
+  void update_plight(emitter::ParticleObj *particle, emitter::EmitterObj *emitter);
   void update_model_spd(emitter::EmitterObj *emitter, f32 speed);
   void emitter_alloc01_set_draw(emitter::EmitterObj *emitter, emitter::EmitterArg *arg);
   void update_pause();

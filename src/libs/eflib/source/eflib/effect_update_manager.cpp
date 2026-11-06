@@ -1,7 +1,9 @@
 #include <new>
 
+#include "eflib/effect_send_param.h"
 #include "eflib/effect_system_manager.h"
 #include "mm/mm_std_base.h"
+#include "mm_math/mm_col4.h"
 #include "mtl/alloc_handle.h"
 #include "ptlib/emitter/particle_emitter_manager.h"
 #include "ptlib/forcefield/particle_force_field.h"
@@ -13,6 +15,7 @@
 #include "types.h"
 
 namespace effect {
+class IEffectCallBack;
 
 namespace {
 SystemManager *s_instance;
@@ -151,6 +154,132 @@ void SystemManager::es_free(void *data) {
 }
 
 SystemManager::CommandList *SystemManager::getCommand(u32 index) { return index == 0 ? &unknown220[0] : &unknown220[1]; }
+
+void SystemManager::addCommand(const EsCommand &command) {
+  if (unknown7824f != 0) {
+    ptlib::efMsg("addCommandError!!");
+    return;
+  }
+  getCommand(unknown7824c)->push_back(command);
+}
+
+void SystemManager::es_pack_free(u64 pack) {
+  EsCommand command;
+  command.unknown00 = 22;
+  command.unknown08.value = pack;
+  addCommand(command);
+}
+
+void *SystemManager::es_pack_regist(void *data, u32 size) {
+  EsCommand command;
+  command.unknown00 = 21;
+  command.unknown08.data = data;
+  command.unknown10 = size;
+  addCommand(command);
+  return data;
+}
+
+void *SystemManager::es_regist(void *data, u32 size) {
+  EsCommand command;
+  command.unknown00 = 20;
+  command.unknown08.data = data;
+  command.unknown10 = size;
+  addCommand(command);
+  return data;
+}
+
+u32 SystemManager::es_create(void *data, bool isLoop) {
+  if (data == nullptr) {
+    return 0;
+  }
+  u32 key = ptlib::HashManager::get()->get_create_key();
+  EsCommand command;
+  command.unknown00 = 2;
+  command.unknown08.data = data;
+  command.unknown10 = key;
+  command.unknownd0.isLoop = isLoop;
+  addCommand(command);
+  return key;
+}
+
+u32 SystemManager::es_create_cas(void *data, const IEffectCallBack *callback, int unknown, float value, bool isLoop) {
+  if (data == nullptr) {
+    return 0;
+  }
+  u32 key = ptlib::HashManager::get()->get_create_key();
+  EsCommand command;
+  command.unknown00 = 4;
+  command.unknown08.data = data;
+  command.unknown10 = key;
+  command.unknownd0.isLoop = isLoop;
+  command.unknownd8.callback = callback;
+  command.unknowne0.createCas.unknown = unknown;
+  command.unknowne0.createCas.value = value;
+  addCommand(command);
+  return key;
+}
+
+void SystemManager::es_set_alpha(u32 handle, f32 alpha) {
+  EsCommand command;
+  command.unknown00 = 13;
+  command.unknown08.data = nullptr;
+  command.unknown10 = handle;
+  command.unknown20.value.unknown40.a = alpha;
+  addCommand(command);
+}
+
+void SystemManager::es_set_viewnum(u32 handle, int viewnum) {
+  EsCommand command;
+  command.unknown00 = 14;
+  command.unknown08.data = nullptr;
+  command.unknown10 = handle;
+  command.unknown20.value.unknowna3 = viewnum;
+  addCommand(command);
+}
+
+void SystemManager::es_set_category(u32 handle, u32 category) {
+  EsCommand command;
+  command.unknown00 = 18;
+  command.unknown08.data = nullptr;
+  command.unknown10 = handle;
+  command.unknown20.value.unknown9c = category;
+  addCommand(command);
+}
+
+void SystemManager::es_set_disp(u32 handle, int isDisp) {
+  EsCommand command;
+  command.unknown00 = 16;
+  command.unknown08.data = nullptr;
+  command.unknown10 = handle;
+  command.unknownd0.disp = isDisp;
+  addCommand(command);
+}
+
+void SystemManager::es_remove_cas(void *callback) {
+  if (callback == nullptr) {
+    return;
+  }
+  EsCommand command;
+  command.unknown00 = 19;
+  command.unknown08.data = nullptr;
+  command.unknown10 = 0;
+  command.unknownd0.callback = callback;
+  command.unknownd8.frame = -1;
+  addCommand(command);
+}
+
+void SystemManager::es_fade_core(void *data, u32 handle, int frame) {
+  if (data == nullptr && handle == 0) {
+    return;
+  }
+  EsCommand command;
+  command.unknown00 = 19;
+  command.unknown08.data = data;
+  command.unknown10 = handle;
+  command.unknownd0.callback = nullptr;
+  command.unknownd8.frame = frame;
+  addCommand(command);
+}
 
 f32 SystemManager::getGlobalSpeed() { return unknown78240[unknown7824c]; }
 

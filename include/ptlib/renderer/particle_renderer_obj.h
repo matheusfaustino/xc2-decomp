@@ -132,6 +132,7 @@ public:
   void draw_capture();
   u32 changeShader(u32 type, bool isSimple);
   void myGX2SetBlendControl(int type);
+  void set_alpha_mode(int type, bool isSimple);
   void *lockStream(emitter::EmitterObj *emitter);
   void unlockStream(emitter::EmitterObj *emitter, int count);
   void draw_common_uconst(f32 *uniform, emitter::EmitterObj *emitter);

@@ -50,6 +50,9 @@ const GrlBlendFunc unknown003[11] = {GRL_BLEND_FUNC_ZERO,
 // Inferred role: blend combines selected by the packed blend type; original name unknown.
 const GrlBlendCombine unknown004[5] = {GRL_BLEND_COMBINE_ADD, GRL_BLEND_COMBINE_SUBTRACT, GRL_BLEND_COMBINE_MIN, GRL_BLEND_COMBINE_MAX, GRL_BLEND_COMBINE_UNKNOWN_3};
 // Inferred role: writes the position, the compute index and the transform of a particle, shared by the screen and string attributes; original name unknown.
+// Inferred role: packed blend type selected by an alpha mode; original name unknown.
+const u8 unknown006[32] = {0x00, 0x02, 0x01, 0x03, 0x02, 0x01, 0x06, 0x05, 0x07, 0x08, 0x06, 0x05, 0x07, 0x04, 0x00, 0x20,
+                           0x40, 0x60, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00};
 inline void unknown005(f32 *uniform, emitter::ParticleObj *particle) {
   memcpy(&uniform[0], &particle->unknown10, sizeof(mm::Vec3NA));
   reinterpret_cast<u32 *>(uniform)[3] = particle->unknown148;
@@ -100,6 +103,22 @@ u32 RenderGrObj::changeShader(u32 type, bool isSimple) {
     }
   }
   return type;
+}
+
+void RenderGrObj::set_alpha_mode(int type, bool isSimple) {
+  if (isSimple) {
+    grlib::CGLibDepthCtl::setDepthControl(1, 0, GRL_COMPARE_LEQUAL);
+  } else {
+    grlib::CGLibDepthCtl::setDepthControl(0, 0, GRL_COMPARE_ALWAYS);
+  }
+  if ((type & 0x9f) == 0) {
+    return;
+  }
+  u32 mode = type & 0xff9f;
+  if (mode <= 0x7f) {
+    mode = unknown006[mode];
+  }
+  myGX2SetBlendControl(mode);
 }
 
 void RenderGrObj::myGX2SetBlendControl(int type) {
