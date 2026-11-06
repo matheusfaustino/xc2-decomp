@@ -6,6 +6,7 @@
 #include "mm_math/mm_mat44.h"
 #include "mm_mtl/fixstr.h"
 #include "mm_mtl/vector.h"
+#include "scn/scn_obj_model_dr_sys.h"
 #include "types.h"
 
 namespace mm {
@@ -80,6 +81,11 @@ EffectCasterSend::MtxAndName *EffectCasterSend::getBindData(u32 &count) {
   MtxAndName *datas = m_caster->unknown20;
   count = m_caster->unknown28;
   return datas;
+}
+
+void *EffectCasterSend::getMdl() {
+  unknown80 = static_cast<ml::ScnObjModelDrSys *>(m_caster->unknown18)->unknown3d8;
+  return unknown80;
 }
 
 f32 EffectCasterSend::getMdlFrame() { return unknown90[effect::SystemManager::getPtr()->unknown7824d == 0]; }

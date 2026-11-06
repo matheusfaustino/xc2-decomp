@@ -1,7 +1,11 @@
+#include "framework/model/model_manager.h"
 #include "framework/reference_frame.h"
 #include "fw/fw_model_object.h"
+#include "ml/scn.h"
 #include "ml/scn_obj_model.h"
 #include "mm_math/mm_vec3.h"
+#include "mm_mtl/fixed_array.h"
+#include "mm_mtl/intrusive_list.h"
 #include "mm_mtl/intrusive_ptr.h"
 #include "scn/scn_obj_acc.h"
 #include "types.h"
@@ -11,6 +15,18 @@ struct Mat44;
 } // namespace mm
 
 namespace fw {
+
+ModelObject::~ModelObject() {
+  if (unknown28 != nullptr) {
+    if (m_interface != nullptr) {
+      unknown28->releaseItem(m_interface);
+      m_interface = nullptr;
+    }
+    unknown28 = nullptr;
+  }
+
+  ModelManager::get()->unknown18[unknown38].unknown00.erase(this);
+}
 
 ModelObject::ModelObject() : unknown20(0), m_interface(nullptr), unknown38(0), m_active(true), unknown3d(false), unknown50(0.0f, 0.0f, 0.0f), unknown60(1.0f) {}
 

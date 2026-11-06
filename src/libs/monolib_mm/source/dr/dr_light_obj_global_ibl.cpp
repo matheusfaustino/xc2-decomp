@@ -38,3 +38,5 @@ f32 DrLightObjGlobalIBL::calcSimilarity(const DrLightObjGlobalIBL &other) const 
 
 template void mm::mtl::Vector<ml::DrLightObjGlobalIBL *>::extend(size_t, size_t);
 template void mm::mtl::Vector<ml::DrLightObjGlobalIBL *>::resize(size_t);
+
+template void mm::mtl::Vector<ml::DrLightObjGlobalIBL::MeshData>::destroy();
