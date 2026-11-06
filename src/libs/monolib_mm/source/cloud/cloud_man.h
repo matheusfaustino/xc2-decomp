@@ -53,12 +53,12 @@ public:
   const mm::Col3 &getPlaneCol(u32 index) const;
   void openDebugWindow(ml::WinProc *window);
 
-  mtl::ALLOC_HANDLE unknown08; // Inferred role: mem top; original member name unknown.
-  mtl::ALLOC_HANDLE unknown0c; // Inferred role: mem data; original member name unknown.
-  mtl::ALLOC_HANDLE unknown10; // Inferred role: mem work; original member name unknown.
-  ml::Scn *unknown18;          // Inferred role: scn; original member name unknown.
-  bool unknown20;              // Inferred role: is setup request; original member name unknown.
-  u64 _28;
+  mtl::ALLOC_HANDLE unknown08;      // Inferred role: mem top; original member name unknown.
+  mtl::ALLOC_HANDLE unknown0c;      // Inferred role: mem data; original member name unknown.
+  mtl::ALLOC_HANDLE unknown10;      // Inferred role: mem work; original member name unknown.
+  ml::Scn *unknown18;               // Inferred role: scn; original member name unknown.
+  bool unknown20;                   // Inferred role: is setup request; original member name unknown.
+  u32 *unknown28;                   // Inferred role: culling group bits; original member name unknown.
   CloudDataMan *unknown30;          // Inferred role: data man; original member name unknown.
   CloudVertexMan *unknown38;        // Inferred role: vertex man; original member name unknown.
   CloudTextureMan *unknown40;       // Inferred role: texture man; original member name unknown.
@@ -71,6 +71,8 @@ public:
 
 static_assert(offsetof(CloudMan, unknown08) == 0x08, "");
 static_assert(offsetof(CloudMan, unknown18) == 0x18, "");
+static_assert(offsetof(CloudMan, unknown20) == 0x20, "");
+static_assert(offsetof(CloudMan, unknown28) == 0x28, "");
 static_assert(offsetof(CloudMan, unknown30) == 0x30, "");
 static_assert(offsetof(CloudMan, unknown58) == 0x58, "");
 static_assert(offsetof(CloudMan, unknown60) == 0x60, "");
