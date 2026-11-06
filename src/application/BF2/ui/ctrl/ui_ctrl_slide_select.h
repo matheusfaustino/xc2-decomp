@@ -27,9 +27,12 @@ public:
   };
 
   UICtrlSlideSelect(u32 object);
+  static UICtrlSlideSelect *create(u32 object, const SlideSetting &setting, UISelectObjList *list);
   virtual ~UICtrlSlideSelect();
 
   void updateObjectPos();
+  void setSelIndex(int index, int prev, int next, bool immediate);
+  virtual void update(const fw::UpdateInfo &info);
 
   SlideSetting unknown2c;                    // Inferred role: setting; original member name unknown.
   UISelectObjList *unknown48;                // Inferred role: list; original member name unknown.

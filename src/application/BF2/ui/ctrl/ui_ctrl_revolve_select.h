@@ -35,6 +35,7 @@ public:
   };
 
   UICtrlRevolveSelect(u32 object);
+  static UICtrlRevolveSelect *create(u32 object, const RevolveSetting &setting, UISelectObjList *list);
   virtual ~UICtrlRevolveSelect();
 
   void reset();
@@ -43,6 +44,10 @@ public:
   void getCenterPos(mm::Pnt<s16> &pos) const;
   bool isRolling() const;
   bool isMoving() const;
+  void setIndex(int index, bool move);
+  void moveCenterOffset(const mm::Pnt<s16> &offset, bool move);
+  void updateObject(f32 angle, const mm::Pnt<s16> &pos);
+  virtual void update(const fw::UpdateInfo &info);
 
   RevolveSetting unknown2c;   // Inferred role: setting; original member name unknown.
   u32 unknown5c;              // Inferred role: current angle; original member name unknown.

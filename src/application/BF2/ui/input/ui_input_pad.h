@@ -5,6 +5,16 @@
 #include "ui/event/ui_event_data.h"
 #include "ui/input/ui_input_layer.h"
 
+namespace mm {
+namespace mtl {
+class IAllocator;
+} // namespace mtl
+} // namespace mm
+
+namespace fw {
+struct PadData;
+}
+
 namespace ui {
 
 class UIInputPad : public UIInputLayer {
@@ -12,6 +22,7 @@ public:
   struct PadSetup;
 
   UIInputPad(u32 handle, u32 priority, const PadSetup &setup);
+  static UIInputPad *create(u32 handle, u32 priority, const PadSetup &setup, mm::mtl::IAllocator *allocator);
   virtual ~UIInputPad();
   void setLineSelectionMax(u32 max);
   void setLineSelectLoop(bool loop);
@@ -21,6 +32,9 @@ public:
   virtual bool hasEventExt() const;
   virtual void clearExt();
   virtual UIInputPad *castUIInputPad();
+  virtual bool updateImpl();
+  void moveSelect(const fw::PadData &pad, u32 trigger, int index);
+  void fixSelectNo(int index, bool up, bool wrap);
 
   u8 unknown1e0[0x360 - 0x1e0]; // Inferred role: pad state; original member names unknown.
   u64 unknown360;               // Role and original member name unknown.

@@ -1,6 +1,14 @@
 #include "ui/input/ui_input_pad.h"
 
+#include "framework/memory/framework_memory.h"
+
 namespace ui {
+
+UIInputPad *UIInputPad::create(u32 handle, u32 priority, const PadSetup &setup, mm::mtl::IAllocator *allocator) {
+// __LINE__ is the line argument of the operator new call.
+#line 113
+  return new (allocator, 16, __FILE__, __LINE__) UIInputPad(handle, priority, setup);
+}
 
 UIInputPad::~UIInputPad() {
   if (unknown360 != 0) {
