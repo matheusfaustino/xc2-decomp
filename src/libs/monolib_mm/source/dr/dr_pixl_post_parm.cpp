@@ -37,6 +37,8 @@ f32 DrPixlPostParm::getTMAASharpness(u32 index) const {
 
 bool DrPixlPostParm::isMotBlur2() const { return m_motBlur2; }
 
+bool DrPixlPostParm::isMotBlur() const { return unknown1ca || unknown1cb; }
+
 bool DrPixlPostParm::getBloomOn() const { return m_bloomOn; }
 
 bool DrPixlPostParm::getToneMapOn() const { return m_toneMapOn; }

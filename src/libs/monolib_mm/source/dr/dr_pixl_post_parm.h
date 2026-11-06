@@ -202,7 +202,8 @@ public:
   f32 unknown19c; // Inferred role: ssao blur str; original member name unknown.
   u8 _01a0[0x01ca - 0x01a0];
   bool unknown1ca; // Inferred role: mot blur; original member name unknown.
-  u8 _01cb[0x01cd - 0x01cb];
+  bool unknown1cb; // Role and original member name unknown.
+  u8 _01cc[0x01cd - 0x01cc];
   bool unknown1cd; // Inferred role: obj mot blur; original member name unknown.
   bool unknown1ce; // Inferred role: app blur; original member name unknown.
   u8 _01cf[0x01d0 - 0x01cf];
@@ -388,6 +389,7 @@ static_assert(offsetof(DrPixlPostParm, m_TMAAOn) == 0x0111, "");
 static_assert(offsetof(DrPixlPostParm, unknown194) == 0x0194, "");
 static_assert(offsetof(DrPixlPostParm, unknown19c) == 0x019c, "");
 static_assert(offsetof(DrPixlPostParm, unknown1ca) == 0x01ca, "");
+static_assert(offsetof(DrPixlPostParm, unknown1cb) == 0x01cb, "");
 static_assert(offsetof(DrPixlPostParm, unknown1cd) == 0x01cd, "");
 static_assert(offsetof(DrPixlPostParm, unknown1ce) == 0x01ce, "");
 static_assert(offsetof(DrPixlPostParm, unknown1d0) == 0x01d0, "");

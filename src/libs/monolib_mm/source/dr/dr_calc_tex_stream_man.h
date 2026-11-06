@@ -50,6 +50,11 @@ public:
   void calcPieceMem(int &pieceCount, u32 &freeSize, u32 &objectCount);
   void cntMemUpdate();
   bool memSeachOptimization(u32 size);
+
+  // Original enumerator names unknown.
+  enum DrTxtmType {};
+
+  bool callReadType(DrTxtmType type);
   DrCalcTexStmObj *createAheadFreeObj(u32 size);
   bool createSizeFreeObj(DrCalcTexStmObj *object, u32 size);
   DrCalcTexStmObj *createChildObj(DrCalcTexStmObj *parent, u32 size);
@@ -70,8 +75,9 @@ public:
   u32 unknown2488;                  // Inferred role: optimization count; original member name unknown.
   u16 unknown248c;                  // Inferred role: read mode; original member name unknown.
   u16 unknown248e;                  // Inferred role: read mode flags; original member name unknown.
-  u8 _2490[0x2498 - 0x2490];
-  u32 unknown2498; // Inferred role: job cpu; original member name unknown.
+  s32 unknown2490;                  // Inferred role: read type; original member name unknown.
+  s32 unknown2494;                  // Inferred role: previous read type; original member name unknown.
+  u32 unknown2498;                  // Inferred role: job cpu; original member name unknown.
 };
 
 static_assert(offsetof(DrCalcTexStreamMan, unknown08) == 0x08, "");
@@ -83,6 +89,7 @@ static_assert(offsetof(DrCalcTexStreamMan, unknown2480) == 0x2480, "");
 static_assert(offsetof(DrCalcTexStreamMan, unknown2484) == 0x2484, "");
 static_assert(offsetof(DrCalcTexStreamMan, unknown248c) == 0x248c, "");
 static_assert(offsetof(DrCalcTexStreamMan, unknown248e) == 0x248e, "");
+static_assert(offsetof(DrCalcTexStreamMan, unknown2490) == 0x2490, "");
 static_assert(offsetof(DrCalcTexStreamMan, unknown2498) == 0x2498, "");
 
 } // namespace ml

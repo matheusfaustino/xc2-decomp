@@ -5,6 +5,7 @@ namespace ml {
 
 class DrMdoCtlMpf : public DrMdlObj {
 public:
+  void createDisplaList();
   void callZPrepassRender();
   void updateMpf();
   void calcMpfRenderList();

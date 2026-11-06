@@ -5,6 +5,14 @@
 
 namespace ml {
 
+bool DrCalcTexStreamMan::callReadType(DrTxtmType type) {
+  if (unknown2490 < type) {
+    return false;
+  }
+  unknown2490 = type;
+  return unknown2494 >= type;
+}
+
 CriticalSection &DrCalcTexStreamMan::getCriticalSection() {
   static CriticalSection sect;
   return sect;

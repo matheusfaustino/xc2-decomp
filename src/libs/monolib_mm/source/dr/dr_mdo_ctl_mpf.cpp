@@ -8,6 +8,8 @@
 
 namespace ml {
 
+void DrMdoCtlMpf::createDisplaList() {}
+
 void DrMdoCtlMpf::updateMpf() {
   m_AABBMax = mm::Vec3(1.0f, 1.0f, 1.0f);
   m_AABBMin = mm::Vec3(-1.0f, -1.0f, -1.0f);

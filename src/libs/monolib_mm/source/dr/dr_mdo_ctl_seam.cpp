@@ -36,6 +36,8 @@ void *DrMdoCtlSeam::getColiListTbl() { return unknown640[DrMan::s_nDblIdx]; }
 
 u32 DrMdoCtlSeam::getColiListMax() { return unknown650[DrMan::s_nDblIdx]; }
 
+DrResMdoSeamColi *DrMdoCtlSeam::getColiRes(int index) { return &unknown258.unknown20[static_cast<u32>(index)]; }
+
 u32 DrMdoCtlSeam::isRead(int index) const {
   if (((unknownc7c >> 28) & 1) == 0) {
     return unknowncd0.unknown4a & (1 << index);

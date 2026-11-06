@@ -163,6 +163,13 @@ static_assert(offsetof(MdoArgSeamUpdate, unknown48) == 0x48, "");
 static_assert(offsetof(MdoArgSeamUpdate, unknown58) == 0x58, "");
 static_assert(sizeof(MdoArgSeamUpdate) == 0x68, "");
 
+// Inferred role: seam read call; original type name unknown.
+struct unknown064 {
+  u8 _00[0x28];
+};
+
+static_assert(sizeof(unknown064) == 0x28, "");
+
 // Inferred role: global IBL entry of the seam data; original type name unknown.
 struct unknown096 {
   u8 _00[0x08];
@@ -292,6 +299,7 @@ public:
   DrMdoCtlSeam(int viewNum);
   void *getColiListTbl();
   u32 getColiListMax();
+  DrResMdoSeamColi *getColiRes(int index);
   u32 isRead(int index) const;
   void setErrCode(int code, int param);
   static int calcSemaAlignment(u32 size, u32 alignment);
@@ -439,8 +447,8 @@ public:
   bool unknowncc8;                 // Inferred role: unknown state, cleared by the constructor; original member name unknown.
   DrResMdoSeamRead unknowncd0;     // Inferred role: seam reader; original member name unknown.
   DrResMdoSeamParmRead unknownd30; // Inferred role: seam read parameters; original member name unknown.
-  u8 _1370[0x14b0 - 0x1370];
-  u32 unknown14b0; // Inferred role: unknown, cleared by the constructor; original member name unknown.
+  unknown064 unknown1370[8];       // Inferred role: seam read calls; original member name unknown.
+  u32 unknown14b0;                 // Inferred role: unknown, cleared by the constructor; original member name unknown.
   u8 _14b4[0x14c0 - 0x14b4];
   u64 unknown14c0; // Inferred role: unknown, cleared by the constructor; original member name unknown.
   u32 unknown14c8; // Inferred role: unknown, cleared by the constructor; original member name unknown.

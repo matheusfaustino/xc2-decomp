@@ -646,7 +646,7 @@ public:
   const MdsMatCharMkTexTbl *unknown48; // Inferred role: char mk textures; original member name unknown.
   void *unknown50;                     // Inferred role: dammy data; original member name unknown.
   DrMdoSmlShadowObj *unknown58;        // Inferred role: sml shadow; original member name unknown.
-  u8 _60[0x70 - 0x60];
+  mm::Mat44 *unknown60[2];             // Inferred role: node matrices per double-buffer slot; original member name unknown.
   mm::Mat44 m_matrix;
   mm::Vec3 m_offsetPos;
   u8 _c0[0xd0 - 0xc0];
@@ -684,6 +684,7 @@ static_assert(offsetof(DrMdoMat, unknown40) == 0x40, "");
 static_assert(offsetof(DrMdoMat, unknown48) == 0x48, "");
 static_assert(offsetof(DrMdoMat, unknown50) == 0x50, "");
 static_assert(offsetof(DrMdoMat, unknown58) == 0x58, "");
+static_assert(offsetof(DrMdoMat, unknown60) == 0x60, "");
 static_assert(offsetof(DrMdoMat, m_matrix) == 0x70, "");
 static_assert(offsetof(DrMdoMat, m_offsetPos) == 0xb0, "");
 static_assert(offsetof(DrMdoMat, unknownd0) == 0xd0, "");

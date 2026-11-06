@@ -44,6 +44,8 @@ u32 DrMdoMpfMan::advanceInstanceBuffOsf(u32 size) {
 
 void DrMdoMpfMan::bindInstanceBuffAsVertex(u32 stream, u32 offset, u32 stride, u32 divisor) { grlib::CGLibCtlVertex::setUniformVertex(unknown98, stride, offset, stream, divisor); }
 
+void DrMdoMpfMan::bindInstanceBuffAsSSBO(u32 index, u32 offset, u32 size) { unknown98.setStorageBuffer(index, offset, size); }
+
 void DrMdoMpfMan::addMpfObj() { unknown08++; }
 
 bool DrMdoMpfMan::delMpfObj() {

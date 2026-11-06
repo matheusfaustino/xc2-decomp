@@ -21,6 +21,7 @@ public:
   void updateInstanceBuff(u32 offset, u32 size);
   u32 advanceInstanceBuffOsf(u32 size);
   void bindInstanceBuffAsVertex(u32 stream, u32 offset, u32 stride, u32 divisor);
+  void bindInstanceBuffAsSSBO(u32 index, u32 offset, u32 size);
   void addMpfObj();
   bool delMpfObj();
   u8 *getTempMemTbl(int size);
