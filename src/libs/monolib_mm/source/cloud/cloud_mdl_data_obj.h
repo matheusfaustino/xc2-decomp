@@ -43,9 +43,9 @@ public:
   void bindVertex(u32 index);
   void render(u32 index);
 
-  void *unknown00;                  // Inferred role: original member name unknown.
-  void *unknown08;                  // Inferred role: original member name unknown.
-  void *unknown10;                  // Inferred role: original member name unknown.
+  CloudMdlDataObj *unknown00;       // Inferred role: previous model data; original member name unknown.
+  CloudMdlDataObj *unknown08;       // Inferred role: next model data; original member name unknown.
+  CloudMdlDataObj **unknown10;      // Inferred role: owning list head slot; original member name unknown.
   grlib::CGLibVtlMemPool unknown18; // Inferred role: mem pool; original member name unknown.
   const char *unknown48;            // Inferred role: name buffer; original member name unknown.
   unknown001 *unknown50;            // Inferred role: part table; original member name unknown.
