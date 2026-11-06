@@ -21,7 +21,14 @@ void UIInputPointer::setupPointerSelection(const SelectionSetup &setup) {
     unknown1e8.unknown10->addRef();
   }
   unknown224 = 1.0f;
-  unknown204 = 0;
+  unknown204 = mm::Pnt<s16>(0, 0);
+}
+
+void UIInputPointer::changePointerPos(const mm::Pnt<s16> &pos) {
+  if (unknown204.x != pos.x || unknown204.y != pos.y) {
+    unknown242 = pos;
+    unknown240 = true;
+  }
 }
 
 void UIInputPointer::changeRegionScale(f32 scale) {

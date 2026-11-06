@@ -35,6 +35,7 @@ public:
 
   void setIndex(u32 index);
   bool inputChange(u32 index);
+  void setSelIndex(u32 index, bool immediate);
   void setDisp(bool disp);
   void setAddColor(const char *name);
   void setMulColor(const char *name);
