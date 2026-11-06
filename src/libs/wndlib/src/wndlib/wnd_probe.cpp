@@ -1,5 +1,6 @@
 // Original file name from the game string C:/Monolithsoft/BF2/prog/libs/wndlib/src/wndlib/wnd_probe.cpp.
 #include "wnd/wnd_probe.h"
+#include "mm/mm_std_base.h"
 #include "mm_mtl/vector.h" // IWYU pragma: keep
 #include "wnd/wnd.h"       // IWYU pragma: keep
 #include "wnd/wnd_wind.h"
@@ -12,6 +13,17 @@ template void mm::mtl::Vector<wnd::LocalWindHitCache>::push_back(const wnd::Loca
 template void mm::mtl::Vector<wnd::LocalWindHitCache>::expand(size_t, size_t);
 
 namespace wnd {
+
+WindProbe::WindProbe(const ProbeCreateInfo &info, u32 seed, mm::mtl::IAllocator *allocator)
+    : WindObject(unknown002_1, info), unknown88(seed), unknown180(nullptr), unknown188(nullptr), unknown190(allocator), m_pOverlappingCache(nullptr) {
+  unknown190.reserve(info.unknown14, 16);
+}
+
+WindProbe::~WindProbe() {
+  // The game asserts that the overlapping cache was released before the probe.
+#line 38
+  MM_ASSERT(m_pOverlappingCache == nullptr);
+}
 
 void WindProbe::bindGlobalWind(const GlobalWind &wind) {
   unknown90.setNode(&wind);

@@ -1,16 +1,46 @@
 // Original file name from the game string C:/Monolithsoft/BF2/prog/libs/wndlib/src/wndlib/wnd_world.cpp.
 #include "mm/mm_std_base.h"
 #include "mm_mtl/intrusive_list.h"
+#include "mm_mtl/reference_object.h" // for safeRelease
 #include "mm_mtl/vector.h"
 #include "types.h"
 #include "wnd/wnd_broad_phaze_interface.h"
+#include "wnd/wnd_dispatcher.h"
 #include "wnd/wnd_global_wind_manager.h" // IWYU pragma: keep
 #include "wnd/wnd_node.h"
 #include "wnd/wnd_object.h"
 #include "wnd/wnd_probe.h"
 #include "wnd/wnd_wind.h"
 
+namespace mm {
+namespace mtl {
+class IAllocator;
+} // namespace mtl
+} // namespace mm
+
 namespace wnd {
+struct ResConpoundWind;
+
+WindWorld::WindWorld(Dispatcher *dispatcher, BroadPhazeInterface *broadPhaze, const Array<const ResConpoundWind *> &resWind, mm::mtl::IAllocator *allocator) : unknown0c(0), unknown1d0(false) {
+  m_pBroadPhaze = broadPhaze;
+  broadPhaze->addRef();
+  m_pDispatcher = dispatcher;
+  dispatcher->addRef();
+  unknown10.setup(resWind, allocator);
+}
+
+WindWorld::~WindWorld() {
+  while (!unknown188.empty()) {
+    AreaWind *wind = unknown188.begin().get()->m_pOwner;
+    removeAreaWind(*wind);
+  }
+  while (!unknown170.empty()) {
+    removeProbe(*unknown170.begin());
+  }
+  delayErace();
+  mm::mtl::safeRelease(m_pDispatcher);
+  mm::mtl::safeRelease(m_pBroadPhaze);
+}
 
 void WindWorld::setDebugMode(bool enable, u32 mask) {
   unknown1d0 = enable;
@@ -70,6 +100,14 @@ void WindWorld::removeLocalWind(LocalWind &wind) {
   m_pBroadPhaze->removeWindObject(wind);
   unknown1a0.erase(&wind.unknown98);
   unknown1b8.push_back(&wind.unknown70);
+}
+
+void WindWorld::delayErace() {
+  while (!unknown1b8.empty()) {
+    WindObject *object = unknown1b8.begin().get()->m_pOwner;
+    unknown1b8.erase(&object->unknown70);
+    object->release();
+  }
 }
 
 // The game's bodies of these two are empty, so they return void; the pair cache is absent from this build.

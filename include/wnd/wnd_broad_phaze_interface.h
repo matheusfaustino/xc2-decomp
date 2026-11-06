@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mm_mtl/intrusive_list.h"
+#include "mm_mtl/reference_object.h"
 
 namespace wnd {
 
@@ -10,7 +11,7 @@ class WindObject;
 class WindProbe;
 
 // Interface of the broad phase used by WindWorld; the slot order comes from the vtable of BroadPhazeOctree (0x71011b9ba8).
-class BroadPhazeInterface {
+class BroadPhazeInterface : public mm::mtl::ReferenceObject {
 public:
   virtual ~BroadPhazeInterface() = default;
   virtual bool createProxy(WindObject &wind);

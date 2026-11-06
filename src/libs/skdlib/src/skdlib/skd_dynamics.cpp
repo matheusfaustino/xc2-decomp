@@ -1,6 +1,8 @@
 // Original file name from the game string C:/Monolithsoft/BF2/prog/libs/skdlib/src/skdlib/skd_dynamics.cpp.
 #include "skd/skd_dynamics.h"
 
+#include <string.h>
+
 #include "anm/anm_pose.h"
 #include "mm/mm_std_base.h"
 #include "mm_mtl/vector.h" // IWYU pragma: keep
@@ -104,6 +106,24 @@ void Dynamics::setSolverBlendWeight(u32 index, f32 weight) {
   if (m_solvers[index] != nullptr) {
     m_solvers[index]->m_solverBlendWeight = weight;
   }
+}
+
+s32 Dynamics::getSolverIndex(const char *name) const {
+  s32 index = -1;
+  for (u32 i = 0; i < m_solvers.size(); i++) {
+    if (m_solvers[i] == nullptr) {
+      continue;
+    }
+    const ResSolver *resSolver = m_solvers[i]->m_pResSolver;
+    if (resSolver == nullptr) {
+      continue;
+    }
+    if (strcmp(name, resSolver->unknown00) == 0) {
+      index = i;
+      break;
+    }
+  }
+  return index;
 }
 
 } // namespace skd

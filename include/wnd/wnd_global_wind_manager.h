@@ -82,7 +82,7 @@ static_assert(sizeof(GlobalWindManager) == 0x150, "");
 class WindWorld : public mm::mtl::ReferenceObject {
 public:
   WindWorld(Dispatcher *dispatcher, BroadPhazeInterface *broadPhaze, const Array<const ResConpoundWind *> &resWind, mm::mtl::IAllocator *allocator);
-  virtual ~WindWorld() = default;
+  ~WindWorld() override;
 
   void update(f32 deltaTime);
   bool query(Query *query);
