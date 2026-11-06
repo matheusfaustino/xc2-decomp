@@ -7,6 +7,7 @@
 
 namespace navi {
 
+class NvmshResMan;
 struct _NaviCalcResTbl;
 struct _NaviTempColiResl;
 
@@ -111,5 +112,24 @@ static_assert(offsetof(NvmshAcObjBase, unknown130) == 0x130, "");
 static_assert(offsetof(NvmshAcObjBase, m_moveVec) == 0x150, "");
 static_assert(offsetof(NvmshAcObjBase, m_moveSpd) == 0x160, "");
 static_assert(sizeof(NvmshAcObjBase) == 0x170, "");
+
+// Both classes only override the destructor: their vtables (0x71011b7560 and 0x71011b75f0) hold the
+// NvmshAcObjBase slots after it. The class names come from the game symbols, their role is unknown.
+class NvmshAcObjBaseDef : public NvmshAcObjBase {
+public:
+  ~NvmshAcObjBaseDef();
+  void release();
+  bool update(bool &unknown, NvmshResMan *resMan, bool param3);
+};
+
+class NvmshAcObjBaseGbl : public NvmshAcObjBase {
+public:
+  ~NvmshAcObjBaseGbl();
+  void release();
+  bool update(bool &unknown, NvmshResMan *resMan, bool param3);
+};
+
+static_assert(sizeof(NvmshAcObjBaseDef) == 0x170, "");
+static_assert(sizeof(NvmshAcObjBaseGbl) == 0x170, "");
 
 } // namespace navi

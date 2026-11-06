@@ -4,6 +4,29 @@
 
 namespace navi {
 
+NvmshResObj::NvmshResObj()
+    : unknown00(0), unknown08(nullptr), unknown10(nullptr), unknown18(nullptr), unknown20(nullptr), unknown28(nullptr), unknown30(nullptr), unknown38(nullptr), unknown40(nullptr), unknown48(nullptr),
+      unknown50(nullptr) {}
+
+NvmshResObj::~NvmshResObj() {}
+
+NvmshResData::~NvmshResData() {}
+
+void NvmshResObj::createNavi(const u8 *data) {
+  const _NvMhAllReadObj *header = reinterpret_cast<const _NvMhAllReadObj *>(data);
+  unknown08 = data;
+  unknown10 = data;
+  unknown18 = data + header->unknown28;
+  unknown20 = data + header->unknown30;
+  unknown28 = data + header->unknown54;
+  unknown48 = data + header->unknown40;
+  unknown30 = data + header->unknown48;
+  unknown50 = data + header->unknown50;
+  unknown38 = data + header->unknown6c;
+  unknown40 = data + header->unknown74;
+  unknown00 |= 1;
+}
+
 void NvmshResObj::releaseNavi() {
   unknown00 = 0;
   unknown08 = nullptr;

@@ -3,6 +3,10 @@
 
 #include "types.h"
 
+namespace mm {
+struct Vec3;
+} // namespace mm
+
 namespace navi {
 
 class NvmshResMemMan;
@@ -14,6 +18,8 @@ public:
   void releaseResource();
   void tail();
   void resourceNaviUpdate();
+  void update();
+  void updateMemMove(const mm::Vec3 &position, bool unknown, const mm::Vec3 &previous, int index);
 
   u8 _00[0x48];
   NvmshResMemMan *unknown48; // Inferred role: memory manager; original member name unknown.

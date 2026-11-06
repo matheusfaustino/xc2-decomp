@@ -17,6 +17,7 @@ struct _NvMhMeshAdjacency {
 class NvmshUtil {
 public:
   static void getConectDirXY(int &x, int &y, const _NvMhMeshAdjacency *adjacency);
+  static int getConectPriIdx(int x, int y, int z, const u8 *table);
 
   static const int NAVI_UTIL_OFFX[4];
   static const int NAVI_UTIL_OFFY[4];
