@@ -16,7 +16,7 @@
 
 namespace cloud {
 
-CloudMan::CloudMan(ml::Scn *scn, mtl::ALLOC_HANDLE handle, u32 size) : unknown18(scn), _28(0) {
+CloudMan::CloudMan(ml::Scn *scn, mtl::ALLOC_HANDLE handle, u32 size) : unknown18(scn), unknown28(nullptr) {
   s_nDblDfIdx = 0;
   s_nDblStIdx = 1;
   unknown08 = mtl::ALLOC_HANDLE();
