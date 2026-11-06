@@ -2,10 +2,18 @@
 
 #include "bdat.h"
 #include "framework/memory/framework_memory.h"
+#include "fw/fw_render_resource.h"
+#include "mm_mtl/fixstr.h"
 #include "mm_mtl/hash.h"
 #include "ui/ui_util.h"
 
 namespace ui {
+
+UIStreamManager::UIStreamManager(mm::mtl::IAllocator *allocator) : unknown08(allocator), unknown58(nullptr) {
+  mm::mtl::FixStr<128> fileName;
+  UIUtil::makeMenuImageFileName(fileName, "cmn_stream_dummy");
+  unknown58 = fw::RenderResource::request(unknown08, fileName.c_str(), 10);
+}
 
 u32 UIStreamManager::regist(u8 *bdat) {
   for (Content *it = unknown10.begin().get(); it != unknown10.end().get(); it = static_cast<Content *>(it->unknown00)) {

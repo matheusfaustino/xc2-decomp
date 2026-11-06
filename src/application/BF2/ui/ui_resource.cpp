@@ -11,6 +11,13 @@
 
 namespace ui {
 
+UIResource::UIResource(const char *name) : unknown0c(name) {}
+
+UIResource::~UIResource() {
+  releaseRenderViewList();
+  releaseResourceList();
+}
+
 bool UIResource::isValid() const {
   if (unknown30.capacity() == 0 || unknown30.size() == 0) {
     return false;

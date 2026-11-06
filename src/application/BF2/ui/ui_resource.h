@@ -42,6 +42,7 @@ public:
   };
 
   UIResource(const char *name);
+  virtual ~UIResource();
   void load(const UIBuildInfo *buildInfo, mm::mtl::IAllocator *allocator);
   void releaseRenderViewList();
   void releaseResourceList();
