@@ -84,7 +84,7 @@ void CloudCalcParams::setMdlZBuffReductionTarget(bool isSky) {
 }
 
 void CloudCalcParams::beginTile(CldTileType type) {
-  CldTileState &state = unknown49c[unknown498][type];
+  unknown001 &state = unknown49c[unknown498][type];
   if (state.unknown08) {
     grlib::CGLibGPUCache::setTiledCacheSize(state.unknown00, state.unknown04);
     grlib::CGLibGPUCache::setTiledCacheAction(GRL_TILED_CACHE_ACTION_UNKNOWN_1);
@@ -92,7 +92,7 @@ void CloudCalcParams::beginTile(CldTileType type) {
 }
 
 void CloudCalcParams::endTile(CldTileType type) {
-  CldTileState &state = unknown49c[unknown498][type];
+  unknown001 &state = unknown49c[unknown498][type];
   if (state.unknown08) {
     grlib::CGLibGPUCache::setTiledCacheAction(GRL_TILED_CACHE_ACTION_UNKNOWN_3);
     grlib::CGLibGPUCache::setTiledCacheAction(GRL_TILED_CACHE_ACTION_UNKNOWN_2);

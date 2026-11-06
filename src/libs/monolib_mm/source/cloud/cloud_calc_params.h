@@ -22,15 +22,16 @@ enum CldTileType {};
 class CloudCalcParams {
 public:
   // One tiled-cache state per (buffer, tile type); beginTile/endTile select [unknown498][type].
-  struct CldTileState {
+  // Inferred role: tiled cache state; original type name unknown.
+  struct unknown001 {
     u32 unknown00; // Inferred role: tile width; original member name unknown.
     u32 unknown04; // Inferred role: tile height; original member name unknown.
     u8 unknown08;  // Inferred role: tiled cache enabled; original member name unknown.
     u8 _09[0x0c - 0x09];
   };
 
-  static_assert(offsetof(CldTileState, unknown08) == 0x08, "");
-  static_assert(sizeof(CldTileState) == 0x0c, "");
+  static_assert(offsetof(unknown001, unknown08) == 0x08, "");
+  static_assert(sizeof(unknown001) == 0x0c, "");
 
   CloudCalcParams();
   ~CloudCalcParams();
@@ -127,7 +128,7 @@ public:
   grlib::CGLibDblUniformBlock unknown460; // Inferred role: calc uniform; original member name unknown.
   u16 unknown498;                         // Inferred role: tile state index; original member name unknown.
   u8 _49a[0x49c - 0x49a];
-  CldTileState unknown49c[2][3]; // Inferred role: tiled cache states; original member name unknown.
+  unknown001 unknown49c[2][3]; // Inferred role: tiled cache states; original member name unknown.
 };
 
 static_assert(offsetof(CloudCalcParams, unknown00) == 0x00, "");

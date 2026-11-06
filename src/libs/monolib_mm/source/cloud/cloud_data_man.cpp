@@ -9,8 +9,8 @@ namespace cloud {
 
 // Read order of the five cloud files; entry 0 is the shader list, the four others are blended
 // cloud textures. Evidence: CloudDataMan::CloudDataMan passes each path to DevFileTh::readFile in
-// this order and reLoadData indexes this table by CloudDataType.
-static const char *s_pDataPath[5] = {
+// this order and reLoadData indexes this table by CloudDataType. Original table name unknown.
+static const char *unknown001[5] = {
     "/monolib/shader/cloud/shd_cloud.wishp",
     "/monolib/shader/cloud/volume.witex",
     "/monolib/shader/cloud/volume2.witex",
@@ -31,7 +31,7 @@ CloudDataMan::CloudDataMan() {
   param._54 = 0x1000;
   param._6d = false;
   for (u32 i = 0; i < 5; i++) {
-    param.unknown00 = s_pDataPath[i];
+    param.unknown00 = unknown001[i];
     unknown48[i] = ml::DevFileTh::readFile(param);
     param._54 = 0x1000;
   }
@@ -82,14 +82,14 @@ void CloudDataMan::reLoadData(CloudDataType type) {
   param.unknown60 = this;
   param._54 = 0x1000;
   param._6d = false;
-  param.unknown00 = s_pDataPath[type];
+  param.unknown00 = unknown001[type];
   unknown48[type] = ml::DevFileTh::readFile(param);
 }
 
-void CloudDataMan::reLoadShaderData() { reLoadData(CLOUD_DATA_TYPE_0); }
+void CloudDataMan::reLoadShaderData() { reLoadData(UNKNOWN001_UNKNOWN_0); }
 
 void CloudDataMan::reLoadTextureData() {
-  for (u32 type = CLOUD_DATA_TYPE_1; type <= CLOUD_DATA_TYPE_4; type++) {
+  for (u32 type = UNKNOWN001_UNKNOWN_1; type <= UNKNOWN001_UNKNOWN_4; type++) {
     reLoadData(static_cast<CloudDataType>(type));
   }
 }
