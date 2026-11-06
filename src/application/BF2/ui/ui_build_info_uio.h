@@ -23,7 +23,7 @@ public:
   virtual const char *getName() const;
   virtual u32 getObjectNum() const;
   virtual void getObjectData(u32 index, ObjectData &data) const;
-  virtual void getObjectDataUIO(UIObjBuildData *buildData, u32 index, ObjectData &data) const;
+  void getObjectDataUIO(UIObjBuildData *buildData, u32 index, ObjectData &data) const;
 
   const char *m_name;
   fw::CommonResource *unknown10;        // Inferred role: resource; original member name unknown.

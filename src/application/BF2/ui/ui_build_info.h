@@ -13,6 +13,9 @@ public:
   virtual void update();
   virtual bool isReady() const;
   virtual bool isValid() const;
+  virtual u32 getObjectNum() const = 0;
+  virtual void getObjectData(u32 index, ObjectData &data) const = 0;
+  virtual const char *getName() const = 0;
 };
 
 static_assert(sizeof(UIBuildInfo::ObjectData) == 0xc0, "");

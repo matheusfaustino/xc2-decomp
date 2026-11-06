@@ -12,6 +12,7 @@ public:
   virtual ~UIBuildInfoBdat();
   virtual const char *getName() const;
   virtual u32 getObjectNum() const;
+  virtual void getObjectData(u32 index, ObjectData &data) const;
 
   const char *m_name;
 };

@@ -7,16 +7,18 @@
 
 namespace ui {
 
+class UIBuildInfo;
 class UIResource;
 
 class UIObjFactory : public mm::mtl::PtrSingleton<UIObjFactory> {
 public:
   struct PreloadResource {
-    u64 unknown00;         // Role and original member name unknown.
-    UIResource *unknown08; // Inferred role: resource; original member name unknown.
+    UIBuildInfo *unknown00; // Inferred role: build info; original member name unknown.
+    UIResource *unknown08;  // Inferred role: resource; original member name unknown.
   };
 
   void registPreloadResource(u32 type, const char *name);
+  void releasePreloadResource(const char *name);
   bool getPreloadResource(const char *name, PreloadResource &resource);
   bool isLoading() const;
 
