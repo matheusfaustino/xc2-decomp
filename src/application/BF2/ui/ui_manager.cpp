@@ -1,13 +1,18 @@
 #include "ui/ui_manager.h"
 
 #include "bdat.h"
+#include "framework/memory/framework_memory.h"
+#include "mm_math/mm_col4.h"
 #include "mm_mtl/fixstr.h"
 #include "ui/event/ui_event_data.h"
 #include "ui/event/ui_event_manager.h"
 #include "ui/factory/ui_obj_factory.h"
+#include "ui/motion/ui_motion_library.h"
 #include "ui/plugin/ui_object_number_plugin.h"
 #include "ui/text/ui_text_manager.h"
 #include "ui/timer/ui_timer_manager.h"
+#include "ui/ui_color_library.h"
+#include "ui/ui_uio_library.h"
 #include "ui/ui_util.h"
 
 namespace ui {
@@ -172,6 +177,48 @@ bool UIManager::isTerminated() const {
     }
   }
   return true;
+}
+
+void UIManager::resetData() {
+  UIUtil::initBdatFP();
+  if (UIColorLibrary::get() == nullptr) {
+// __LINE__ is the line argument of the operator new call.
+#line 282
+    new (UIUtil::getProgAllocator(), 16, __FILE__, __LINE__) UIColorLibrary();
+  }
+  u8 *colorBdat = UIUtil::getBdatFP(UI_BDAT_COLOR_LIST);
+  if (colorBdat != nullptr) {
+    for (int i = 0; i < Bdat::getIdCount(colorBdat); i++) {
+      int id = Bdat::getIdTop(colorBdat) + i;
+      const char *name = Bdat::getVal(colorBdat, "name", id).valueString;
+      if (name != nullptr && *name != '\0') {
+        mm::Col4 color;
+        color.r = static_cast<u32>(Bdat::getVal(colorBdat, "col_r", id).valueU8) / 255.0f;
+        color.g = static_cast<u32>(Bdat::getVal(colorBdat, "col_g", id).valueU8) / 255.0f;
+        color.b = static_cast<u32>(Bdat::getVal(colorBdat, "col_b", id).valueU8) / 255.0f;
+        color.a = 1.0f;
+        UIColorLibrary::get()->add(name, color);
+      }
+    }
+  }
+
+  UIMotionLibrary::get()->reset();
+  u8 *motionBdat = UIUtil::getBdatFP(UI_BDAT_RES_MOTION);
+  if (motionBdat != nullptr) {
+    for (int id = 1; id <= Bdat::getIdCount(motionBdat); id++) {
+      const char *file = Bdat::getVal(motionBdat, "file", id).valueString;
+      UIMotionLibrary::get()->add(file);
+    }
+  }
+
+  UIUioLibrary::get()->reset();
+  u8 *uioBdat = UIUtil::getBdatFP(UI_BDAT_RES_UIO);
+  if (uioBdat != nullptr) {
+    for (int id = Bdat::getIdTop(uioBdat); id <= Bdat::getIdEnd(uioBdat); id++) {
+      const char *file = Bdat::getVal(uioBdat, "file", id).valueString;
+      UIUioLibrary::get()->add(file);
+    }
+  }
 }
 
 } // namespace ui

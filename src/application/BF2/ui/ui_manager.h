@@ -30,6 +30,7 @@ public:
 
   UIManager(const UIPadRead *padRead, mtl::ALLOC_HANDLE handle);
   void terminate();
+  void resetData();
   u32 createLayer(u32 layer);
   bool isLayerCreated(u32 layer);
   u32 searchObject(const char *name, u16 group);
