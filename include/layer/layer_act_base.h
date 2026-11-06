@@ -65,6 +65,10 @@ public:
   bool actcmd_priority(const u8 *&cmd);
   bool actcmd_wait(const u8 *&cmd);
   bool actcmd_ctrlspd(const u8 *&cmd);
+  bool actcmd_pos(const u8 *&cmd);
+  bool actcmd_scl(const u8 *&cmd);
+  bool actcmd_addcol(const u8 *&cmd);
+  bool actcmd_mulcol(const u8 *&cmd);
   bool actend_no(const LyrActionData *action, bool isCmdEnd);
   bool actend_cmdend(const LyrActionData *action, bool isCmdEnd);
   bool actend_on(const LyrActionData *action, bool isCmdEnd);

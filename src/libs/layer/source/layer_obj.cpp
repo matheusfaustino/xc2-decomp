@@ -707,6 +707,60 @@ bool LayerActBase::actcmd_ctrlspd(const u8 *&cmd) {
   return false;
 }
 
+bool LayerActBase::actcmd_addcol(const u8 *&cmd) {
+  bool result = true;
+  if (unknown250->unknown18 != 0.0f) {
+    const f32 *parm = reinterpret_cast<const f32 *>(cmd + 4);
+    mm::Col3 color;
+    if (parm[3] <= unknown250->unknown14) {
+      color.r = parm[0];
+      color.g = parm[1];
+      color.b = parm[2];
+      result = false;
+    } else {
+      f32 rate = 1.0f / ((parm[3] - unknown250->unknown14) * unknown250->unknown1c);
+      if (rate > 1.0f) {
+        rate = 1.0f;
+      }
+      const mm::Col3 &current = unknownc8[2].unknown1c.unknown10;
+      color.r = current.r + (parm[0] - current.r) * rate;
+      color.g = current.g + (parm[1] - current.g) * rate;
+      color.b = current.b + (parm[2] - current.b) * rate;
+    }
+    setInitAddCol(color);
+  }
+  cmd += 20;
+  return result;
+}
+
+bool LayerActBase::actcmd_mulcol(const u8 *&cmd) {
+  bool result = true;
+  if (unknown250->unknown18 != 0.0f) {
+    const f32 *parm = reinterpret_cast<const f32 *>(cmd + 4);
+    mm::Col4 color;
+    if (parm[4] <= unknown250->unknown14) {
+      color.r = parm[0];
+      color.g = parm[1];
+      color.b = parm[2];
+      color.a = parm[3];
+      result = false;
+    } else {
+      f32 rate = 1.0f / ((parm[4] - unknown250->unknown14) * unknown250->unknown1c);
+      if (rate > 1.0f) {
+        rate = 1.0f;
+      }
+      const mm::Col4 &current = unknownc8[2].unknown1c.unknown00;
+      color.r = current.r + (parm[0] - current.r) * rate;
+      color.g = current.g + (parm[1] - current.g) * rate;
+      color.b = current.b + (parm[2] - current.b) * rate;
+      color.a = current.a + (parm[3] - current.a) * rate;
+    }
+    setInitMulCol(color);
+  }
+  cmd += 24;
+  return result;
+}
+
 bool LayerActBase::actend_no(const LyrActionData *action, bool isCmdEnd) { return false; }
 
 bool LayerActBase::actend_cmdend(const LyrActionData *action, bool isCmdEnd) { return !isCmdEnd; }

@@ -41,6 +41,56 @@ template <typename T> inline void unknown001(const void *source, void *destinati
   }
 }
 
+// Inferred role: zero size bytes in units of T, then the bytes left over; original name unknown.
+template <typename T> inline void unknown002(void *buffer, unsigned long size) {
+  T *dst = static_cast<T *>(buffer);
+  while (size >= sizeof(T) * 4) {
+    dst[0] = 0;
+    dst[1] = 0;
+    dst[2] = 0;
+    dst[3] = 0;
+    size -= sizeof(T) * 4;
+    dst += 4;
+  }
+  if (size > 0) {
+    u8 *dstByte = reinterpret_cast<u8 *>(dst);
+    while (size > 0) {
+      *dstByte = 0;
+      size--;
+      dstByte++;
+    }
+  }
+}
+
+// Inferred role: fill size bytes with the byte value in units of T, then the bytes left over; original name unknown.
+template <typename T> inline void unknown003(void *buffer, unsigned long size, u8 value) {
+  T pattern = value;
+  for (u32 i = 1; i < sizeof(T); i++) {
+    pattern = static_cast<T>((pattern << 8) | value);
+  }
+  T *dst = static_cast<T *>(buffer);
+  while (size >= sizeof(T) * 4) {
+    dst[0] = pattern;
+    dst[1] = pattern;
+    dst[2] = pattern;
+    dst[3] = pattern;
+    size -= sizeof(T) * 4;
+    dst += 4;
+  }
+  if (size > 0) {
+    u8 *dstByte = reinterpret_cast<u8 *>(dst);
+    while (size > 0) {
+      *dstByte = value;
+      size--;
+      dstByte++;
+    }
+  }
+}
+
+void ClearMemory8(void *buffer, unsigned long size) { unknown002<u8>(buffer, size); }
+
+void FillMemory8(void *buffer, unsigned long size, unsigned char value) { unknown003<u8>(buffer, size, value); }
+
 void CopyMemory8(const void *source, void *destination, unsigned long size) { unknown001<u8>(source, destination, size); }
 
 void CopyMemory16(const void *source, void *destination, unsigned long size) { unknown001<u16>(source, destination, size); }
