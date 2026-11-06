@@ -1,8 +1,11 @@
 #include "layer/layer_font_tag.h"
 
+#include <strings.h>
+
 namespace layer {
 
 const u16 LayerFontTag::FONT_INSTANCE_SIZE = 0x24;
+const char *LayerFontTag::s_resTagTbl[4] = {"System:Color", "System:Ruby", "ML:icon", "ML:wide"};
 
 LayerFontTag::LayerFontTag(const LayerFontResObj *res, const LayerFontStyleObj *style, const LyrFontStyleData *styleData, const LayerFontIconObj *icon, LayerFontSetting setting)
     : unknown10(res), unknown18(icon), unknown20(styleData), unknown28(false), unknown29(false) {
@@ -63,6 +66,18 @@ void LayerFontTag::beginParseString() {
 }
 
 void LayerFontTag::calcTagColorEnd() { unknown68 = unknown78; }
+
+bool LayerFontTag::callTagEnd(const char *tag) {
+  if (unknown28) {
+    if (strcasecmp(s_resTagTbl[0], tag) == 0) {
+      calcTagColorEnd();
+    }
+    if (strcasecmp(s_resTagTbl[1], tag) == 0) {
+      calcTagRubyEnd();
+    }
+  }
+  return true;
+}
 
 void LayerFontTag::parseNotTag(const u8 *string, u32 &index) {
   u32 position = index;

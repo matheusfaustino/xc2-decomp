@@ -5,7 +5,9 @@
 #include "mtl/alloc_handle.h"
 #include "ptlib/emitter/particle_emitter_manager.h"
 #include "ptlib/forcefield/particle_force_field.h"
+#include "ptlib/particle_heap_allocater.h"
 #include "ptlib/particle_system.h"
+#include "ptlib/renderer/particle_renderer_eff_state.h"
 #include "ptlib/renderer/screen_render_manager.h"
 #include "types.h"
 
@@ -95,6 +97,17 @@ void SystemManager::setUserDrFunc(void *(*createMdl)(const void *, const char *,
   ptlib::ParticleManager::setUserDrFunc(
       createMdl, deleteMdl, createLgt, deleteLgt, setMdlPos, setMdlMatrix, setMdlColor, setMdlAlpha, setMdlSpd, setLgtPos, setLgtMatrix, setLgtParam, debugRenderer, createGrp, destroyGrp);
 }
+
+void SystemManager::es_clearall(bool isForce) {
+  if (unknown7824f == 0) {
+    unknown7824f = 1;
+  }
+  unknown78248 = isForce;
+}
+
+void SystemManager::begin() { ptlib::renderer::EffStateManager::get()->begin(); }
+
+void SystemManager::memoryDump() { ptlib::HeapAllocaterManager::getPtr(ptlib::HeapAllocaterManager::HEAP_TYPE_UNKNOWN_0)->memoryDump(); }
 
 void SystemManager::syncRenderBegin() {}
 

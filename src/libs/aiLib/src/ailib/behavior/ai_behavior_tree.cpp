@@ -11,3 +11,23 @@ template void mm::mtl::Vector<mm::mtl::IntrusivePtr<ai::BehaviorNode>>::push_bac
 template void mm::mtl::Vector<mm::mtl::IntrusivePtr<ai::BehaviorNode>>::resize(size_t, const mm::mtl::IntrusivePtr<ai::BehaviorNode> &);
 template void mm::mtl::Vector<mm::mtl::IntrusivePtr<ai::BehaviorNodeInfo>>::destroy();
 template void mm::mtl::Vector<mm::mtl::IntrusivePtr<ai::BehaviorNodeInfo>>::expand(size_t, size_t);
+
+namespace ai {
+
+BlackBoard::BlackBoard() {}
+
+BlackBoard::~BlackBoard() {}
+
+const mm::mtl::RTTI *BlackBoard::getRTTI() const { return &m_rtti; }
+
+BehaviorNode::~BehaviorNode() {}
+
+const mm::mtl::RTTI *BehaviorNode::getRTTI() const { return &m_rtti; }
+
+bool BehaviorNode::execute(BlackBoard &blackBoard) { return true; }
+
+bool BehaviorNode::checkCondition(const BlackBoard &blackBoard) { return true; }
+
+void BehaviorTree::endSetup() { m_setup = false; }
+
+} // namespace ai

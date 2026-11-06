@@ -33,6 +33,7 @@ public:
   };
 
   static const u16 FONT_INSTANCE_SIZE;
+  static const char *s_resTagTbl[4];
 
   LayerFontTag(const LayerFontResObj *res, const LayerFontStyleObj *style, const LyrFontStyleData *styleData, const LayerFontIconObj *icon, LayerFontSetting setting);
   void getWorkSize(LayerTagWork &work, const u8 *string);
@@ -43,7 +44,9 @@ public:
   void parseNotTag(const u8 *string, u32 &index) override;
   void parseNotTag(const wchar_t *string, u32 &index) override;
   void calcTagColorEnd();
+  void calcTagRubyEnd();
   void calcTagWide();
+  bool callTagEnd(const char *tag) override;
   // Inferred role: writes the current color into a font instance; original function name unknown.
   void unknown002(unknown001 *instance) const {
     instance->unknown20[0] = unknown68.r * 255.0f;
