@@ -34,7 +34,6 @@ public:
   void createLightUniform();
   void createDetailUniform(const mm::Vec3 &detail);
   void createGlbFogUniform();
-  void createSkyUniform(const mm::Vec3 &sky);
   void createSkyVertexUniform();
   void createParticlesUniform(const CloudWrkParticles *particles, u32 count);
   void createMdlPolyUniform(const CloudMdlParts *parts, const mm::Vec3 &a, const mm::Vec3 &b, const CMLObjData *data);

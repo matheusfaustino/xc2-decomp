@@ -26,7 +26,13 @@ public:
   void alphaRender(const ml::IDrDrawWorkInfo *workInfo);
 
   CloudObj *unknown00; // Inferred role: head of the object list; original member name unknown.
-  u8 _08[0x38 - 0x08];
+  CloudObj *unknown08; // Inferred role: tail of the object list; original member name unknown.
+  u32 unknown10;       // Inferred role: object count; original member name unknown.
+  u8 _14[0x18 - 0x14];
+  CloudMdlDataObj *unknown18; // Inferred role: head of the model data list; original member name unknown.
+  CloudMdlDataObj *unknown20; // Inferred role: tail of the model data list; original member name unknown.
+  u32 unknown28;              // Inferred role: model data count; original member name unknown.
+  u8 _2c[0x38 - 0x2c];
   CloudCalcParams *unknown38;   // Inferred role: calc params; original member name unknown.
   CloudObjReduction *unknown40; // Inferred role: reduction renderer; original member name unknown.
   u8 _48[0x58 - 0x48];
@@ -42,6 +48,11 @@ public:
   u8 _67[0x70 - 0x67];
 };
 
+static_assert(offsetof(CloudObjMan, unknown08) == 0x08, "");
+static_assert(offsetof(CloudObjMan, unknown10) == 0x10, "");
+static_assert(offsetof(CloudObjMan, unknown18) == 0x18, "");
+static_assert(offsetof(CloudObjMan, unknown20) == 0x20, "");
+static_assert(offsetof(CloudObjMan, unknown28) == 0x28, "");
 static_assert(offsetof(CloudObjMan, unknown38) == 0x38, "");
 static_assert(offsetof(CloudObjMan, unknown40) == 0x40, "");
 static_assert(offsetof(CloudObjMan, unknown58) == 0x58, "");
