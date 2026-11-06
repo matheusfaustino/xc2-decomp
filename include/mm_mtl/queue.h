@@ -30,6 +30,9 @@ public:
 
   typedef queue_iterator<T> iterator;
 
+  // Inferred role: empty queue bound to the allocator; the game constructs Hfsm::unknown38 with it and allocates on reserve.
+  explicit Queue(IAllocator *allocator) : m_buffer(nullptr), m_size(0), m_front(0), m_capacity(0), m_alignment(16), m_allocator(allocator) {}
+
   Queue(IAllocator *allocator, size_t capacity) : m_buffer(nullptr), m_size(0), m_front(0), m_capacity(0), m_alignment(8), m_allocator(allocator) {
     m_buffer = static_cast<T *>(m_allocator->allocate(capacity * sizeof(T), m_alignment));
     m_front = 0;
@@ -85,6 +88,17 @@ public:
   iterator begin() { return iterator(m_buffer, m_front, m_capacity); }
 
   u32 size() const { return m_size; }
+  u32 capacity() const { return m_capacity; }
+  bool full() const { return m_size == m_capacity; }
+
+  // Inferred role: enqueues a value without growing, asserting the buffer and the spare capacity; original name unknown.
+  // The game inlines it in Hfsm::endSetup and its assertions name "m_buffer != 0" and "!full()".
+  void unknown001(const T &value) {
+    MM_ASSERT(m_buffer != 0);
+    MM_ASSERT(!full());
+    new (&at((m_front + m_size) % m_capacity)) T(value);
+    m_size++;
+  }
 
   T &front() { return at(m_front); }
 
