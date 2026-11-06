@@ -141,6 +141,20 @@ public:
   void detachChildAll();
 
   mm::mtl::Vector<BehaviorNode *> m_childNodes;
+
+protected:
+  // Folds visit over the attached children in order; visit returns the updated result for each child.
+  template <typename Visitor> bool foldChildren(bool result, Visitor visit) {
+    BehaviorNode **it = m_childNodes.begin();
+    BehaviorNode **end = m_childNodes.end();
+    for (; it != end; it++) {
+      BehaviorNode *pNode = *it;
+      if (pNode != nullptr) {
+        result = visit(pNode, result);
+      }
+    }
+    return result;
+  }
 };
 
 static_assert(offsetof(CompositeNode, m_childNodes) == 0x38, "");

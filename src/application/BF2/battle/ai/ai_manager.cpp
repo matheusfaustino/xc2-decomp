@@ -63,6 +63,32 @@ int AiManager::getNumFromId(int id) {
   return num;
 }
 
+void AiManager::_clear() {
+  for (mm::mtl::FixedList<AiData *, DATA_COUNT>::iterator it = unknown10.begin(); it != unknown10.end();) {
+    AiScriptManager::end(AiScriptDataManager::getScriptName((*it)->getId()));
+    if (*it != nullptr) {
+      delete *it;
+      *it = nullptr;
+    }
+    it = unknown10.erase(it);
+  }
+}
+
+void AiManager::unregist(gf::GF_OBJ_HANDLE *handle) {
+  for (mm::mtl::FixedList<AiData *, DATA_COUNT>::iterator it = unknown10.begin(); it != unknown10.end();) {
+    if ((*it)->getHandle() == handle) {
+      AiScriptManager::end(AiScriptDataManager::getScriptName((*it)->getId()));
+      if (*it != nullptr) {
+        delete *it;
+        *it = nullptr;
+      }
+      it = unknown10.erase(it);
+    } else {
+      ++it;
+    }
+  }
+}
+
 void AiManager::listenerGfObj(OBJEVT event, gf::GF_OBJ_HANDLE *handle, u32) {
   if (event == gf::IGfObjListener::OBJEVT_DESTROY) {
     unregist(handle);

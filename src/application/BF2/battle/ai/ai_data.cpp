@@ -2,10 +2,19 @@
 #include "battle/ai/ai_manager.h"
 #include "battle/utility_battle.h"
 #include "fw/fw_transform.h"
+#include "gf/data/gf_bdat_chrenparam.h"
+#include "gf/data/gf_bdat_rsc.h"
+#include "gf/data/gf_data_enemy.h"
+#include "gf/data/gf_data_param_acc.h"
+#include "gf/data/gf_object_type.h"
 #include "gf/game/gf_game_party.h"
+#include "gf/object/gf_obj.h"
 #include "gf/object/gf_obj_acc.h"
 #include "gf/object/gf_obj_handle.h"
+#include "gf/object/gf_obj_manager.h"
+#include "gf/object/gf_obj_setup.h"
 #include "mm_math/mm_vec3.h"
+#include "mm_mtl/rtti.h"
 #include "types.h"
 
 namespace fw {
@@ -56,6 +65,8 @@ bool AiData::isSleep() const { return m_sleep; }
 
 void AiData::setSleep(bool isSleep) { m_sleep = isSleep; }
 
+static bool checkState(gf::GF_OBJ_HANDLE *handle, int state) { return btl::Utility::AI_CheckState(handle, static_cast<btl::Utility::CHECK_STATE>(state), 0); }
+
 bool AiData::isValid() const {
   if (m_sleep) {
     return false;
@@ -70,25 +81,10 @@ bool AiData::isValid() const {
   if (!objAcc.isBattle()) {
     return false;
   }
-  if (btl::Utility::AI_CheckState(m_handle, static_cast<btl::Utility::CHECK_STATE>(1), 0)) {
+  if (checkState(m_handle, 1) || checkState(m_handle, 3) || checkState(m_handle, 4) || checkState(m_handle, 5) || checkState(m_handle, 7) || checkState(m_handle, 8)) {
     return false;
   }
-  if (btl::Utility::AI_CheckState(m_handle, static_cast<btl::Utility::CHECK_STATE>(3), 0)) {
-    return false;
-  }
-  if (btl::Utility::AI_CheckState(m_handle, static_cast<btl::Utility::CHECK_STATE>(4), 0)) {
-    return false;
-  }
-  if (btl::Utility::AI_CheckState(m_handle, static_cast<btl::Utility::CHECK_STATE>(5), 0)) {
-    return false;
-  }
-  if (btl::Utility::AI_CheckState(m_handle, static_cast<btl::Utility::CHECK_STATE>(7), 0)) {
-    return false;
-  }
-  if (btl::Utility::AI_CheckState(m_handle, static_cast<btl::Utility::CHECK_STATE>(8), 0)) {
-    return false;
-  }
-  return !btl::Utility::AI_CheckState(m_handle, static_cast<btl::Utility::CHECK_STATE>(9), 0);
+  return !checkState(m_handle, 9);
 }
 
 int AiData::getParam(int index) const { return m_param[index]; }
@@ -119,6 +115,54 @@ mm::Vec3 AiData::getPositionTarget() const {
 }
 
 f32 AiData::getRadius() const { return getRadius(m_handle); }
+
+f32 AiData::getRadius(gf::GF_OBJ_HANDLE *handle) const {
+  f32 radius = 0.0f;
+  if (m_handle != gf::INVALID_HANDLE) {
+    gf::GfObjAcc objAcc(handle);
+    if (objAcc.isValid()) {
+      u32 type = objAcc.getType();
+      if (type != gf::OBJECT_TYPE_ENEMY) {
+        if (type == gf::OBJECT_TYPE_DRIVER) {
+          radius = 0.5f;
+        }
+      } else {
+        gf::DataParamAcc dataParam(handle);
+        const gf::SDataEnemy *dataEnemy = dataParam.getSDataEnemy();
+        gf::GfBdatRsc *bdatRsc = gf::GfBdatRsc::get();
+        if (dataEnemy != nullptr && bdatRsc != nullptr) {
+          radius = static_cast<f32>(bdatRsc->getRscEnEnRadius(dataEnemy->unknown44));
+          gf::GFOBJ_INFO *info = gf::GfObjManager::getObjInfo(handle);
+          if (info != nullptr && info->unknown30 != nullptr) {
+            gf::GfObjSetup *setup = info->unknown30;
+            if (setup->unknown08 == info->unknown18->unknown28 && info->unknown18->unknown28 == gf::OBJECT_TYPE_ENEMY) {
+              if (setup->getRTTI()->isKindOf(&gf::GfObjSetupEnemy::m_rtti)) {
+                radius *= setup->unknown40;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return radius;
+}
+
+int AiData::getScoutStartHp() const {
+  int scoutStartHp = 0;
+  if (m_handle != gf::INVALID_HANDLE) {
+    gf::GfObjAcc objAcc(m_handle);
+    if (objAcc.isValid() && objAcc.getType() == gf::OBJECT_TYPE_ENEMY) {
+      gf::DataParamAcc dataParam(m_handle);
+      const gf::SDataEnemy *dataEnemy = dataParam.getSDataEnemy();
+      gf::GfBdatChrEnParam *chrEnParam = gf::GfBdatChrEnParam::get();
+      if (dataEnemy != nullptr && chrEnParam != nullptr) {
+        scoutStartHp = chrEnParam->getChrEnParamScoutStartHp(dataEnemy->unknown08);
+      }
+    }
+  }
+  return scoutStartHp;
+}
 
 f32 AiData::getRadiusTarget() const {
   gf::GF_OBJ_HANDLE *target = gf::INVALID_HANDLE;
