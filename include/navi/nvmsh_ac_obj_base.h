@@ -1,0 +1,115 @@
+#pragma once
+#include <stddef.h>
+
+#include "mm_math/mm_vec3.h"
+#include "navi/nvmsh_ac_obj.h"
+#include "types.h"
+
+namespace navi {
+
+struct _NaviCalcResTbl;
+struct _NaviTempColiResl;
+
+// Navigation mesh agent object implementation. The game's vtable is at 0x71011b74d0 and its constructor at 0x71008e906c
+// initialises the fields below; the destructor slot of the vtable points at NvmshAcObj's.
+class NvmshAcObjBase : public NvmshAcObj {
+public:
+  const mm::Vec3 &getMoveVec() const override;
+  void setBeginPos(const mm::Vec3 &position) override;
+  void setEndPos(const mm::Vec3 &position) override;
+  void setBeginRadius(f32 radius) override;
+  void setEndRadius(f32 radius) override;
+  void setBeginSeachRadius(f32 radius) override;
+  void setEndSeachRadius(f32 radius) override;
+  void setBeginHeight(f32 param1, f32 param2) override;
+  void setEndHeight(f32 param1, f32 param2) override;
+  void setMeshNum(int num) override;
+  int getMeshNum() const override;
+  void setMoveSpd(f32 speed) override;
+
+  void rootReset();
+  void conectReset();
+  void resetCache();
+  void setRootListBuff(u8 *buffer, int size);
+  void calcNextVec(const _NaviCalcResTbl *resTable, const _NaviTempColiResl &res);
+  void calcRootMeshVec(const _NaviCalcResTbl *resTable, const _NaviTempColiResl &res);
+  void calcTargetVecLine(const mm::Vec3 &start, const mm::Vec3 &end);
+
+  u32 unknown14;             // Inferred role: never written by the constructor; original member name unknown.
+  NvmshAcObjBase *unknown18; // Inferred role: previous object in the update list; original member name unknown.
+  NvmshAcObjBase *unknown20; // Inferred role: next object in the update list; original member name unknown.
+  u32 unknown28;             // Inferred role: state flags cleared by resetCache; original member name unknown.
+  u32 unknown2c;
+  u8 *unknown30;
+  u32 unknown38;
+  u32 unknown3c;
+  u8 *unknown40;
+  u8 *unknown48;
+  u16 unknown50;
+  u16 unknown52;
+  u16 unknown54;
+  u16 unknown56;
+  u16 unknown58;
+  u16 unknown5a;
+  u16 unknown5c;
+  u8 unknown5e;
+  u8 unknown5f;
+  u8 unknown60;
+  u8 unknown61;
+  u8 unknown62;
+  s8 m_meshNum;
+  u8 unknown64; // Inferred role: set from setMeshNum's argument being positive; original member name unknown.
+  u8 unknown65;
+  u8 _66[0xb0 - 0x66];
+  mm::Vec3 m_beginPos;
+  f32 m_beginHeight[2];
+  f32 m_beginRadius;
+  f32 m_beginSeachRadius;
+  u8 _d0[0xe0 - 0xd0];
+  mm::Vec3 m_endPos;
+  f32 m_endHeight[2];
+  f32 m_endRadius;
+  f32 m_endSeachRadius;
+  u8 _100[0x110 - 0x100];
+  mm::Vec3 unknown110;
+  mm::Vec3 unknown120;
+  mm::Vec3 unknown130;
+  u8 _140[0x150 - 0x140];
+  mm::Vec3 m_moveVec;
+  f32 m_moveSpd;
+};
+
+static_assert(offsetof(NvmshAcObjBase, unknown14) == 0x14, "");
+static_assert(offsetof(NvmshAcObjBase, unknown28) == 0x28, "");
+static_assert(offsetof(NvmshAcObjBase, unknown30) == 0x30, "");
+static_assert(offsetof(NvmshAcObjBase, unknown38) == 0x38, "");
+static_assert(offsetof(NvmshAcObjBase, unknown40) == 0x40, "");
+static_assert(offsetof(NvmshAcObjBase, unknown48) == 0x48, "");
+static_assert(offsetof(NvmshAcObjBase, unknown50) == 0x50, "");
+static_assert(offsetof(NvmshAcObjBase, unknown52) == 0x52, "");
+static_assert(offsetof(NvmshAcObjBase, unknown54) == 0x54, "");
+static_assert(offsetof(NvmshAcObjBase, unknown56) == 0x56, "");
+static_assert(offsetof(NvmshAcObjBase, unknown58) == 0x58, "");
+static_assert(offsetof(NvmshAcObjBase, unknown5a) == 0x5a, "");
+static_assert(offsetof(NvmshAcObjBase, unknown5c) == 0x5c, "");
+static_assert(offsetof(NvmshAcObjBase, unknown5e) == 0x5e, "");
+static_assert(offsetof(NvmshAcObjBase, unknown62) == 0x62, "");
+static_assert(offsetof(NvmshAcObjBase, m_meshNum) == 0x63, "");
+static_assert(offsetof(NvmshAcObjBase, unknown64) == 0x64, "");
+static_assert(offsetof(NvmshAcObjBase, unknown65) == 0x65, "");
+static_assert(offsetof(NvmshAcObjBase, m_beginPos) == 0xb0, "");
+static_assert(offsetof(NvmshAcObjBase, m_beginHeight) == 0xc0, "");
+static_assert(offsetof(NvmshAcObjBase, m_beginRadius) == 0xc8, "");
+static_assert(offsetof(NvmshAcObjBase, m_beginSeachRadius) == 0xcc, "");
+static_assert(offsetof(NvmshAcObjBase, m_endPos) == 0xe0, "");
+static_assert(offsetof(NvmshAcObjBase, m_endHeight) == 0xf0, "");
+static_assert(offsetof(NvmshAcObjBase, m_endRadius) == 0xf8, "");
+static_assert(offsetof(NvmshAcObjBase, m_endSeachRadius) == 0xfc, "");
+static_assert(offsetof(NvmshAcObjBase, unknown110) == 0x110, "");
+static_assert(offsetof(NvmshAcObjBase, unknown120) == 0x120, "");
+static_assert(offsetof(NvmshAcObjBase, unknown130) == 0x130, "");
+static_assert(offsetof(NvmshAcObjBase, m_moveVec) == 0x150, "");
+static_assert(offsetof(NvmshAcObjBase, m_moveSpd) == 0x160, "");
+static_assert(sizeof(NvmshAcObjBase) == 0x170, "");
+
+} // namespace navi
