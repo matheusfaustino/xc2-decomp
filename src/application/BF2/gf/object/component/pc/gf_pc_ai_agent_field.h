@@ -1,6 +1,7 @@
 #pragma once
 #include <stddef.h>
 
+#include "ai/ai_behavior_node.h"
 #include "ai/ai_behavior_tree.h"
 #include "fw/fw_transform.h"
 #include "mm/mm_std_base.h"

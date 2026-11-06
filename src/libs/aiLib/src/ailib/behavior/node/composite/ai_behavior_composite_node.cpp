@@ -1,5 +1,6 @@
 // Original file name from the game string C:/Monolithsoft/BF2/prog/libs/aiLib/src/ailib/behavior/node/composite/ai_behavior_composite_node.cpp.
-#include "ai/ai_behavior_tree.h"
+#include "ai/ai_behavior_node.h"
+#include "mm/mm_std_base.h"
 #include "mm_mtl/vector.h" // IWYU pragma: keep
 #include "types.h"
 
@@ -20,5 +21,30 @@ CompositeNode::CompositeNode(const char *name, u32 childNum, mm::mtl::IAllocator
 CompositeNode::~CompositeNode() {}
 
 const mm::mtl::RTTI *CompositeNode::getRTTI() const { return &m_rtti; }
+
+void CompositeNode::setActiveNotiryChildren(BlackBoard &blackBoard, bool isActive) {
+  setActive(blackBoard, isActive);
+  BehaviorNode **it = m_childNodes.begin();
+  BehaviorNode **end = m_childNodes.end();
+  for (; it != end; it++) {
+    if (*it != nullptr) {
+      (*it)->setActiveNotiryChildren(blackBoard, isActive);
+    }
+  }
+}
+
+void CompositeNode::attachChild(u32 index, BehaviorNode *node) {
+#line 68
+  MM_ASSERT(m_childNodes[index] == nullptr);
+  m_childNodes[index] = node;
+}
+
+void CompositeNode::detachChild(u32 index) { m_childNodes[index] = nullptr; }
+
+void CompositeNode::detachChildAll() {
+  for (u32 i = 0; i < m_childNodes.size(); i++) {
+    m_childNodes[i] = nullptr;
+  }
+}
 
 } // namespace ai

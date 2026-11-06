@@ -2,7 +2,7 @@
 // Original file name from the game string C:/Monolithsoft/BF2/prog/application/BF2\gf/object/component/pc/field/ai/gf_pc_ai_follow_task_field.h.
 #include <stddef.h>
 
-#include "ai/ai_behavior_tree.h"
+#include "ai/ai_behavior_node.h"
 #include "gf/object/component/pc/gf_pc_ai_agent_field.h"
 #include "types.h"
 
