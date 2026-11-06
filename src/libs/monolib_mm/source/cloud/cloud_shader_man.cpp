@@ -8,7 +8,7 @@ namespace cloud {
 
 // Dispatches a shader type to the function that binds its decoded shader. The table is indexed by
 // CloudShaderType; every entry has no this-adjustment.
-CloudShaderMan::SelectFn CloudShaderMan::s_CallSelect[16] = {
+CloudShaderMan::unknown001 CloudShaderMan::s_CallSelect[16] = {
     &CloudShaderMan::selectRenderPlane,
     &CloudShaderMan::selectDebug,
     &CloudShaderMan::selectColor,
@@ -141,11 +141,11 @@ grlib::CGLibDecShader *CloudShaderMan::selectCounter(CloudShaderType type, u32 a
   grlib::CGLibDecShader *shader = &unknown08.unknown40[type];
   u32 calcMode = shader->getDeclarationOfs("CLD_MDL_CALC");
   shader->setDeclarationIdx(calcMode, a);
-  static const u64 unknown001[4] = {1, 2, 1, 1}; // Inferred role: vertex fetch per counter mode; original name unknown.
+  static const u64 unknown002[4] = {1, 2, 1, 1}; // Inferred role: vertex fetch per counter mode; original name unknown.
   s32 index = static_cast<s32>(a) - 1;
   u64 fetch = 2;
   if (static_cast<u32>(index) <= 3) {
-    fetch = unknown001[index];
+    fetch = unknown002[index];
   }
   grlib::CGLibCtlShader::setShader(*shader, unknown68[fetch]);
   return shader;

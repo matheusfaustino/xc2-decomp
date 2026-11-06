@@ -10,12 +10,13 @@ class FileHandleTh;
 
 namespace cloud {
 
+// Inferred roles of the enumerators: original names unknown.
 enum CloudDataType {
-  CLOUD_DATA_TYPE_0,
-  CLOUD_DATA_TYPE_1,
-  CLOUD_DATA_TYPE_2,
-  CLOUD_DATA_TYPE_3,
-  CLOUD_DATA_TYPE_4,
+  UNKNOWN001_UNKNOWN_0 = 0, // Shader list.
+  UNKNOWN001_UNKNOWN_1 = 1, // First texture.
+  UNKNOWN001_UNKNOWN_2 = 2, // Second texture.
+  UNKNOWN001_UNKNOWN_3 = 3, // Third texture.
+  UNKNOWN001_UNKNOWN_4 = 4, // Fourth texture.
 };
 
 // Owns the five cloud files read from the device: the shader list and four textures. The data

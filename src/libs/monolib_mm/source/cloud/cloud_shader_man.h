@@ -18,7 +18,8 @@ enum CloudSamplerType {};
 
 class CloudShaderMan {
 public:
-  typedef grlib::CGLibDecShader *(CloudShaderMan::*SelectFn)(CloudShaderType type, u32 a, u32 b, u32 c);
+  // Inferred role: member function pointer of the select functions; original type name unknown.
+  typedef grlib::CGLibDecShader *(CloudShaderMan::*unknown001)(CloudShaderType type, u32 a, u32 b, u32 c);
 
   CloudShaderMan();
   ~CloudShaderMan();
@@ -46,7 +47,7 @@ public:
   grlib::CGLibDecShader *selectPlnDepth(CloudShaderType type, u32 a, u32 b, u32 c);
   grlib::CGLibDecShader *selectUpScale(CloudShaderType type, u32 a, u32 b, u32 c);
 
-  static SelectFn s_CallSelect[16];
+  static unknown001 s_CallSelect[16];
   static u32 s_reShdFtxTbl[16];
 
   void *unknown00;                   // Inferred role: shader buffer freed by the destructor; original member name unknown.
