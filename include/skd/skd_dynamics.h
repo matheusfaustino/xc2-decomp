@@ -224,7 +224,7 @@ static_assert(sizeof(NodeArray) == 0x38, "");
 class DynamicsSolver {
 public:
   DynamicsSolver(mm::mtl::IAllocator *allocator, const ResSolver &resSolver, u32 index);
-  virtual ~DynamicsSolver();
+  virtual ~DynamicsSolver() = default;
   virtual void solve(f32 deltaTime, const CollionArray &collisions, const Packet &packet);
   virtual void solveMT(f32 deltaTime, const CollionArray &collisions, const Packet &packet, anm::ThreadPool &threadPool);
 
@@ -330,7 +330,7 @@ static_assert(sizeof(DetectPlaneJob) == 0x40, "");
 // vptr (the serialized data keeps its members); DynamicResDynamics's destructor reads the allocator at 0x10 and the
 // collisions and solvers at 0x18 and 0x20.
 struct ResDynamics {
-  virtual ~ResDynamics();
+  virtual ~ResDynamics() = default;
 
   u8 _08[0x08];
   mm::mtl::IAllocator *unknown10;         // Inferred role: allocator of owned resources; original member name unknown.
@@ -347,7 +347,7 @@ static_assert(sizeof(ResDynamics) == 0x28, "");
 // ReferenceObject allocator at 0x10, then destroys the vector; the vtable at 0x71011b9ab8 lists the destructor only.
 class DynamicResDynamics : public ResDynamics {
 public:
-  virtual ~DynamicResDynamics();
+  virtual ~DynamicResDynamics() = default;
 
   mm::mtl::Vector<void *> unknown28; // Inferred role: owned resources; original member name unknown.
 };

@@ -5,8 +5,10 @@
 #include "types.h"
 #include "wnd/wnd_broad_phaze_interface.h"
 #include "wnd/wnd_global_wind_manager.h" // IWYU pragma: keep
+#include "wnd/wnd_node.h"
 #include "wnd/wnd_object.h"
 #include "wnd/wnd_probe.h"
+#include "wnd/wnd_wind.h"
 
 namespace wnd {
 
@@ -68,6 +70,35 @@ void WindWorld::removeLocalWind(LocalWind &wind) {
   m_pBroadPhaze->removeWindObject(wind);
   unknown1a0.erase(&wind.unknown98);
   unknown1b8.push_back(&wind.unknown70);
+}
+
+// The game's bodies of these two are empty, so they return void; the pair cache is absent from this build.
+void WindWorld::createOverlappingPairCache(WindProbe &probe) {}
+
+void WindWorld::destroyOverlappingPairCache(WindProbe &probe) {}
+
+void WindWorld::updateGlobalWind(const UpdateInfo &info) {
+  if (unknown10.unknown40.unknownf0 != nullptr) {
+    unknown10.unknown40.unknownf0->update(info);
+  }
+  if (unknown10.unknown40.unknowne8 != nullptr) {
+    unknown10.unknown40.unknowne8->update(info);
+  }
+  // The game calls the base blender directly, so GlobalWind::update is not reached twice.
+  unknown10.unknown40.WindBlender::update(info);
+  if (unknown10.unknown40.unknownf0 == nullptr) {
+    unknown10.unknown40.unknownf0 = nullptr;
+  }
+}
+
+void WindWorld::updateProbe(const UpdateInfo &info) {
+  if (unknown170.empty()) {
+    return;
+  }
+  for (auto it = unknown170.begin(); it != unknown170.end(); ++it) {
+    // The game has no node assertion here, so operator-> (which asserts) is not used.
+    it.get()->calcGlobalWindPower(info);
+  }
 }
 
 } // namespace wnd

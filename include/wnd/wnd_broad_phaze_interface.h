@@ -12,7 +12,7 @@ class WindProbe;
 // Interface of the broad phase used by WindWorld; the slot order comes from the vtable of BroadPhazeOctree (0x71011b9ba8).
 class BroadPhazeInterface {
 public:
-  virtual ~BroadPhazeInterface();
+  virtual ~BroadPhazeInterface() = default;
   virtual bool createProxy(WindObject &wind);
   virtual void destroyProxy(WindObject &wind);
   virtual bool addWindObject(WindObject &wind);

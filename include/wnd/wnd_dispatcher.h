@@ -36,7 +36,6 @@ public:
 class Dispatcher : public mm::mtl::ReferenceObject {
 public:
   explicit Dispatcher(const CollisionInfo &info);
-  virtual ~Dispatcher();
 
   bool dispatchAll(mm::mtl::IntrusiveList<WindProbe> &probes, const UpdateInfo &info);
 

@@ -31,7 +31,6 @@ static_assert(sizeof(HitCache) == 0x20, "");
 class LocalWind : public WindObject {
 public:
   explicit LocalWind(const LocalWindCreateInfo &info);
-  ~LocalWind();
 
   void calcEffectiveWind(const mm::Vec3 &position, mm::Vec3 *wind) const;
   f32 calcDampingDistance(f32 distance) const;
@@ -52,7 +51,6 @@ static_assert(sizeof(LocalWind) == 0xb0, "");
 class AreaWind : public WindObject {
 public:
   explicit AreaWind(const AreaWindCreateInfo &info);
-  ~AreaWind();
 
   void update(const UpdateInfo &info);
 
