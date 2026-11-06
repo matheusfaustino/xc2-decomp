@@ -8,9 +8,10 @@ namespace ui {
 
 class UIUpdateCallback {
 public:
-  void endUpdate(const fw::UpdateInfo &info);
-  void beginApply();
-  void endApply();
+  virtual void beginUpdate(const fw::UpdateInfo &info) = 0;
+  virtual void endUpdate(const fw::UpdateInfo &info);
+  virtual void beginApply();
+  virtual void endApply();
 };
 
 } // namespace ui

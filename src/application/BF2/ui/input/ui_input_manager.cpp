@@ -11,6 +11,8 @@
 
 namespace ui {
 
+UIInputManager::UIInputManager() : unknown20(0), unknown24(true) {}
+
 void UIInputManager::enable() { unknown24 = true; }
 
 void UIInputManager::disable() { unknown24 = false; }

@@ -9,6 +9,10 @@
 #include "ui/input/ui_input_layer.h"
 #include "ui/input/ui_input_pointer.h"
 
+namespace fw {
+struct UpdateInfo;
+}
+
 namespace ui {
 class UIInputPad;
 
@@ -22,6 +26,10 @@ public:
     u8 _21[0x28 - 0x21];
   };
 
+  UIInputManager();
+  virtual ~UIInputManager();
+
+  void update(const fw::UpdateInfo &info);
   void enable();
   void disable();
   void setupInputSelection(u32 input, int index, u32 size);

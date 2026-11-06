@@ -9,6 +9,7 @@
 namespace fw {
 class CommonResource;
 class RenderResource;
+struct UpdateInfo;
 } // namespace fw
 
 namespace mm {
@@ -45,6 +46,7 @@ public:
 
   UIStreamManager(mm::mtl::IAllocator *allocator);
   virtual ~UIStreamManager();
+  void update(const fw::UpdateInfo &info);
   u32 regist(u8 *bdat);
   void start(u32 streamId, u32 handle, u32 index);
   void deleteImage(const mm::mtl::FixStr<32> &name, u32 object);

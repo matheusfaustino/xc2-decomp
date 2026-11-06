@@ -10,6 +10,10 @@ namespace mtl {
 class ALLOC_HANDLE;
 } // namespace mtl
 
+namespace fw {
+struct UpdateInfo;
+} // namespace fw
+
 namespace ui {
 
 class UIGameListener;
@@ -29,6 +33,8 @@ public:
   };
 
   UIManager(const UIPadRead *padRead, mtl::ALLOC_HANDLE handle);
+  virtual ~UIManager();
+  void update(const fw::UpdateInfo &info);
   void terminate();
   void resetData();
   u32 createLayer(u32 layer);
@@ -53,13 +59,15 @@ public:
 
   UIGroup unknown08[GROUP_MAX];                   // Inferred role: groups; original member name unknown.
   mm::mtl::FixedVector<LayerInfo, 32> unknown348; // Inferred role: layers; original member name unknown.
-  u8 _3d0[0x3d8 - 0x3d0];
+  u16 unknown3d0;                                 // Inferred role: setup flag; original member name unknown.
+  u8 _3d2[0x3d8 - 0x3d2];
   const UIPadRead *unknown3d8; // Inferred role: pad read; original member name unknown.
   UIUpdateCallback *m_updateCallback;
 };
 
 static_assert(offsetof(UIManager, unknown08) == 0x08, "");
 static_assert(offsetof(UIManager, unknown348) == 0x348, "");
+static_assert(offsetof(UIManager, unknown3d0) == 0x3d0, "");
 static_assert(offsetof(UIManager, unknown3d8) == 0x3d8, "");
 static_assert(offsetof(UIManager, m_updateCallback) == 0x3e0, "");
 static_assert(sizeof(UIManager) == 0x3e8, "");

@@ -9,9 +9,18 @@
 #include "ui/ui_build_info.h"
 #include "ui/ui_build_info_bdat.h"
 #include "ui/ui_build_info_uio.h"
+#include "ui/ui_obj_build_data.h"
 #include "ui/ui_resource.h"
+#include "ui/ui_util.h"
 
 namespace ui {
+
+UIObjFactory::UIObjFactory() {
+  UIUtil::initObjectMap(0x1fa0);
+  UIObjBuildData::initialize();
+  unknown08.setAllocator(UIUtil::getProgAllocator());
+  unknown08.reserve(0x20);
+}
 
 bool UIObjFactory::getPreloadResource(const char *name, PreloadResource &resource) {
   for (const PreloadResource *it = unknown30.begin(); it != unknown30.end(); ++it) {
@@ -65,7 +74,7 @@ void UIObjFactory::releasePreloadResource(const char *name) {
 }
 
 bool UIObjFactory::isLoading() const {
-  if (unknown10 != nullptr) {
+  if (unknown08.size() != 0) {
     return true;
   }
 

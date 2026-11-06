@@ -7,6 +7,7 @@
 
 namespace fw {
 class CommonResource;
+struct UpdateInfo;
 } // namespace fw
 
 namespace ui {
@@ -27,6 +28,7 @@ public:
   UIMotionData *find(const char *name);
   bool add(const char *name);
   bool isLoading() const;
+  void update(const fw::UpdateInfo &info);
   void reset();
 
   mm::mtl::Vector<MotionInfo> unknown08; // Inferred role: motions; original member name unknown.
