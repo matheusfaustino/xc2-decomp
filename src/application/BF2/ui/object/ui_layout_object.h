@@ -22,6 +22,7 @@ public:
   static mm::mtl::RTTI m_rtti;
 
   virtual ~UILayoutObject();
+  virtual void update();
   virtual const mm::mtl::RTTI *getRTTI() const;
   virtual void setInitialize();
   virtual void getDisplayOffset(u16 mode, mm::Pnt<s16> &offset) const;

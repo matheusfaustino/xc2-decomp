@@ -27,6 +27,30 @@ UILayoutObject::~UILayoutObject() {
   }
 }
 
+void UILayoutObject::update() {
+  u32 flags = unknown98.unknown001(0);
+  bool term;
+  if ((flags & (1 << UI_OBJECT_FLAG_DUPLICATE)) != 0 && getParentPtr() != nullptr) {
+    term = getParentPtr()->unknown98.test(UI_OBJECT_FLAG_TERM);
+  } else {
+    term = (flags & (1 << UI_OBJECT_FLAG_TERM)) != 0;
+  }
+  if (!term && unknown98.test(UI_OBJECT_FLAG_SUSPEND)) {
+    return;
+  }
+  UIObject::update();
+  if (unknown108 == nullptr || unknown108->unknown20) {
+    return;
+  }
+  unknown108->update();
+  if (unknowndc == 0) {
+    return;
+  }
+  if (unknown20.unknown24 || unknown108->unknown21) {
+    updateSize();
+  }
+}
+
 const mm::mtl::RTTI *UILayoutObject::getRTTI() const { return &m_rtti; }
 
 void UILayoutObject::setLayoutData(UILayoutData *layoutData) {

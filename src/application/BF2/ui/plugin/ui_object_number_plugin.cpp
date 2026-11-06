@@ -63,6 +63,30 @@ UIObjectNumberPlugin *UIObjectNumberPlugin::create(u32 handle) {
   return plugin;
 }
 
+UIObjectNumberPlugin *UIObjectNumberPlugin::createExt(u32 handle, u32 extType) {
+// __LINE__ is the line argument of the operator new call.
+#line 138
+  UIObjectNumberPlugin *plugin = new (UIUtil::getProgAllocator(), 16, __FILE__, __LINE__) UIObjectNumberPlugin();
+  plugin->addRef();
+  UIObjectAcc acc(handle);
+  if (acc.isLayout()) {
+    return nullptr;
+  }
+  if (acc.isValid() && acc.isImage() && UIObjectPluginUtil::attachPlugin(handle, plugin)) {
+    acc.setExtType(extType);
+    plugin->unknown84 = 9999;
+    plugin->unknown7c = 0;
+    plugin->unknown80 = 0;
+    plugin->init(handle);
+    plugin->unknown88 = TYPE_EXT;
+    return plugin;
+  } else if (plugin != nullptr) {
+    plugin->release();
+    plugin = nullptr;
+  }
+  return plugin;
+}
+
 UIObjectNumberPlugin *UIObjectNumberPlugin::getPlugin(u32 handle) {
   UIObject *object = UIUtil::getObject(handle);
   if (object == nullptr) {
