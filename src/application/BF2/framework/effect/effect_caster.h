@@ -93,7 +93,7 @@ public:
   virtual ~EffectCasterSend();
   virtual void *getMdl();
   virtual const char *getStateName();
-  virtual MtxAndName *getBindData(u32 &count);
+  virtual void *getBindData(u32 &count);
   virtual f32 getMdlFrame();
   virtual f32 getMdlScl();
   virtual void getMdlMat(mm::Mat44 &matrix);

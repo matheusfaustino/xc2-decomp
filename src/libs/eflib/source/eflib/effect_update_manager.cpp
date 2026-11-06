@@ -1,9 +1,11 @@
 #include <new>
 
+#include "eflib/effect_callback.h"
 #include "eflib/effect_send_param.h"
 #include "eflib/effect_system_manager.h"
 #include "mm/mm_std_base.h"
 #include "mm_math/mm_col4.h"
+#include "mm_mtl/fixed_vector.h"
 #include "mtl/alloc_handle.h"
 #include "ptlib/emitter/particle_emitter_manager.h"
 #include "ptlib/forcefield/particle_force_field.h"
@@ -14,9 +16,11 @@
 #include "ptlib/renderer/screen_render_manager.h"
 #include "types.h"
 
-namespace effect {
-class IEffectCallBack;
+namespace mm {
+struct Mat44;
+} // namespace mm
 
+namespace effect {
 namespace {
 SystemManager *s_instance;
 } // namespace
@@ -255,6 +259,95 @@ void SystemManager::es_set_disp(u32 handle, int isDisp) {
   addCommand(command);
 }
 
+void SystemManager::es_set_speed(u32 handle, f32 speed) {
+  EsCommand command;
+  command.unknown00 = 17;
+  command.unknown08.data = nullptr;
+  command.unknown10 = handle;
+  command.unknown20.value.unknown80 = speed;
+  addCommand(command);
+}
+
+void SystemManager::es_set_param(u32 handle, const SendParam *param) {
+  EsCommand command;
+  command.unknown00 = 9;
+  command.unknown08.data = nullptr;
+  command.unknown10 = handle;
+  command.unknown20.value = *param;
+  addCommand(command);
+}
+
+void SystemManager::es_set_param(void *data, const SendParam *param) {
+  EsCommand command;
+  command.unknown00 = 9;
+  command.unknown08.data = data;
+  command.unknown10 = 0;
+  command.unknown20.value = *param;
+  addCommand(command);
+}
+
+void SystemManager::es_set_param_pos_only(u32 handle, const SendParam *param) {
+  EsCommand command;
+  command.unknown00 = 6;
+  command.unknown08.data = nullptr;
+  command.unknown10 = handle;
+  command.unknown20.value = *param;
+  addCommand(command);
+}
+
+void SystemManager::es_set_param_pos_only2(u32 handle, const SendParam *param) {
+  EsCommand command;
+  command.unknown00 = 7;
+  // Zero through the value member: it is the same store as the data member of the other overloads, which the
+  // duplicate-block check would otherwise reject.
+  command.unknown08.value = 0;
+  command.unknown10 = handle;
+  command.unknown20.value = *param;
+  addCommand(command);
+}
+
+void SystemManager::es_set_param_cas(u32 handle, const IEffectCallBack *callback, const SendParam *param) {
+  EsCommand command;
+  command.unknown00 = 11;
+  command.unknown10 = handle;
+  command.unknownd0.callback = callback;
+  command.unknown20.value = *param;
+  addCommand(command);
+}
+
+u32 SystemManager::es_create(void *data, const SendParam *param, bool isLoop) {
+  if (data == nullptr) {
+    return 0;
+  }
+  u32 key = ptlib::HashManager::get()->get_create_key();
+  EsCommand command;
+  command.unknown00 = 3;
+  command.unknown08.data = data;
+  command.unknown10 = key;
+  command.unknownd0.isLoop = isLoop;
+  command.unknown20.value = *param;
+  addCommand(command);
+  return key;
+}
+
+u32 SystemManager::es_create(void *data, const SendParam *param, const IEffectCallBack *callback, int unknown, int category, bool isLoop) {
+  if (data == nullptr) {
+    return 0;
+  }
+  u32 key = ptlib::HashManager::get()->get_create_key();
+  EsCommand command;
+  command.unknown00 = 5;
+  command.unknown08.data = data;
+  command.unknown10 = key;
+  command.unknown20.value = *param;
+  command.unknownd0.isLoop = isLoop;
+  command.unknownd8.callback = callback;
+  command.unknowne0.create.unknown = unknown;
+  command.unknowne0.create.category = category;
+  addCommand(command);
+  return key;
+}
+
 void SystemManager::es_remove_cas(void *callback) {
   if (callback == nullptr) {
     return;
@@ -297,6 +390,47 @@ void SystemManager::setGlobalSpeed(f32 speed) { unknown78240[unknown7824c == 0] 
 
 void SystemManager::setCategorySpd(u32 category, f32 speed) { ptlib::emitter::EmitterManager::getPtr()->unknown1700[category] = speed; }
 
+void SystemManager::kizunaTail() {
+  ptlib::emitter::EmitterManager *manager = ptlib::emitter::EmitterManager::getPtr();
+  if (manager == nullptr) {
+    return;
+  }
+  u32 src = manager->unknown1790;
+  u32 dst = ~src & 1;
+  for (u32 i = 0; i < 8; i++) {
+    manager->unknown00[dst][i] = manager->unknown00[src][i];
+  }
+}
+
+void SystemManager::getNum(u32 &emitterNum, u32 &particleNum, u32 &drawNum) {
+  ptlib::emitter::EmitterManager *manager = ptlib::emitter::EmitterManager::get();
+  ptlib::emitter::EmitterManager::unknown007 *work = manager->unknown1778[~manager->unknown1790 & 1];
+  emitterNum = work->unknown4008.size();
+  particleNum = work->unknownea7b0;
+  drawNum = work->unknown4000;
+}
+
+void SystemManager::getNumDetail(u32 &emitterNum, u32 &particleNum, u32 &drawNum, u32 &workNum) {
+  ptlib::emitter::EmitterManager *manager = ptlib::emitter::EmitterManager::get();
+  ptlib::emitter::EmitterManager::unknown007 *work = manager->unknown1778[~manager->unknown1790 & 1];
+  emitterNum = work->unknownea7b8;
+  particleNum = work->unknownea7bc;
+  drawNum = work->unknownea7c0;
+  workNum = work->unknownea7c4;
+}
+
+u32 SystemManager::getEmitterForm(u32 handle) {
+  ptlib::emitter::EmitterManager *manager = ptlib::emitter::EmitterManager::get();
+  ptlib::emitter::EmitterManager::unknown007 *work = manager->unknown1778[~manager->unknown1790 & 1];
+  if (work == nullptr) {
+    return 0;
+  }
+  if (handle >= work->unknown4008.size()) {
+    return 0;
+  }
+  return work->unknown4008.begin()[handle].unknown00;
+}
+
 void SystemManager::end() {}
 
 void SystemManager::apply(const ptlib::DrDrawWorkInfoEF *info) {
@@ -326,5 +460,17 @@ int SystemManager::es_getDeadFlag(u32 handle) {
 void SystemManager::lastRender(const ptlib::DrDrawWorkInfoEF *info) {}
 
 void SystemManager::finalRender(const ptlib::DrDrawWorkInfoEF *info) { testRender(info); }
+
+void SystemManager::getEFP(IEffectCallBack *callback, int, int, const char *name, mm::Mat44 &matrix, f32 *scale) {
+  if (callback == nullptr) {
+    return;
+  }
+  if (name != nullptr) {
+    callback->getEfpMat(matrix, name);
+  }
+  if (scale != nullptr) {
+    *scale *= callback->getMdlScl();
+  }
+}
 
 } // namespace effect

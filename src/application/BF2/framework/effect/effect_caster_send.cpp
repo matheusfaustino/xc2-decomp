@@ -73,7 +73,7 @@ EffectCasterSend::EffectCasterSend(mm::mtl::IAllocator *allocator)
 
 EffectCasterSend::~EffectCasterSend() {}
 
-EffectCasterSend::MtxAndName *EffectCasterSend::getBindData(u32 &count) {
+void *EffectCasterSend::getBindData(u32 &count) {
   if (m_caster == nullptr) {
     return nullptr;
   }

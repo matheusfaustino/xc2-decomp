@@ -6,6 +6,10 @@
 #include "ptlib/forcefield/particle_force_field.h"
 #include "types.h"
 
+namespace mm {
+struct Mat44;
+} // namespace mm
+
 namespace mtl {
 class ALLOC_HANDLE;
 } // namespace mtl
@@ -66,6 +70,10 @@ public:
         u32 unknown;
         f32 value;
       } createCas;
+      struct {
+        int unknown;  // Inferred role: callback argument; original member name unknown.
+        int category; // Inferred role: effect category; original member name unknown.
+      } create;
     } unknowne0;
   };
 
@@ -140,6 +148,7 @@ public:
   const char *es_get_name(void *data);
   void es_clearall(bool isForce);
   void log();
+  void kizunaTail();
   CommandList *getCommandPtr(u32 index);
   void setGlobalSpeed(f32 speed);
   void setCategorySpd(u32 category, f32 speed);
@@ -156,6 +165,7 @@ public:
   void getNum(u32 &emitterNum, u32 &particleNum, u32 &drawNum);
   void getNumDetail(u32 &emitterNum, u32 &particleNum, u32 &drawNum, u32 &workNum);
   u32 getEmitterForm(u32 handle);
+  static void getEFP(IEffectCallBack *callback, int, int, const char *name, mm::Mat44 &matrix, f32 *scale);
 
   u8 _08[0x09 - 0x08];
   bool unknown09;                                          // Inferred role: update; original member name unknown.

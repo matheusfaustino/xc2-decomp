@@ -10,7 +10,8 @@ namespace effect {
 
 // Layout inferred from the stores that fw::EffectManager::setParam, setMatrix and create make to a stack
 // SendParam before es_set_param (1.0.0: 0x7100172368, 0x710017242c, 0x71001725fc, 0x71001726cc, 0x7100172ad4).
-// Member names are unknown.
+// Member names are unknown. The gaps at 0x58 and 0x7c are the alignment padding of the two mm::Vec3
+// members: the copy in SystemManager::es_set_param skips them.
 struct alignas(16) SendParam {
   SendParam() : unknown00(mm::Mat44::identity) {
     unknown40 = mm::Col4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -19,8 +20,7 @@ struct alignas(16) SendParam {
     unknown60.z = 1.0f;
     unknown60.x = 1.0f;
     unknowna3 = 1;
-    unknown70 = 0;
-    unknown78 = 0;
+    unknown70 = mm::Vec3(0.0f, 0.0f, 0.0f);
     unknowna2 = 0;
     unknowna4 = 0;
     unknowna5 = 0;
@@ -30,8 +30,8 @@ struct alignas(16) SendParam {
     unknowna6 = 0;
     unknown90 = -1.0f;
     unknown94 = -1.0f;
-    unknown88 = -1.0f;
     unknown8c = -1.0f;
+    unknown88 = -1.0f;
     unknown98 = -1.0f;
     unknown9c = 0;
     unknowna8 = 0;
@@ -40,26 +40,23 @@ struct alignas(16) SendParam {
   mm::Mat44 unknown00; // Inferred role: matrix; original member name unknown.
   mm::Col4 unknown40;  // Inferred role: color; original member name unknown.
   u64 unknown50;       // Role and original member name unknown.
-  u8 _58[0x60 - 0x58];
-  mm::Vec3 unknown60; // Inferred role: scale; original member name unknown.
-  u64 unknown70;      // Role and original member name unknown.
-  u32 unknown78;      // Role and original member name unknown.
-  u8 _7c[0x80 - 0x7c];
-  f32 unknown80; // Role and original member name unknown.
-  f32 unknown84; // Inferred role: scale or speed; original member name unknown.
-  f32 unknown88; // Role and original member name unknown.
-  f32 unknown8c; // Role and original member name unknown.
-  f32 unknown90; // Role and original member name unknown.
-  f32 unknown94; // Role and original member name unknown.
-  f32 unknown98; // Role and original member name unknown.
-  u32 unknown9c; // Inferred role: category, an integer copied to the emitter; original member name unknown.
-  u16 unknowna0; // Role and original member name unknown.
-  u8 unknowna2;  // Role and original member name unknown.
-  u8 unknowna3;  // Role and original member name unknown.
-  u8 unknowna4;  // Role and original member name unknown.
-  u8 unknowna5;  // Role and original member name unknown.
-  u16 unknowna6; // Role and original member name unknown.
-  u8 unknowna8;  // Role and original member name unknown.
+  mm::Vec3 unknown60;  // Inferred role: scale; original member name unknown.
+  mm::Vec3 unknown70;  // Role and original member name unknown.
+  f32 unknown80;       // Role and original member name unknown.
+  f32 unknown84;       // Inferred role: scale or speed; original member name unknown.
+  f32 unknown88;       // Role and original member name unknown.
+  f32 unknown8c;       // Role and original member name unknown.
+  f32 unknown90;       // Role and original member name unknown.
+  f32 unknown94;       // Role and original member name unknown.
+  f32 unknown98;       // Role and original member name unknown.
+  u32 unknown9c;       // Inferred role: category, an integer copied to the emitter; original member name unknown.
+  u16 unknowna0;       // Role and original member name unknown.
+  u8 unknowna2;        // Role and original member name unknown.
+  u8 unknowna3;        // Role and original member name unknown.
+  u8 unknowna4;        // Role and original member name unknown.
+  u8 unknowna5;        // Role and original member name unknown.
+  u16 unknowna6;       // Role and original member name unknown.
+  u8 unknowna8;        // Role and original member name unknown.
 };
 
 static_assert(offsetof(SendParam, unknown40) == 0x40, "");

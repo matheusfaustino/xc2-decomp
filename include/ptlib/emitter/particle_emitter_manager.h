@@ -1,6 +1,7 @@
 #pragma once
 #include <stddef.h>
 
+#include "mm_math/mm_vec3.h"
 #include "mm_mtl/fixed_vector.h"
 #include "ptlib/emitter/particle_emitter.h"
 #include "ptlib/particle_intrusive_list.h"
@@ -20,6 +21,31 @@ struct EmitterParam;
 
 class EmitterManager {
 public:
+  // Inferred role: entry of the emitter table of unknown007; original type and member names unknown.
+  struct unknown009 {
+    u32 unknown00; // Inferred role: emitter form; original member name unknown.
+    u8 _04[0x20 - 0x04];
+  };
+
+  // Inferred role: per-parity update work, allocated by init_sub; original type and member names unknown.
+  struct unknown007 {
+    u8 _0000[0x4000];
+    u64 unknown4000;                                    // Inferred role: draw count; original member name unknown.
+    mm::mtl::FixedVector<unknown009, 2001> unknown4008; // Inferred role: emitter table; original member name unknown.
+    u8 _13a30[0xea7b0 - 0x13a30];
+    u64 unknownea7b0; // Inferred role: particle count; original member name unknown.
+    u32 unknownea7b8; // Inferred role: emitter count; original member name unknown.
+    u32 unknownea7bc; // Inferred role: particle count; original member name unknown.
+    u32 unknownea7c0; // Inferred role: draw count; original member name unknown.
+    u32 unknownea7c4; // Inferred role: work count; original member name unknown.
+  };
+
+  // Inferred role: per-parity kizuna work entry; original type and member names unknown.
+  struct unknown012 {
+    mm::Vec3 unknown000[20]; // Inferred role: rope points; original member name unknown.
+    u8 unknown140[0x30];
+  };
+
   static EmitterManager *get();
   static EmitterManager *&getPtr();
   static void init();
@@ -70,14 +96,15 @@ public:
   void move();
   FxHeader *emitter_set_search(int type, const char *name, void *owner, u32 category);
 
-  u8 _0000[0x1700 - 0x0000];
+  unknown012 unknown00[2][8];                       // Inferred role: kizuna works per update parity; original member name unknown.
   f32 unknown1700[(0x1750 - 0x1700) / sizeof(f32)]; // Inferred role: category speed; original member name unknown.
   EmitterObj *unknown1750;                          // Inferred role: p emitter top; original member name unknown.
   EmitterObj *unknown1758;                          // Inferred role: p emitter top of the type 4 and 5 emitters; original member name unknown.
   EmitterObj *unknown1760;                          // Inferred role: p emitter top of the type 2 emitters; original member name unknown.
   EmitterObj *unknown1768;                          // Inferred role: cleared by move; original member name unknown.
-  u8 _1770[0x1790 - 0x1770];
-  u32 unknown1790; // Inferred role: update parity; original member name unknown.
+  u8 _1770[0x1778 - 0x1770];
+  mm::mtl::FixedVector<unknown007 *, 2> unknown1778; // Inferred role: update works; original member name unknown.
+  u32 unknown1790;                                   // Inferred role: update parity; original member name unknown.
   u8 _1794[0x17a8 - 0x1794];
   IntrusiveList<EmitterObj> unknown17a8;     // Inferred role: active emitters; original member name unknown.
   IntrusiveList<EmitterObj> unknown17c0;     // Inferred role: free emitters; original member name unknown.
@@ -86,11 +113,17 @@ public:
   IntrusiveList<EmitterSetNode> unknown1808; // Inferred role: free emitter sets; original member name unknown.
 };
 
+static_assert(sizeof(EmitterManager::unknown012) == 0x170, "");
 static_assert(offsetof(EmitterManager, unknown1700) == 0x1700, "");
 static_assert(offsetof(EmitterManager, unknown1750) == 0x1750, "");
 static_assert(offsetof(EmitterManager, unknown1758) == 0x1758, "");
 static_assert(offsetof(EmitterManager, unknown1760) == 0x1760, "");
 static_assert(offsetof(EmitterManager, unknown1768) == 0x1768, "");
+static_assert(offsetof(EmitterManager, unknown1778) == 0x1778, "");
+static_assert(offsetof(EmitterManager::unknown007, unknown4000) == 0x4000, "");
+static_assert(offsetof(EmitterManager::unknown007, unknown4008) == 0x4008, "");
+static_assert(offsetof(EmitterManager::unknown007, unknownea7b0) == 0xea7b0, "");
+static_assert(sizeof(EmitterManager::unknown007) == 0xea7c8, "");
 static_assert(offsetof(EmitterManager, unknown1790) == 0x1790, "");
 static_assert(offsetof(EmitterManager, unknown17a8) == 0x17a8, "");
 static_assert(offsetof(EmitterManager, unknown17c0) == 0x17c0, "");
