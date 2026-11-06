@@ -11,7 +11,8 @@ void NvmshUtil::getConectDirXY(int &x, int &y, const _NvMhMeshAdjacency *adjacen
   y = NAVI_UTIL_OFFY[index];
 }
 
-// The shift halves a triangular number; writing the division adds a signed-division fixup the game does not have.
+// The game computes both branch indices and selects between them; each triangular term is an arithmetic shift
+// right by one in the game's code (`asr #1`).
 int NvmshUtil::getConectPriIdx(int x, int y, int z, const u8 *table) {
   s32 index;
   if (x > y) {

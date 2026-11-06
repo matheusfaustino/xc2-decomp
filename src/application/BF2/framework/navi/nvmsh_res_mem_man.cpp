@@ -4,6 +4,7 @@
 
 namespace navi {
 
+// The game stores these fields in this order.
 NvmshResMemObj::NvmshResMemObj() {
   unknown18 = nullptr;
   unknown20 = 0;

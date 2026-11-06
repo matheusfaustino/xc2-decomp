@@ -24,6 +24,7 @@ public:
   u8 _24[0x50 - 0x24];
 };
 
+static_assert(offsetof(NvmshResMemObj, unknown00) == 0x00, "");
 static_assert(offsetof(NvmshResMemObj, unknown08) == 0x08, "");
 static_assert(offsetof(NvmshResMemObj, unknown10) == 0x10, "");
 static_assert(offsetof(NvmshResMemObj, unknown18) == 0x18, "");
@@ -43,15 +44,18 @@ public:
   void moveMemoryObject(NvmshResMemObj *destination, NvmshResMemObj *source);
   bool calcPieceMem();
 
-  void *unknown00; // Inferred role: allocated block; original member name unknown.
-  NvmshResMemObj *unknown08;
-  NvmshResMemObj *unknown10;
+  void *unknown00;           // Inferred role: allocated block; original member name unknown.
+  NvmshResMemObj *unknown08; // Inferred role: unknown; original member name unknown.
+  NvmshResMemObj *unknown10; // Inferred role: unknown; original member name unknown.
   NvmshResMemObj *unknown18; // Inferred role: head of the list of used pieces; original member name unknown.
-  NvmshResMemObj *unknown20;
+  NvmshResMemObj *unknown20; // Inferred role: unknown; original member name unknown.
 };
 
+static_assert(offsetof(NvmshResMemMan, unknown00) == 0x00, "");
+static_assert(offsetof(NvmshResMemMan, unknown08) == 0x08, "");
 static_assert(offsetof(NvmshResMemMan, unknown10) == 0x10, "");
 static_assert(offsetof(NvmshResMemMan, unknown18) == 0x18, "");
 static_assert(offsetof(NvmshResMemMan, unknown20) == 0x20, "");
+static_assert(sizeof(NvmshResMemMan) == 0x28, "");
 
 } // namespace navi

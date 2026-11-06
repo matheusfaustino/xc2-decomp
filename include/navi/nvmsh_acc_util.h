@@ -25,6 +25,7 @@ public:
   unsigned char _09[0x10 - 0x09];
 };
 
+static_assert(offsetof(NvmshAccUtil, unknown00) == 0x00, "");
 static_assert(offsetof(NvmshAccUtil, unknown08) == 0x08, "");
 static_assert(sizeof(NvmshAccUtil) == 0x10, "");
 

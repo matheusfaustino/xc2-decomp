@@ -31,5 +31,6 @@ public:
 static_assert(offsetof(NvmshResMan, unknown48) == 0x48, "");
 static_assert(offsetof(NvmshResMan, unknown16ea) == 0x16ea, "");
 static_assert(offsetof(NvmshResMan, unknown16ec) == 0x16ec, "");
+static_assert(sizeof(NvmshResMan) == 0x16f0, "");
 
 } // namespace navi

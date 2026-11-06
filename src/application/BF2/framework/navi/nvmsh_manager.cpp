@@ -43,14 +43,7 @@ void NvmshManager::pauseHLv(bool pause, bool highLevel) {
 }
 
 bool NvmshManager::jobUpdate(void *param1, void *param2) {
-  unknown68 |= 0x20000;
-  u32 pauseMask = (unknown68 & 4) == 0 ? 1 : 8;
-  if ((unknown68 & pauseMask) == 0) {
-    unknown50->update();
-    unknown58->update(unknown50);
-  }
-
-  unknown68 &= ~0x20000u;
+  update();
   return false;
 }
 
@@ -60,8 +53,9 @@ NvmshAcObj *NvmshManager::createObj() {
 }
 
 ml::CriticalSection &NvmshManager::getCriticalSection() {
-  static ml::CriticalSection s_criticalSection;
-  return s_criticalSection;
+  // The game has a function-local ml::CriticalSection here, but no symbol names it; the original name is unknown.
+  static ml::CriticalSection unknown001;
+  return unknown001;
 }
 
 void NvmshManager::update() {

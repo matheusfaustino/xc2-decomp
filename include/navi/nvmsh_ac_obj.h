@@ -33,6 +33,7 @@ public:
 };
 
 static_assert(offsetof(NvmshAcObj, unknown08) == 0x08, "");
+static_assert(offsetof(NvmshAcObj, unknown0c) == 0x0c, "");
 static_assert(offsetof(NvmshAcObj, unknown10) == 0x10, "");
 
 } // namespace navi

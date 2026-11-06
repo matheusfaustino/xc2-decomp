@@ -39,10 +39,10 @@ public:
   static ml::CriticalSection &getCriticalSection();
 
   u8 _08[0x20 - 0x08];
-  mm::Vec3 unknown20[2]; // Inferred role: positions; original member name unknown.
-  mm::Vec3 unknown40;    // Inferred role: previous position; original member name unknown.
-  NvmshResMan *unknown50;
-  NvmshAcMan *unknown58;
+  mm::Vec3 unknown20[2];       // Inferred role: positions; original member name unknown.
+  mm::Vec3 unknown40;          // Inferred role: previous position; original member name unknown.
+  NvmshResMan *unknown50;      // Inferred role: resource manager; original member name unknown.
+  NvmshAcMan *unknown58;       // Inferred role: agent manager; original member name unknown.
   mtl::ALLOC_HANDLE unknown60; // Inferred role: allocator handle passed to NvmshAcMan::createObj; original member name unknown.
   int unknown64;               // Inferred role: position index; original member name unknown.
   u32 unknown68;               // Inferred role: state flags; original member name unknown.

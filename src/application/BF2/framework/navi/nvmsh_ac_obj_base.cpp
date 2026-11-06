@@ -32,6 +32,7 @@ int NvmshAcObjBase::getMeshNum() const { return m_meshNum; }
 
 void NvmshAcObjBase::setMoveSpd(f32 speed) { m_moveSpd = speed; }
 
+// The game stores these fields in this order.
 void NvmshAcObjBase::rootReset() {
   unknown50 = 0;
   unknown52 = 0;
@@ -63,6 +64,7 @@ void NvmshAcObjBase::calcNextVec(const _NaviCalcResTbl *resTable, const _NaviTem
   calcTargetVecLine(unknown110, unknown120);
 }
 
+// Clears bits 0 to 4, 10 to 12, 20, 21 and 23.
 void NvmshAcObjBase::resetCache() { unknown28 &= 0xff4fe3e0; }
 
 void NvmshAcObjBaseDef::release() { unknown10 = 0; }

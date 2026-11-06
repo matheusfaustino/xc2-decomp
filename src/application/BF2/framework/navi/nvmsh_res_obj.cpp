@@ -13,6 +13,7 @@ NvmshResObj::~NvmshResObj() {}
 NvmshResData::~NvmshResData() {}
 
 void NvmshResObj::createNavi(const u8 *data) {
+  // Evidence: the game reads the header fields at these offsets directly from the file image.
   const _NvMhAllReadObj *header = reinterpret_cast<const _NvMhAllReadObj *>(data);
   unknown08 = data;
   unknown10 = data;
@@ -27,6 +28,7 @@ void NvmshResObj::createNavi(const u8 *data) {
   unknown00 |= 1;
 }
 
+// The game has both functions, with the same body.
 void NvmshResObj::releaseNavi() {
   unknown00 = 0;
   unknown08 = nullptr;
@@ -52,6 +54,8 @@ void NvmshResData::releaseNavi(NvmshResMemMan *memMan) {
   unknown70 = nullptr;
 
   if (object != nullptr) {
+    // The game inlines releaseFreeObj's scan here and calls clearMemObj directly; calling
+    // releaseFreeObj emits a bl to it instead (checked against the game).
     for (NvmshResMemObj *entry = memMan->unknown18; entry != nullptr; entry = entry->unknown08) {
       if (entry == object) {
         memMan->clearMemObj(object);
