@@ -110,13 +110,13 @@ public:
   f32 unknown3e0; // Inferred role: model color; original member name unknown.
   f32 unknown3e4; // Inferred role: model color; original member name unknown.
   f32 unknown3e8; // Inferred role: model color; original member name unknown.
-  f32 unknown3ec; // Inferred role: model color; original member name unknown.
-  f32 unknown3f0; // Inferred role: model color; original member name unknown.
-  f32 unknown3f4; // Inferred role: model color; original member name unknown.
+  f32 unknown3ec; // Inferred role: light color and model color; original member name unknown.
+  f32 unknown3f0; // Inferred role: light color and model color; original member name unknown.
+  f32 unknown3f4; // Inferred role: light color and model color; original member name unknown.
   u8 _3f8[0x400 - 0x3f8];
-  f32 unknown400; // Inferred role: model color; original member name unknown.
-  f32 unknown404; // Inferred role: model color; original member name unknown.
-  f32 unknown408; // Inferred role: model color; original member name unknown.
+  f32 unknown400; // Inferred role: light direction and model color; original member name unknown.
+  f32 unknown404; // Inferred role: light direction and model color; original member name unknown.
+  f32 unknown408; // Inferred role: light direction and model color; original member name unknown.
   u8 _40c[0x420 - 0x40c];
   grlib::CGLibRenderTarget *unknown420; // Inferred role: main render target; original member name unknown.
   u8 _428[0x438 - 0x428];
@@ -155,7 +155,6 @@ static_assert(offsetof(CloudCalcParams, unknown3cc) == 0x3cc, "");
 static_assert(offsetof(CloudCalcParams, unknown3d0) == 0x3d0, "");
 static_assert(offsetof(CloudCalcParams, unknown3e0) == 0x3e0, "");
 static_assert(offsetof(CloudCalcParams, unknown400) == 0x400, "");
-static_assert(sizeof(CloudCalcParams) == 0x4f0, "");
 static_assert(offsetof(CloudCalcParams, unknown420) == 0x420, "");
 static_assert(offsetof(CloudCalcParams, unknown438) == 0x438, "");
 static_assert(offsetof(CloudCalcParams, unknown440) == 0x440, "");
@@ -163,5 +162,7 @@ static_assert(offsetof(CloudCalcParams, unknown458) == 0x458, "");
 static_assert(offsetof(CloudCalcParams, unknown460) == 0x460, "");
 static_assert(offsetof(CloudCalcParams, unknown498) == 0x498, "");
 static_assert(offsetof(CloudCalcParams, unknown49c) == 0x49c, "");
+// unknown49c ends at 0x4e4; the alignas(16) Mat44 members round sizeof up to 0x4f0.
+static_assert(sizeof(CloudCalcParams) == 0x4f0, "");
 
 } // namespace cloud

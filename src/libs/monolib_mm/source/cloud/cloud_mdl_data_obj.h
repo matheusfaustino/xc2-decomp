@@ -28,7 +28,7 @@ public:
   };
 
   // Inferred role: vertex list entry; original type name unknown.
-  struct unknown004 {
+  struct unknown003 {
     grlib::CGLibVtxVertex unknown00; // Inferred role: vertex buffer; original member name unknown.
     grlib::CGLibVtxIndex unknown28;  // Inferred role: index buffer; original member name unknown.
   };
@@ -51,7 +51,7 @@ public:
   unknown001 *unknown50;            // Inferred role: part table; original member name unknown.
   unknown002 *unknown58;            // Inferred role: vertex index table; original member name unknown.
   void *unknown60;                  // Inferred role: original member name unknown.
-  unknown004 *unknown68;            // Inferred role: vertex lists; original member name unknown.
+  unknown003 *unknown68;            // Inferred role: vertex lists; original member name unknown.
   CloudMdlParts **unknown70;        // Inferred role: parts; original member name unknown.
   s32 unknown78;                    // Inferred role: vertex list num; original member name unknown.
   s32 unknown7c;                    // Inferred role: part num; original member name unknown.
@@ -66,7 +66,12 @@ static_assert(offsetof(CloudMdlDataObj, unknown68) == 0x68, "");
 static_assert(offsetof(CloudMdlDataObj, unknown70) == 0x70, "");
 static_assert(offsetof(CloudMdlDataObj, unknown78) == 0x78, "");
 static_assert(offsetof(CloudMdlDataObj, unknown80) == 0x80, "");
+static_assert(sizeof(CloudMdlDataObj) == 0x88, "");
+static_assert(offsetof(CloudMdlDataObj::unknown001, unknownb0) == 0xb0, "");
+static_assert(offsetof(CloudMdlDataObj::unknown001, unknownb4) == 0xb4, "");
 static_assert(sizeof(CloudMdlDataObj::unknown001) == 0xd0, "");
-static_assert(sizeof(CloudMdlDataObj::unknown004) == 0x50, "");
+static_assert(sizeof(CloudMdlDataObj::unknown002) == 0x08, "");
+static_assert(offsetof(CloudMdlDataObj::unknown003, unknown28) == 0x28, "");
+static_assert(sizeof(CloudMdlDataObj::unknown003) == 0x50, "");
 
 } // namespace cloud

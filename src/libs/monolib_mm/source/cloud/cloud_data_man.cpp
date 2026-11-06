@@ -10,7 +10,7 @@ namespace cloud {
 // Read order of the five cloud files; entry 0 is the shader list, the four others are blended
 // cloud textures. Evidence: CloudDataMan::CloudDataMan passes each path to DevFileTh::readFile in
 // this order and reLoadData indexes this table by CloudDataType. Original table name unknown.
-static const char *unknown001[5] = {
+static const char *unknown001[UNKNOWN001_UNKNOWN_5] = {
     "/monolib/shader/cloud/shd_cloud.wishp",
     "/monolib/shader/cloud/volume.witex",
     "/monolib/shader/cloud/volume2.witex",
@@ -18,8 +18,10 @@ static const char *unknown001[5] = {
     "/monolib/shader/cloud/tg_smoke_01_n.witex",
 };
 
+// The game inlines the five readFile calls; it does not call reLoadData from the constructor. The
+// _54 store is repeated after each read (the game stores it again after the last one).
 CloudDataMan::CloudDataMan() {
-  for (u32 i = 0; i < 5; i++) {
+  for (u32 i = 0; i < UNKNOWN001_UNKNOWN_5; i++) {
     unknown08[i] = nullptr;
     unknown30[i] = 0;
     unknown48[i] = nullptr;
@@ -30,7 +32,7 @@ CloudDataMan::CloudDataMan() {
   param.unknown60 = this;
   param._54 = 0x1000;
   param._6d = false;
-  for (u32 i = 0; i < 5; i++) {
+  for (u32 i = 0; i < UNKNOWN001_UNKNOWN_5; i++) {
     param.unknown00 = unknown001[i];
     unknown48[i] = ml::DevFileTh::readFile(param);
     param._54 = 0x1000;
@@ -38,7 +40,7 @@ CloudDataMan::CloudDataMan() {
 }
 
 CloudDataMan::~CloudDataMan() {
-  for (u32 i = 0; i < 5; i++) {
+  for (u32 i = 0; i < UNKNOWN001_UNKNOWN_5; i++) {
     if (unknown48[i] != nullptr) {
       ml::DevFileTh::cancel(unknown48[i], false);
     }
@@ -50,7 +52,7 @@ CloudDataMan::~CloudDataMan() {
 }
 
 bool CloudDataMan::isReadOk() const {
-  for (u32 i = 0; i < 5; i++) {
+  for (u32 i = 0; i < UNKNOWN001_UNKNOWN_5; i++) {
     if (unknown08[i] == nullptr) {
       return false;
     }
@@ -60,7 +62,7 @@ bool CloudDataMan::isReadOk() const {
 
 bool CloudDataMan::OnFileEvent(ml::EventFileTh *event) {
   if (event->type == ml::EventFileTh::TYPE_COMPLETE) {
-    for (u32 i = 0; i < 5; i++) {
+    for (u32 i = 0; i < UNKNOWN001_UNKNOWN_5; i++) {
       if (unknown48[i] == event->unknown08) {
         unknown08[i] = event->moveFileData();
         unknown30[i] = event->unknown30;

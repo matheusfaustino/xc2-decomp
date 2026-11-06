@@ -10,12 +10,14 @@ CloudMdlDataObj::CloudMdlDataObj()
 CloudMdlDataObj::~CloudMdlDataObj() { releaseData(); }
 
 void CloudMdlDataObj::setCallDisp(bool isCallDisp) {
+  // The game computes the cleared and the set value into separate registers before the select.
   u32 flags = unknown80;
   u32 cleared = flags & ~3u;
   u32 set = flags | 2u;
   unknown80 = isCallDisp ? set : cleared;
 }
 
+// Sets the double-buffer half bit selected by CloudMan::s_nDblStIdx.
 void CloudMdlDataObj::release() { unknown80 |= 0x40u << CloudMan::s_nDblStIdx; }
 
 } // namespace cloud

@@ -7,9 +7,8 @@
 
 namespace cloud {
 
-// A cloud plane that flows along the wind. It owns the two uniform blocks uploaded in update:
-// unknown20 holds the world/view/projection matrices and the fog parameters, unknown58 holds the
-// shadow parameters.
+// A cloud plane that flows along the wind. It owns the two uniform blocks: unknown20 holds the
+// world/view/projection matrices and the fog parameters, unknown58 holds the shadow parameters.
 class CloudObjFlow : public CloudObj {
 public:
   CloudObjFlow();

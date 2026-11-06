@@ -11,7 +11,7 @@ bool CloudMdlParts::isDisp() const {
   }
   u32 group = unknown74;
   if (group != 0) {
-    u32 bits = CloudMan::get()->unknown28[static_cast<u32>(group) >> 5];
+    u32 bits = CloudMan::get()->unknown28[group >> 5];
     if ((bits & (1u << (group & 0x1f))) != 0) {
       return false;
     }

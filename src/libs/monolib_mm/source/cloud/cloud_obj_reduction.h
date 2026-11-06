@@ -55,6 +55,7 @@ static_assert(offsetof(CloudObjReduction, unknown1ae8) == 0x1ae8, "");
 static_assert(offsetof(CloudObjReduction, unknown22e8) == 0x22e8, "");
 static_assert(offsetof(CloudObjReduction, unknown2ae8) == 0x2ae8, "");
 static_assert(offsetof(CloudObjReduction, unknown2b48) == 0x2b48, "");
+static_assert(offsetof(CloudObjReduction, unknown2b4c) == 0x2b4c, "");
 static_assert(offsetof(CloudObjReduction, unknown2b54) == 0x2b54, "");
 static_assert(sizeof(CloudObjReduction) == 0x2b58, "");
 

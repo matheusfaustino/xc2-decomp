@@ -20,6 +20,8 @@ bool CloudObjMan::isRender() const {
 CloudMdlDataObj *CloudObjMan::createMdlData(const void *data) {
   CloudMdlDataObj *object = new (CloudMan::get()->unknown10) CloudMdlDataObj();
   object->create(data);
+  // The game takes the address of unknown18 before the branch and reloads unknown20 for the second
+  // store.
   CloudMdlDataObj **head = &unknown18;
   if (unknown20 != nullptr) {
     unknown20->unknown08 = object;
@@ -44,6 +46,7 @@ void CloudObjMan::alphaRender(const ml::IDrDrawWorkInfo *workInfo) {
   for (CloudObj *object = unknown00; object != nullptr; object = object->unknown10) {
     object->alphaRenderSec();
   }
+  // The game tail-calls CGLibRenderTarget::setRenderTarget here, not CloudCalcParams::setMainRenderTarget.
   unknown38->unknown420->setRenderTarget(*unknown38->unknown438);
 }
 

@@ -12,7 +12,13 @@ class CloudMdlParts;
 struct CMLObjData;
 struct CloudWrkParticles;
 
-enum CloudUniformType {};
+// Block types of the cloud shaders; only the indices used by the matched functions are known, the
+// original enumerator names are unknown.
+enum CloudUniformType {
+  UNKNOWN001_UNKNOWN_10 = 10,
+  UNKNOWN001_UNKNOWN_15 = 15,
+  UNKNOWN001_UNKNOWN_16 = 16,
+};
 
 // A double-buffered uniform block of the cloud shaders. The create* functions upload values read
 // from CloudCalcParams (CloudMan::get()->unknown50->unknown38) into the mapped buffer of the block.
@@ -39,7 +45,7 @@ public:
   void createMdlPolyUniform(const CloudMdlParts *parts, const mm::Vec3 &a, const mm::Vec3 &b, const CMLObjData *data);
   void createPartCalcUniform(u32 width, u32 height);
   void createDownDepthUniform(u32 width, u32 height);
-  static f32 gaussianDistribution(f32 x, f32 y, f32 z);
+  static f32 gaussianDistribution(f32 x, f32 y, f32 sigma);
   static void getSampleOffsets_GaussBlur_Horizontally(f32 a, f32 b, int count, f32 *offsets, f32 c, f32 d);
   static void getSampleOffsets_GaussBlur_Verticaly(f32 a, f32 b, int count, f32 *offsets, f32 c, f32 d);
 

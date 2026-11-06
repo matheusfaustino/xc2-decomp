@@ -21,12 +21,13 @@ public:
     unknown18 = 0;
     unknown20 = nullptr;
     unknown28 = 0;
+    // The game initialises the next three members in this order: unknown72, unknown78, unknown74.
     unknown72 = 0;
     unknown78 = 0;
     unknown74 = 0;
     unknownc0 = nullptr;
     unknownc8 = nullptr;
-    unknown30.createUniform(static_cast<CloudUniformType>(10), 0);
+    unknown30.createUniform(UNKNOWN001_UNKNOWN_10, 0);
   }
   ~CloudMdlParts() { unknown30.releaseUniform(); }
   void setMdl(CloudMdlDataObj *mdlData, u32 index);
@@ -55,10 +56,16 @@ public:
 };
 
 static_assert(offsetof(CloudMdlParts, unknown30) == 0x30, "");
+static_assert(offsetof(CloudMdlParts, unknown08) == 0x08, "");
+static_assert(offsetof(CloudMdlParts, unknown10) == 0x10, "");
+static_assert(offsetof(CloudMdlParts, unknown18) == 0x18, "");
+static_assert(offsetof(CloudMdlParts, unknown20) == 0x20, "");
+static_assert(offsetof(CloudMdlParts, unknown28) == 0x28, "");
 static_assert(offsetof(CloudMdlParts, unknown68) == 0x68, "");
 static_assert(offsetof(CloudMdlParts, unknown70) == 0x70, "");
 static_assert(offsetof(CloudMdlParts, unknown72) == 0x72, "");
 static_assert(offsetof(CloudMdlParts, unknown74) == 0x74, "");
+static_assert(offsetof(CloudMdlParts, unknown78) == 0x78, "");
 static_assert(offsetof(CloudMdlParts, unknownc0) == 0xc0, "");
 static_assert(offsetof(CloudMdlParts, unknownc8) == 0xc8, "");
 static_assert(sizeof(CloudMdlParts) == 0xd0, "");

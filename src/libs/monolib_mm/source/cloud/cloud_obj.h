@@ -1,4 +1,5 @@
 #pragma once
+#include <stddef.h>
 
 namespace cloud {
 
@@ -17,6 +18,9 @@ public:
   void *unknown18;     // Inferred role: original member name unknown.
 };
 
+static_assert(offsetof(CloudObj, unknown08) == 0x08, "");
+static_assert(offsetof(CloudObj, unknown10) == 0x10, "");
+static_assert(offsetof(CloudObj, unknown18) == 0x18, "");
 static_assert(sizeof(CloudObj) == 0x20, "");
 
 } // namespace cloud

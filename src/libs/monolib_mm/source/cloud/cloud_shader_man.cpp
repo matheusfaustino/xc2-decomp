@@ -6,8 +6,8 @@
 
 namespace cloud {
 
-// Dispatches a shader type to the function that binds its decoded shader. The table is indexed by
-// CloudShaderType; every entry has no this-adjustment.
+// Dispatches a shader type to the function that binds its decoded shader; indexed by
+// CloudShaderType.
 CloudShaderMan::unknown001 CloudShaderMan::s_CallSelect[16] = {
     &CloudShaderMan::selectRenderPlane,
     &CloudShaderMan::selectDebug,
@@ -47,7 +47,7 @@ void CloudShaderMan::releaseShader() {
 }
 
 void CloudShaderMan::update() {}
-void CloudShaderMan::setTexture(u32 index, const grlib::CGLibTextureBuffer &texture, CloudSamplerType sampler) { grlib::CGLibCtlTexture::setTexture(texture, unknownA8[sampler], index); }
+void CloudShaderMan::setTexture(u32 index, const grlib::CGLibTextureBuffer &texture, CloudSamplerType sampler) { grlib::CGLibCtlTexture::setTexture(texture, unknowna8[sampler], index); }
 
 void CloudShaderMan::setShader(CloudShaderType type, u32 a, u32 b, u32 c) { (this->*s_CallSelect[type])(type, a, b, c); }
 
@@ -120,6 +120,7 @@ grlib::CGLibDecShader *CloudShaderMan::selectOutput(CloudShaderType type, u32 a,
   shader->setDeclarationIdx(outMode, a);
   u32 earlyZ = shader->getDeclarationOfs("EARLY_Z_ON");
   shader->setDeclarationIdx(earlyZ, b);
+  // Inferred role: vertex fetch, mode 3 uses a different one; original table name unknown.
   grlib::CGLibCtlShader::setShader(*shader, unknown68[a == 3 ? 1 : 2]);
   return shader;
 }
@@ -141,7 +142,9 @@ grlib::CGLibDecShader *CloudShaderMan::selectCounter(CloudShaderType type, u32 a
   grlib::CGLibDecShader *shader = &unknown08.unknown40[type];
   u32 calcMode = shader->getDeclarationOfs("CLD_MDL_CALC");
   shader->setDeclarationIdx(calcMode, a);
-  static const u64 unknown002[4] = {1, 2, 1, 1}; // Inferred role: vertex fetch per counter mode; original name unknown.
+  // Inferred role: vertex fetch per counter mode; original name unknown. The game indexes the
+  // 8-byte table with the sign-extended value of a - 1.
+  static const u64 unknown002[4] = {1, 2, 1, 1};
   s32 index = static_cast<s32>(a) - 1;
   u64 fetch = 2;
   if (static_cast<u32>(index) <= 3) {

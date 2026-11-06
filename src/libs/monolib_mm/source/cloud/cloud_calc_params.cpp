@@ -15,6 +15,7 @@ namespace cloud {
 
 CloudCalcParams::~CloudCalcParams() { unknown460.release(); }
 
+// Same stores as CloudUniform::createFogUniform; the game keeps both functions as separate symbols.
 void CloudCalcParams::parmUpdate() {
   CloudCalcParams *params = CloudMan::get()->unknown50->unknown38;
   const f32 *fog = params->unknown00->unknown1d4;

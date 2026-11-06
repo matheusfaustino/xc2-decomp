@@ -10,13 +10,16 @@ class FileHandleTh;
 
 namespace cloud {
 
-// Inferred roles of the enumerators: original names unknown.
+// Indices and count of the five cloud files. The UNKNOWN001 prefix marks the reconstructed
+// enumerators of this header (the original enumerator names are unknown); the role of each one is
+// in its comment.
 enum CloudDataType {
   UNKNOWN001_UNKNOWN_0 = 0, // Shader list.
   UNKNOWN001_UNKNOWN_1 = 1, // First texture.
   UNKNOWN001_UNKNOWN_2 = 2, // Second texture.
   UNKNOWN001_UNKNOWN_3 = 3, // Third texture.
   UNKNOWN001_UNKNOWN_4 = 4, // Fourth texture.
+  UNKNOWN001_UNKNOWN_5 = 5, // Number of files.
 };
 
 // Owns the five cloud files read from the device: the shader list and four textures. The data
@@ -31,9 +34,9 @@ public:
   void reLoadShaderData();
   void reLoadTextureData();
 
-  void *unknown08[5];             // Inferred role: file data per CloudDataType; original member name unknown.
-  u32 unknown30[5];               // Inferred role: loaded size per CloudDataType; original member name unknown.
-  ml::FileHandleTh *unknown48[5]; // Inferred role: pending handle per CloudDataType; original member name unknown.
+  void *unknown08[UNKNOWN001_UNKNOWN_5];             // Inferred role: file data per CloudDataType; original member name unknown.
+  u32 unknown30[UNKNOWN001_UNKNOWN_5];               // Inferred role: loaded size per CloudDataType; original member name unknown.
+  ml::FileHandleTh *unknown48[UNKNOWN001_UNKNOWN_5]; // Inferred role: pending handle per CloudDataType; original member name unknown.
 };
 
 static_assert(offsetof(CloudDataMan, unknown08) == 0x08, "");

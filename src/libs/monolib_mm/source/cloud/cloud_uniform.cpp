@@ -13,10 +13,10 @@
 namespace cloud {
 
 // Uniform block byte size of each CloudUniformType; evidence: createUniform multiplies this value
-// by the instance count before setup, and CloudObjFlow's constructor uses entries 6 and 7.
+// by the instance count before setup.
 u32 CloudUniform::s_nUniformBlockSize[18] = {0x150, 0x150, 0x70, 0x20, 0xe0, 0x20, 0x3000, 0x20, 0xd0, 0xa0, 0xf0, 0x60, 0xa0, 0xe0, 0x20, 0xa0, 0x140, 0x60};
 
-// Left and right rotations of the cloud planes; evidence: CloudUniform::createPartCalcUniform.
+// Inferred role: left and right rotations of the cloud planes; original name unknown.
 f32 CloudUniform::s_fPlaneSideRot[2] = {-1.5707964f, 1.5707964f};
 
 CloudUniform::CloudUniform() {}
@@ -70,7 +70,7 @@ void CloudUniform::createFlowShadow() {
   buff[7] = 0.0f;
 }
 
-// Detail colour, its three parameters and the current cloud speed product.
+// Detail colour, its three parameters and the product of unknown60 and _64.
 void CloudUniform::createDetailUniform(const mm::Vec3 &detail) {
   CloudMan *man = CloudMan::get();
   CloudCalcParams *params = man->unknown50->unknown38;
@@ -123,15 +123,15 @@ void CloudUniform::createFlowMdlUniform(f32 speed) {
   buff[0x4b] = 0.0f;
 }
 
-// Gaussian weight used by the blur kernels: exp((x^2 + y^2) / (-2 z^2)) / sqrt(2 pi z^2).
-f32 CloudUniform::gaussianDistribution(f32 x, f32 y, f32 z) {
-  f32 g = 1.0f / sqrtf(z * 6.2831855f * z);
-  g *= expf((x * x + y * y) / (z * -2.0f * z));
+// Gaussian weight used by the blur kernels: exp((x^2 + y^2) / (-2 sigma^2)) / sqrt(2 pi sigma^2).
+f32 CloudUniform::gaussianDistribution(f32 x, f32 y, f32 sigma) {
+  f32 g = 1.0f / sqrtf(sigma * 6.2831855f * sigma);
+  g *= expf((x * x + y * y) / (sigma * -2.0f * sigma));
   return g;
 }
 
-// The light direction (unknown400..408) transformed by the view matrix and normalized, then the
-// three light colours at 0x3ec..0x3f4.
+// unknown400..408 used as a light direction (rotated by the view matrix and normalized), then
+// unknown3ec..3f4 used as the three light colours.
 void CloudUniform::createLightUniform() {
   CloudCalcParams *params = CloudMan::get()->unknown50->unknown38;
   f32 *buff = static_cast<f32 *>(getBuff());

@@ -66,6 +66,7 @@ void CloudMdlListMan::releaseObj(CloudMdlParts *&obj) {
     prev->unknownc0 = nullptr;
   } else {
     prev->unknownc0 = next;
+    // The game reloads obj here; keep the link stores through obj rather than the next/prev locals.
     obj->unknownc0->unknownc8 = obj->unknownc8;
   }
   if (obj != nullptr) {

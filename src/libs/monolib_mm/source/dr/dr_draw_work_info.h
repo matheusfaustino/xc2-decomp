@@ -41,7 +41,10 @@ static_assert(offsetof(IDrDrawWorkInfo, unknown420) == 0x420, "");
 static_assert(offsetof(IDrDrawWorkInfo, unknown4e0) == 0x4e0, "");
 static_assert(offsetof(IDrDrawWorkInfo, unknown4ec) == 0x4ec, "");
 static_assert(offsetof(IDrDrawWorkInfo, unknown538) == 0x538, "");
+static_assert(offsetof(IDrDrawWorkInfo, unknown53c) == 0x53c, "");
+static_assert(offsetof(IDrDrawWorkInfo, unknown540) == 0x540, "");
 static_assert(offsetof(IDrDrawWorkInfo, unknown550) == 0x550, "");
+static_assert(offsetof(IDrDrawWorkInfo, unknown554) == 0x554, "");
 static_assert(offsetof(IDrDrawWorkInfo, unknown560) == 0x560, "");
 static_assert(sizeof(IDrDrawWorkInfo) == 0x580, "");
 
