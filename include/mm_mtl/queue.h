@@ -92,7 +92,7 @@ public:
   bool full() const { return m_size == m_capacity; }
 
   // Inferred role: enqueues a value without growing, asserting the buffer and the spare capacity; original name unknown.
-  // The game inlines it in Hfsm::endSetup and its assertions name "m_buffer != 0" and "!full()".
+  // The game inlines it in Hfsm::endSetup; the assertion strings quote "m_buffer != 0" and "!full()".
   void unknown001(const T &value) {
     MM_ASSERT(m_buffer != 0);
     MM_ASSERT(!full());

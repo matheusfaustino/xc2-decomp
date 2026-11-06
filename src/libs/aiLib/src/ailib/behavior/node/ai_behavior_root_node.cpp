@@ -11,6 +11,7 @@ RootNode::~RootNode() {}
 
 const mm::mtl::RTTI *RootNode::getRTTI() const { return &m_rtti; }
 
+// The game has an out-of-line copy of this body for RootNode and another for DecoratorNode.
 bool RootNode::execute(BlackBoard &blackBoard) {
   if (!m_pChildNode->checkCondition(blackBoard)) {
     m_pChildNode->setActiveNotiryChildren(blackBoard, false);

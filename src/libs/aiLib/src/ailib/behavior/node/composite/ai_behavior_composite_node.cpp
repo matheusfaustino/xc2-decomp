@@ -24,6 +24,7 @@ const mm::mtl::RTTI *CompositeNode::getRTTI() const { return &m_rtti; }
 
 void CompositeNode::setActiveNotiryChildren(BlackBoard &blackBoard, bool isActive) {
   setActive(blackBoard, isActive);
+  // The game keeps this loop out of line from unknown001: folding it adds one instruction.
   BehaviorNode **it = m_childNodes.begin();
   BehaviorNode **end = m_childNodes.end();
   for (; it != end; it++) {

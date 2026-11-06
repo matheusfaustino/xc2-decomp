@@ -38,9 +38,11 @@ void AiData::init() {}
 
 void AiData::destroy() {}
 
+static bool unknown001(gf::GF_OBJ_HANDLE *handle, btl::Utility::CHECK_STATE state) { return btl::Utility::AI_CheckState(handle, state, 0); }
+
 void AiData::update(const fw::UpdateInfo &) {
   if (m_frameCount > 0.0f && m_handle != gf::INVALID_HANDLE) {
-    if (!btl::Utility::AI_CheckState(m_handle, static_cast<btl::Utility::CHECK_STATE>(1), 0)) {
+    if (!unknown001(m_handle, btl::Utility::CHECK_STATE_UNKNOWN_1)) {
       m_frameCount -= 1.0f;
     }
   }
@@ -65,8 +67,6 @@ bool AiData::isSleep() const { return m_sleep; }
 
 void AiData::setSleep(bool isSleep) { m_sleep = isSleep; }
 
-static bool checkState(gf::GF_OBJ_HANDLE *handle, int state) { return btl::Utility::AI_CheckState(handle, static_cast<btl::Utility::CHECK_STATE>(state), 0); }
-
 bool AiData::isValid() const {
   if (m_sleep) {
     return false;
@@ -81,10 +81,11 @@ bool AiData::isValid() const {
   if (!objAcc.isBattle()) {
     return false;
   }
-  if (checkState(m_handle, 1) || checkState(m_handle, 3) || checkState(m_handle, 4) || checkState(m_handle, 5) || checkState(m_handle, 7) || checkState(m_handle, 8)) {
+  if (unknown001(m_handle, btl::Utility::CHECK_STATE_UNKNOWN_1) || unknown001(m_handle, btl::Utility::CHECK_STATE_UNKNOWN_3) || unknown001(m_handle, btl::Utility::CHECK_STATE_UNKNOWN_4) ||
+      unknown001(m_handle, btl::Utility::CHECK_STATE_UNKNOWN_5) || unknown001(m_handle, btl::Utility::CHECK_STATE_UNKNOWN_7) || unknown001(m_handle, btl::Utility::CHECK_STATE_UNKNOWN_8)) {
     return false;
   }
-  return !checkState(m_handle, 9);
+  return !unknown001(m_handle, btl::Utility::CHECK_STATE_UNKNOWN_9);
 }
 
 int AiData::getParam(int index) const { return m_param[index]; }
@@ -98,6 +99,7 @@ bool AiData::isFrameCountEnd() const { return m_frameCount <= 0.0f; }
 mm::Vec3 AiData::getPosition() const { return getPosition(m_handle); }
 
 mm::Vec3 AiData::getPosition(gf::GF_OBJ_HANDLE *handle) const {
+  // The game tests this->m_handle here and then passes the handle parameter.
   if (m_handle != gf::INVALID_HANDLE) {
     gf::GfObjAcc objAcc(handle);
     if (objAcc.isValid()) {
@@ -107,24 +109,20 @@ mm::Vec3 AiData::getPosition(gf::GF_OBJ_HANDLE *handle) const {
   return mm::Vec3::zero;
 }
 
-mm::Vec3 AiData::getPositionTarget() const {
-  if (m_handle == gf::INVALID_HANDLE) {
-    return mm::Vec3::zero;
-  }
-  return getPosition(btl::Utility::AI_GetCharacterHandle(btl::Utility::AI_GetTargetCharacterID(m_handle)));
-}
+mm::Vec3 AiData::getPositionTarget() const { return getPosition(getHandleTarget()); }
 
 f32 AiData::getRadius() const { return getRadius(m_handle); }
 
 f32 AiData::getRadius(gf::GF_OBJ_HANDLE *handle) const {
   f32 radius = 0.0f;
+  // The game tests this->m_handle here and then passes the handle parameter.
   if (m_handle != gf::INVALID_HANDLE) {
     gf::GfObjAcc objAcc(handle);
     if (objAcc.isValid()) {
       u32 type = objAcc.getType();
       if (type != gf::OBJECT_TYPE_ENEMY) {
         if (type == gf::OBJECT_TYPE_DRIVER) {
-          radius = 0.5f;
+          radius = 0.5f; // The game uses this constant for a driver object.
         }
       } else {
         gf::DataParamAcc dataParam(handle);
@@ -164,12 +162,6 @@ int AiData::getScoutStartHp() const {
   return scoutStartHp;
 }
 
-f32 AiData::getRadiusTarget() const {
-  gf::GF_OBJ_HANDLE *target = gf::INVALID_HANDLE;
-  if (m_handle != gf::INVALID_HANDLE) {
-    target = btl::Utility::AI_GetCharacterHandle(btl::Utility::AI_GetTargetCharacterID(m_handle));
-  }
-  return getRadius(target);
-}
+f32 AiData::getRadiusTarget() const { return getRadius(getHandleTarget()); }
 
 } // namespace ai

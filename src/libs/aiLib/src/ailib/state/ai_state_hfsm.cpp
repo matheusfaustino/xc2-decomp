@@ -42,17 +42,7 @@ void Hfsm::setState(u32 state) {
 }
 
 void Hfsm::cleanup() {
-  for (State *state = m_pState; state != nullptr; state = state->unknown10) {
-    state->onLeave(unknown00, nullptr);
-  }
-  State *state = m_pState;
-  while (state != nullptr) {
-    State *next = state->unknown10;
-    state->~State();
-    unknown38.push_back(state);
-    state = next;
-  }
-  m_pState = nullptr;
+  clearState();
   unknown38.clear();
   unknown68->deallocate(unknown70);
 }

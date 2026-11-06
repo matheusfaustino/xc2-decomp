@@ -1,4 +1,3 @@
-
 #include "ai/ai_behavior_node.h"
 
 namespace ai {
@@ -10,7 +9,7 @@ const mm::mtl::RTTI *SelectorNode::getRTTI() const { return &m_rtti; }
 bool SelectorNode::checkCondition(const BlackBoard &blackBoard) { return true; }
 
 bool SelectorNode::execute(BlackBoard &blackBoard) {
-  return foldChildren(false, [&](BehaviorNode *pNode, bool result) {
+  return unknown001(false, [&](BehaviorNode *pNode, bool result) {
     bool active = false;
     if (!result && pNode->checkCondition(blackBoard)) {
       active = pNode->execute(blackBoard);

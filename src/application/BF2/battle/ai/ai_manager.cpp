@@ -5,10 +5,6 @@
 #include "framework/memory/framework_memory.h"
 #include "mm_mtl/fixed_list.h" // IWYU pragma: keep
 
-namespace gf {
-struct GF_OBJ_HANDLE;
-} // namespace gf
-
 namespace ai {
 
 void AiManager::init() {
@@ -66,6 +62,7 @@ int AiManager::getNumFromId(int id) {
 void AiManager::_clear() {
   for (mm::mtl::FixedList<AiData *, DATA_COUNT>::iterator it = unknown10.begin(); it != unknown10.end();) {
     AiScriptManager::end(AiScriptDataManager::getScriptName((*it)->getId()));
+    // The game tests the data pointer after the dereference: it stores the null before erase's argument setup.
     if (*it != nullptr) {
       delete *it;
       *it = nullptr;
@@ -78,6 +75,7 @@ void AiManager::unregist(gf::GF_OBJ_HANDLE *handle) {
   for (mm::mtl::FixedList<AiData *, DATA_COUNT>::iterator it = unknown10.begin(); it != unknown10.end();) {
     if ((*it)->getHandle() == handle) {
       AiScriptManager::end(AiScriptDataManager::getScriptName((*it)->getId()));
+      // As in _clear: the game stores the null before erase's argument setup.
       if (*it != nullptr) {
         delete *it;
         *it = nullptr;

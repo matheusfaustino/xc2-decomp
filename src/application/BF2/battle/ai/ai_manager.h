@@ -48,11 +48,11 @@ public:
   f32 getRadiusTarget() const;
   int getScoutStartHp() const;
 
-  gf::GF_OBJ_HANDLE *m_handle; // Inferred role: object handle, INVALID_HANDLE when unused.
-  int m_id;                    // Inferred role: ai id.
-  bool m_sleep;                // Inferred role: sleep flag.
-  f32 m_frameCount;            // Inferred role: remaining frames before the data expires.
-  int m_param[16];             // Inferred role: script parameters.
+  gf::GF_OBJ_HANDLE *m_handle; // Named by getHandle and setHandle; INVALID_HANDLE when unused.
+  int m_id;                    // Named by getId and setId.
+  bool m_sleep;                // Named by isSleep and setSleep.
+  f32 m_frameCount;            // Named by setFrameCount and isFrameCountEnd.
+  int m_param[16];             // Named by getParam and setParam.
 };
 
 static_assert(offsetof(AiData, m_handle) == 0x08, "");
@@ -69,12 +69,12 @@ class AiScriptManager : public mm::mtl::Singleton<AiScriptManager> {
 public:
   // Inferred roles and names of the script states: original enumerator names unknown.
   enum unknown001 {
-    UNKNOWN001_EMPTY = 0,      // Slot is free.
-    UNKNOWN001_LOAD = 1,       // _update loads the script.
-    UNKNOWN001_WAIT_START = 2, // _update starts the script once it is loaded.
-    UNKNOWN001_ACTIVE = 3,     // Script is running.
-    UNKNOWN001_DESTROY = 4,    // _update destroys the script and frees the slot.
-    UNKNOWN001_RELOAD = 5,     // _update destroys the script and goes back to UNKNOWN001_LOAD.
+    UNKNOWN001_UNKNOWN_0 = 0, // _end sets it; _searchData and _searchEmpty treat it as a free slot.
+    UNKNOWN001_UNKNOWN_1 = 1, // _update calls _start, which requests the script load and sets state 2.
+    UNKNOWN001_UNKNOWN_2 = 2, // _update calls _load, which starts the script and sets state 3.
+    UNKNOWN001_UNKNOWN_3 = 3, // _load sets it once the script runs; reload accepts it.
+    UNKNOWN001_UNKNOWN_4 = 4, // _update calls _end, which destroys the script and clears the slot.
+    UNKNOWN001_UNKNOWN_5 = 5, // reload requests it; _update calls _reload and returns to state 1.
   };
 
   struct ScriptData {
@@ -88,6 +88,7 @@ public:
   static void init();
   static void destroy();
   static void update(const fw::UpdateInfo &info);
+  // The game defines start and end out of line; not reconstructed yet.
   static bool start(const char *name);
   static bool end(const char *name);
   static bool reload(const char *name);
@@ -151,6 +152,7 @@ public:
   void regist(gf::GF_OBJ_HANDLE *handle, int id);
   void unregist(gf::GF_OBJ_HANDLE *handle);
   AiData *getDataFromHandle(gf::GF_OBJ_HANDLE *handle);
+  // The game defines it out of line; not reconstructed yet.
   AiData *getDataFromId(int id, int index);
   int getNumFromId(int id);
   void listenerGfObj(OBJEVT event, gf::GF_OBJ_HANDLE *handle, u32 objectType) override;

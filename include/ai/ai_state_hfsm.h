@@ -41,7 +41,7 @@ public:
   }
 
   explicit Hfsm(mm::mtl::IAllocator *allocator);
-  void beginSetup(void *owner, u32 stateCount, u32 param3);
+  void beginSetup(void *owner, u32 stateCount, u32 maxDepth);
   void endSetup();
   void cleanup();
   void clearState();
@@ -49,10 +49,6 @@ public:
   void update(const void *info);
   bool execEvent(void *event);
 
-private:
-  void setStateImpl(u32 state);
-
-public:
   void *unknown00; // Inferred role: p owner; original member name unknown.
   State *m_pState;
   mm::mtl::Vector<StateInfo> m_stateInfos;
@@ -61,7 +57,11 @@ public:
   void *unknown70;                  // Inferred role: state buffer, released by cleanup; original member name unknown.
   size_t unknown78;                 // Inferred role: state size; original member name unknown.
   bool m_setup;
-  bool m_inside; // Inferred role: inside update/event dispatch; original member name unknown.
+  bool m_inside; // Named by the assert of Hfsm::setState (MM_ASSERT(!m_inside)).
+
+private:
+  // The game defines it out of line; not reconstructed yet.
+  void setStateImpl(u32 state);
 };
 
 static_assert(sizeof(Hfsm::StateInfo) == 0x10, "");

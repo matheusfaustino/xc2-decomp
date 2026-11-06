@@ -1,4 +1,3 @@
-
 #include "ai/ai_behavior_node.h"
 
 namespace ai {
@@ -10,7 +9,7 @@ const mm::mtl::RTTI *SequenceNode::getRTTI() const { return &m_rtti; }
 bool SequenceNode::checkCondition(const BlackBoard &blackBoard) { return true; }
 
 bool SequenceNode::execute(BlackBoard &blackBoard) {
-  return foldChildren(true, [&](BehaviorNode *pNode, bool result) {
+  return unknown001(true, [&](BehaviorNode *pNode, bool result) {
     bool active = false;
     if (result && pNode->checkCondition(blackBoard)) {
       active = pNode->execute(blackBoard);

@@ -2,6 +2,7 @@
 #include "battle/ai/ai_manager.h"
 #include "bdat.h"
 #include "gf/data/gf_data_bdat.h"
+#include "mm_math/mm_math.h"
 #include "mm_mtl/fixed_list.h"
 #include "types.h"
 
@@ -11,9 +12,10 @@ void AiScriptDataManager::_init() {
   u8 *bdat = gf::GfDataBdat::getFP(0);
   int top = Bdat::getIdTop(bdat);
   int count = Bdat::getIdCount(bdat);
-  int num = count < static_cast<int>(SCRIPT_COUNT) ? count : static_cast<int>(SCRIPT_COUNT);
+  int num = mm::min(count, static_cast<int>(SCRIPT_COUNT));
   for (int i = 0; i < num; i++) {
     int id = top + i;
+    // getValCheck type 7 reads a string.
     const char *name = reinterpret_cast<const char *>(Bdat::getValCheck(bdat, "Script", id, 7));
     if (name == nullptr || name[0] == '\0') {
       continue;

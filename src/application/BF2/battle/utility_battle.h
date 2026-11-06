@@ -39,7 +39,16 @@ public:
     BTL_ACHIEVE_COND_BACK_ATTACK,
   };
 
-  enum CHECK_STATE {};
+  // Inferred values passed by AI_CheckState callers; original enumerator names unknown.
+  enum CHECK_STATE {
+    CHECK_STATE_UNKNOWN_1 = 1,
+    CHECK_STATE_UNKNOWN_3 = 3,
+    CHECK_STATE_UNKNOWN_4 = 4,
+    CHECK_STATE_UNKNOWN_5 = 5,
+    CHECK_STATE_UNKNOWN_7 = 7,
+    CHECK_STATE_UNKNOWN_8 = 8,
+    CHECK_STATE_UNKNOWN_9 = 9,
+  };
 
   enum CHECK_CHR_NUM_MODE {
     CHECK_CHR_NUM_MODE_ENEMY,

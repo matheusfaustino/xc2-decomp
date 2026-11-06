@@ -40,6 +40,7 @@ public:
   State *getState() const { return m_pState; }
 
 private:
+  // The game defines it out of line; not reconstructed yet.
   void setStateImpl(u32 stateID);
 
   void *unknown00; // Inferred role: p owner; original member name unknown.

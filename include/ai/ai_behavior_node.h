@@ -92,7 +92,7 @@ public:
 
   mm::mtl::FixStr<32> unknown0c; // Inferred role: name; original member name unknown.
   bool unknown30;                // Inferred role: active; original member name unknown.
-  u32 unknown34;                 // Inferred role: flags (bit 0 activate event, 1 create event, 2 destroy event); original member name unknown.
+  u32 unknown34;                 // Inferred role: flags; bit 0 is tested by setActive and bit 1 by createTask; original member name unknown.
 };
 
 static_assert(offsetof(BehaviorNode, unknown0c) == 0x0c, "");
@@ -143,8 +143,9 @@ public:
   mm::mtl::Vector<BehaviorNode *> m_childNodes;
 
 protected:
-  // Folds visit over the attached children in order; visit returns the updated result for each child.
-  template <typename Visitor> bool foldChildren(bool result, Visitor visit) {
+  // Inferred role: folds visit over the attached children in order; visit returns the updated result for each child.
+  // Original name unknown.
+  template <typename Visitor> bool unknown001(bool result, Visitor visit) {
     BehaviorNode **it = m_childNodes.begin();
     BehaviorNode **end = m_childNodes.end();
     for (; it != end; it++) {

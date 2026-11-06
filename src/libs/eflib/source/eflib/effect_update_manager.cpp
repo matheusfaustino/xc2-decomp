@@ -107,6 +107,7 @@ void SystemManager::setUserDrFunc(void *(*createMdl)(const void *, const char *,
 }
 
 void SystemManager::es_clearall(bool isForce) {
+  // unknown7824f latches to 1 here; isValid then fails and addCommand reports an error.
   if (unknown7824f == 0) {
     unknown7824f = 1;
   }

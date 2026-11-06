@@ -29,6 +29,7 @@ public:
   void attachDecorator(u32 nodeID, u32 childID);
   void execute();
   void queryNode(mm::mtl::IAllocator *allocator, BehaviorNodeInfo *info) const;
+  // The game defines it out of line; not reconstructed yet.
   void collectChildNode(BehaviorNode *node, mm::mtl::IAllocator *allocator, BehaviorNodeInfo *info) const;
 
   // __LINE__ must be 47 as in the original header: it is the line argument of the first assert.

@@ -33,12 +33,7 @@ void Fsm::endSetup() {
 }
 
 void Fsm::cleanup() {
-  if (m_pState != nullptr) {
-    m_pState->onLeave(unknown00, nullptr);
-    m_pState->~State();
-    m_stateBufferQueue.push(m_pState);
-    m_pState = nullptr;
-  }
+  clearState();
   m_stateBufferQueue.clear();
   m_allocator->deallocate(unknown60);
 }
