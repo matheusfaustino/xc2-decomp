@@ -12,6 +12,7 @@ public:
   UIObjectList();
   virtual ~UIObjectList();
   void clear();
+  void update();
 
   u32 regist(UIObject *object, const char *name);
   void release(UIObject *object);

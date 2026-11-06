@@ -899,4 +899,15 @@ bool UIObjectAcc::isParicleActivate() {
   return particle->isActive();
 }
 
+void UIObjectAcc::setParicleActivate(bool activate) {
+  if (!isShapeParticle()) {
+    return;
+  }
+  UIPolygonObject *polygon = castIfValid<UIPolygonObject>(unknown08);
+  if (polygon != nullptr) {
+    UIShapeParticle *particle = castIfValid<UIShapeParticle>(polygon->unknown108);
+    particle->activate(activate);
+  }
+}
+
 } // namespace ui

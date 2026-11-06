@@ -122,6 +122,17 @@ void UIObjectList::releaseObject(UIObject *object) {
   }
 }
 
+void UIObjectList::clear() {
+  for (mm::mtl::IntrusiveList<UIObject>::iterator it = unknown08.begin(); it != unknown08.end();) {
+    UIObject *object = it.get();
+    it = unknown08.erase(it);
+    if (object != nullptr) {
+      object->setParent(0);
+      releaseObject(object);
+    }
+  }
+}
+
 void UIObjectList::apply() {
   for (mm::mtl::IntrusiveList<UIObject>::iterator it = unknown08.begin(); it != unknown08.end(); ++it) {
     UIObject &object = *it;

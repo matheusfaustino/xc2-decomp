@@ -2,11 +2,16 @@
 
 #include "framework/memory/framework_memory.h"
 #include "framework/resource/common_resource.h"
+#include "mm_mtl/bitflag.h"
+#include "mm_mtl/intrusive_list.h"
+#include "ui/event/ui_event_data.h"
+#include "ui/event/ui_event_manager.h"
 #include "ui/input/ui_input_layer.h"
 #include "ui/input/ui_input_manager.h"
 #include "ui/object/ui_layout_object.h"
 #include "ui/ui_displayinfo.h"
 #include "ui/ui_object.h"
+#include "ui/ui_object_base.h"
 #include "ui/ui_object_list.h"
 #include "ui/ui_resource.h"
 #include "ui/ui_util.h"
@@ -161,6 +166,25 @@ void UIGroup::initializeObject(const char *name) {
   readyReInitialize(handle);
   info->unknown5a = false;
   info->unknown5b = false;
+}
+
+void UIGroup::readyTerminate(u32 handle) {
+  UIObject *object = UIUtil::getObject(handle);
+  if (object->unknown98.test(UI_OBJECT_FLAG_LISTENER)) {
+    UIEventManager::EventInfo info;
+    info.unknown08.unknown00 = 2;
+    UIEventManager *eventManager = UIEventManager::get();
+    info.unknown00 = handle;
+    eventManager->pushObjectEvent(info);
+  } else {
+    object->setTerm();
+  }
+  if (object->unknownd8 == UI_OBJECT_TYPE_LAYOUT) {
+    UIObjectList *list = UIUtil::getLayoutObject(handle)->unknown108;
+    for (mm::mtl::IntrusiveList<UIObject>::iterator it = list->unknown08.begin(); it != list->unknown08.end(); ++it) {
+      readyTerminate(it.get()->unknowne8);
+    }
+  }
 }
 
 void UIGroup::terminateObject(const char *name, bool isImmediate) {
