@@ -16,6 +16,7 @@
 #include "skd/skd_collision_object.h"
 #include "skd/skd_dynamics.h"
 #include "skd/skd_factory.h"
+#include "skd/skd_packet.h"
 
 namespace anm {
 class Pose;
@@ -77,7 +78,7 @@ void GfComDynamics::setup(const SetupInfo &info) {
   }
 
   skd::Dynamics *dynamics = skd::Factory::createDynamics(collisionObject, *info.resDynamics->unknown20, *pose, unknowne0.get(), getAllocator(ALLOCATOR_DEFAULT));
-  dynamics->unknown188 = info.iterationCount;
+  dynamics->unknown48.unknown140 = info.iterationCount;
   fw::DyanmicsManager *manager = fw::DyanmicsManager::get();
   if (manager != nullptr) {
     u32 layer = getLayer();
@@ -114,9 +115,9 @@ void GfComDynamics::applyAttribute() {
   dynamics->unknown198 = maxMoveDistance;
   dynamics->unknown19c = maxRotation;
   if ((attribute & ASM_ATTRIBUTE_MAX_ITERATION) != 0 || unknownec) {
-    dynamics->unknown188 = ITERATION_COUNT_MAX;
+    dynamics->unknown48.unknown140 = ITERATION_COUNT_MAX;
   } else {
-    dynamics->unknown188 = unknowne8;
+    dynamics->unknown48.unknown140 = unknowne8;
   }
 }
 
@@ -168,7 +169,7 @@ void GfComDynamics::resetMovement() {
 
 u32 GfComDynamics::getSolverCount() const {
   if (unknown10.unknown18 != nullptr) {
-    return unknown10.unknown18->unknown20.size();
+    return unknown10.unknown18->m_solvers.size();
   }
 
   return 0;
@@ -179,7 +180,7 @@ static const char *findSolverName(const skd::Dynamics *dynamics, u32 index) {
     return nullptr;
   }
 
-  const anm::Array<skd::ResSolver> &solvers = *dynamics->unknown18;
+  const anm::Array<skd::ResSolver> &solvers = *dynamics->m_pResSolver;
   if (index < solvers.size()) {
     return solvers[index].unknown00;
   }
@@ -191,7 +192,7 @@ const char *GfComDynamics::getSolverName(u32 index) const { return findSolverNam
 
 u32 GfComDynamics::getSolverID(const char *name) const {
   if (unknown10.unknown18 != nullptr) {
-    return unknown10.unknown18->unknown20.size();
+    return unknown10.unknown18->m_solvers.size();
   }
 
   return static_cast<u32>(-1);

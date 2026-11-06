@@ -1,7 +1,13 @@
 // Original file name from the game string C:/Monolithsoft/BF2/prog/libs/skdlib/src/skdlib/importer/skd_importer.cpp.
+#include "bin/bin_binary_resolver.h"
+#include "mm_mtl/vector.h"    // IWYU pragma: keep
 #include "skd/skd_dynamics.h" // IWYU pragma: keep
 
-#include "mm_mtl/vector.h" // IWYU pragma: keep
+namespace skd {
+
+bool DynamicsImporter::restore(void *data) { return bin::BinaryResolver::restore(data); }
+
+} // namespace skd
 
 template void mm::mtl::Vector<skd::ResSolver>::expand(size_t, size_t);
 template void mm::mtl::Vector<skd::ResCollisionShpere>::push_back(const skd::ResCollisionShpere &);

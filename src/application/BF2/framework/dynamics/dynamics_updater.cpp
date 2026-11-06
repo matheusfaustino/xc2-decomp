@@ -6,6 +6,7 @@
 #include "mm_math/mm_vec3.h"
 #include "skd/skd_collision_object.h"
 #include "skd/skd_dynamics.h"
+#include "skd/skd_packet.h"
 
 namespace fw {
 
@@ -80,7 +81,7 @@ void DynamicsUpdater::update(const UpdateInfo &info) {
   }
 
   unknown18->update(info.unknown04 * unknown98);
-  anm::Pose *pose = unknown18->unknown48;
+  anm::Pose *pose = unknown18->unknown48.m_pBindPose;
   pose->syncLocalSpace();
   pose->syncModelSpace();
 }
