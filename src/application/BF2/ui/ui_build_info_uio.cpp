@@ -1,7 +1,10 @@
 #include "ui/ui_build_info_uio.h"
 
+#include "framework/memory/framework_memory.h"
 #include "framework/resource/common_resource.h"
 #include "mm_mtl/fixstr.h"
+#include "mm_mtl/reference_object.h"
+#include "ui/ui_obj_build_data.h"
 #include "ui/ui_util.h"
 
 namespace ui {
@@ -24,6 +27,33 @@ UIBuildInfoUIO::~UIBuildInfoUIO() {
 }
 
 const char *UIBuildInfoUIO::getName() const { return m_name; }
+
+void UIBuildInfoUIO::update() {
+  if (unknown18.size() != 0) {
+    return;
+  }
+  if (unknown10 == nullptr) {
+    return;
+  }
+  if (!unknown10->valid()) {
+    return;
+  }
+  // __LINE__ must be 61 as in the original source: it is the line argument of operator new.
+#line 61
+  UIObjBuildData *buildData = new (UIUtil::getProgAllocator(), 16, __FILE__, __LINE__) UIObjBuildData(UIUtil::getProgAllocator());
+  buildData->deserialize(unknown10->getAssetData(), unknown10->getAssetSize());
+  u32 objectNum = buildData->getObjectNum();
+  if (objectNum == 0) {
+    delete buildData;
+    mm::mtl::safeRelease(unknown10);
+    return;
+  }
+  unknown18.reserve(objectNum);
+  for (u32 i = 0; i < objectNum; i++) {
+    getObjectDataUIO(buildData, i, unknown18[i]);
+  }
+  delete buildData;
+}
 
 u32 UIBuildInfoUIO::getObjectNum() const { return isReady() ? static_cast<u32>(unknown18.size()) : 0; }
 

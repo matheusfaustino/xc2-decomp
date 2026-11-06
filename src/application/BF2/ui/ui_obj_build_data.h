@@ -30,6 +30,7 @@ public:
 
   static void initialize();
   void clear();
+  void deserialize(const void *data, u32 size);
   u32 getObjectNum() const;
   u32 searchObject(const char *name);
   u32 getParamType(const char *name) const;
