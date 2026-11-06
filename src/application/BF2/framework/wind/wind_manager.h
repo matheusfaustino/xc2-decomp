@@ -21,6 +21,7 @@ class WinProc;
 namespace wnd {
 struct ResWind;
 struct Query;
+class WindWorld;
 } // namespace wnd
 
 namespace fw {

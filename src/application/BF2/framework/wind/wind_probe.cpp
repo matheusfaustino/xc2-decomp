@@ -7,7 +7,9 @@
 #include "ml/rand.h"
 #include "mm_math/mm_quat.h"
 #include "mm_math/mm_vec3.h"
-#include "wnd/wnd.h"
+#include "wnd/wnd_object.h"
+#include "wnd/wnd_probe.h"
+#include "wnd/wnd_shape.h"
 
 namespace fw {
 
@@ -16,10 +18,10 @@ WindProbe::WindProbe(u32 group, f32 radius, mm::mtl::IntrusivePtr<ReferenceFrame
   info.unknown14 = group;
   if (radius > 0.0f) {
 #line 52
-    info.unknown08 = new (FrameworkMemory::getAllocator(5), 16, __FILE__, __LINE__) wnd::SphereShape(radius);
+    info.pShape = new (FrameworkMemory::getAllocator(5), 16, __FILE__, __LINE__) wnd::SphereShape(radius);
   } else {
 #line 56
-    info.unknown08 = new (FrameworkMemory::getAllocator(5), 16, __FILE__, __LINE__) wnd::SphereShape(0.01f);
+    info.pShape = new (FrameworkMemory::getAllocator(5), 16, __FILE__, __LINE__) wnd::SphereShape(0.01f);
   }
 
   wnd::Transform transform;
@@ -33,7 +35,7 @@ WindProbe::WindProbe(u32 group, f32 radius, mm::mtl::IntrusivePtr<ReferenceFrame
     transform.unknown10 = ref->unknown40.unknown10;
   }
 
-  info.unknown00 = &transform;
+  info.pTransform = &transform;
   info.unknown10 = 1;
   u32 seed = ml::mtRand(12);
 #line 71

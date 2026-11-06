@@ -5,7 +5,9 @@
 #include "fw/fw_update_info.h"
 #include "mm_math/mm_quat.h"
 #include "mm_math/mm_vec3.h"
-#include "wnd/wnd.h"
+#include "wnd/wnd_object.h"
+#include "wnd/wnd_probe.h"
+#include "wnd/wnd_shape.h"
 
 namespace fw {
 
@@ -16,12 +18,12 @@ WindImpluse::WindImpluse(const mm::Vec3 &position, f32 radius, f32 param3, f32 p
   info.unknown1c = radius;
 #line 38
   wnd::SphereShape *shape = new (FrameworkMemory::getAllocator(5), 16, __FILE__, __LINE__) wnd::SphereShape(radius);
-  info.unknown08 = shape;
+  info.pShape = shape;
   wnd::Transform transform;
   transform.unknown00 = position;
   transform.unknown10 = mm::Quat::identity;
   info.unknown10 = 0;
-  info.unknown00 = &transform;
+  info.pTransform = &transform;
 #line 44
   unknown20 = new (FrameworkMemory::getAllocator(5), 16, __FILE__, __LINE__) wnd::LocalWind(info);
   if (WindManager::get() != nullptr) {

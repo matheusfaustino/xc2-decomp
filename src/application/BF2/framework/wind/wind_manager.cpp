@@ -12,7 +12,9 @@
 #include "mm_math/mm_vec3.h"
 #include "mm_mtl/fixed_queue.h"
 #include "mm_mtl/reference_object.h"
-#include "wnd/wnd.h"
+#include "wnd/wnd_global_wind_manager.h"
+#include "wnd/wnd_probe.h"
+#include "wnd/wnd_wind.h"
 
 namespace wnd {
 struct Query;
@@ -109,10 +111,10 @@ const mm::Vec3 &WindManager::getGlobalWindPower() {
   }
   if (manager->unknown90.get() != nullptr) {
     wnd::WindProbe *probe = manager->unknown90->unknown20;
-    return probe->unknowna0[probe->unknown88];
+    return probe->unknown90.unknown10[probe->unknown88];
   }
   if (manager->unknown88.get() != nullptr) {
-    return manager->unknown88->unknown20->unknowna0[0];
+    return manager->unknown88->unknown20->unknown90.unknown10[0];
   }
   return mm::Vec3::zero;
 }
