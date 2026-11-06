@@ -22,7 +22,7 @@ The original source paths (`C:/Monolithsoft/BF2/prog/application/BF2/...`) appea
 ## Progress
 
 <!-- progress -->
-36,559 / 48,739 functions (75.010%), 4,318,636 / 10,024,304 bytes of code (43.082%)
+36,563 / 48,739 functions (75.018%), 4,318,944 / 10,024,304 bytes of code (43.085%)
 <!-- /progress -->
 
 Counted over the named functions of `main`, as reported by `check`. Run `check --readme` to update this section.

@@ -284,6 +284,7 @@ public:
   int parse_efb_type0001(u8 *data);
   int parseEfb(ParseEfbParam *param);
   u8 *parseEfb(u8 *data, const char *name, u64 pack);
+  u8 *parse_efs(const char *name, void *data, u32 size);
   renderer::RenderManager &getRenderManager();
   u32 emitter_set_create(FxHeader *header, emitter::EmitterParam *param, u32 key, bool option);
   bool emitter_set_check(FxHeader *header);

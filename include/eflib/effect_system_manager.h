@@ -62,8 +62,10 @@ public:
   void es_pause(bool isPause);
   void es_pack_free_(u64 pack);
   void es_pack_free(u64 pack);
+  void es_pack_regist(const char *name, void *data, u32 size);
   void es_pack_regist(void *data, u32 size);
   u64 es_regist(void *data, u32 size);
+  void *es_regist(const char *name, void *data, u32 size);
   void es_free(void *data);
   u32 es_create(void *data, bool isLoop);
   void es_set_param_pos_only(u32 handle, const SendParam *param);

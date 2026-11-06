@@ -5,6 +5,7 @@
 #include "mtl/alloc_handle.h"
 #include "ptlib/emitter/particle_emitter_manager.h"
 #include "ptlib/forcefield/particle_force_field.h"
+#include "ptlib/particle_hash.h"
 #include "ptlib/particle_heap_allocater.h"
 #include "ptlib/particle_system.h"
 #include "ptlib/renderer/particle_renderer_eff_state.h"
@@ -133,6 +134,16 @@ void SystemManager::MainDraw(const ptlib::DrDrawWorkInfoEF *info, int viewIndex,
 
 void SystemManager::es_pack_free_(u64 pack) { ptlib::ParticleManager::get()->emitter_pack_free(pack); }
 
+void SystemManager::es_pack_regist(const char *name, void *data, u32 size) { ptlib::ParticleManager::get()->parse_efs(name, data, size); }
+
+void *SystemManager::es_regist(const char *name, void *data, u32 size) {
+  ptlib::FxHeader *header = ptlib::ParticleManager::get()->emitter_set_search(0, name, data, size);
+  if (header == nullptr) {
+    return ptlib::ParticleManager::get()->parse_efs(name, data, size);
+  }
+  return header;
+}
+
 void SystemManager::es_free(void *data) {
   if (data != nullptr) {
     ptlib::ParticleManager::get()->emitter_set_free(static_cast<ptlib::FxHeader *>(data), 0);
@@ -166,6 +177,22 @@ void SystemManager::apply(const ptlib::DrDrawWorkInfoEF *info) {
 }
 
 void SystemManager::opacityRender(const ptlib::DrDrawWorkInfoEF *info) {}
+
+void SystemManager::blurRender(const ptlib::DrDrawWorkInfoEF *info) {
+  if (info->unknown560 != 0) {
+    return;
+  }
+  updateCam(info);
+  int viewIndex = info->unknown560;
+  ptlib::ParticleManager::get()->draw(info, viewIndex, true);
+}
+
+int SystemManager::es_getDeadFlag(u32 handle) {
+  if (ptlib::HashManager::getPtr() != nullptr) {
+    return ptlib::HashManager::getPtr()->searchDead(handle);
+  }
+  return -1;
+}
 
 void SystemManager::lastRender(const ptlib::DrDrawWorkInfoEF *info) {}
 
