@@ -36,6 +36,7 @@ public:
   };
 
   static void open(const OpenParam &param);
+  static void close(u32 handle);
   static void openUniteCombo(const OpenUniteParam &param);
 };
 

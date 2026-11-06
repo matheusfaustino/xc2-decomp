@@ -41,6 +41,18 @@ void GfMenuObjSalvage::initialize() {
 
 void GfMenuObjSalvage::finalize() { GfMenuObject::finalize(); }
 
+void GfMenuObjSalvage::openResult(GfMenuCallContext *context, const ResultParam &param) {
+  ui::UIObjectAcc root(getAttachedObject(unknown002));
+  if (GfMenuObjUtil::checkCCStart(context)) {
+    ui::UIObjectAcc result(root.searchChild("LAY_result"));
+    ui::EventData event;
+    event.unknown00 = 0x21;
+    event.unknown08_u16 = param.unknown00;
+    sendEvent(result.unknown10, event, 0.0f);
+    startCallContext(context, unknown002, result.unknown10);
+  }
+}
+
 void GfMenuObjSalvage::update() {
   unknown28.unknown003();
   GfMenuObject::update();

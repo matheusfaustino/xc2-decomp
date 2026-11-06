@@ -2,6 +2,7 @@
 
 #include "gf/gf_allocator.h"
 #include "gf/menu/object/gf_menu_obj_util.h"
+#include "ui/event/ui_event_data.h"
 #include "ui/event/ui_event_manager.h"
 #include "ui/ui_object_acc.h"
 
@@ -35,6 +36,18 @@ void GfMenuObjChapterTelop::initialize() {
 }
 
 void GfMenuObjChapterTelop::finalize() { GfMenuObject::finalize(); }
+
+void GfMenuObjChapterTelop::close(u16 title) {
+  u32 handle = getAttachedObject(unknown001);
+  if (ui::UIObjectAcc(handle).isValid()) {
+    if (!ui::UIObjectAcc(handle).isTerm()) {
+      ui::EventData event;
+      event.unknown00 = 0x22;
+      event.unknown08_u16 = title;
+      sendEvent(handle, event, 0.0f);
+    }
+  }
+}
 
 void GfMenuObjChapterTelop::update() {
   unknown28.unknown003();

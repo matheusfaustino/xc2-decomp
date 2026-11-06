@@ -8,6 +8,8 @@
 
 namespace gf {
 
+class GfMenuCallContext;
+
 class GfMenuObjSalvage : public GfMenuObject {
 public:
   class ResultListener : public ui::UIObjectListener {
@@ -20,6 +22,10 @@ public:
     GfMenuObjSalvage *unknown20; // Inferred role: owner; original member name unknown.
   };
 
+  struct ResultParam {
+    u32 unknown00; // Inferred role: result rank; original member name unknown.
+  };
+
   GfMenuObjSalvage(u32 handle);
   ~GfMenuObjSalvage() override;
   void initialize() override;
@@ -28,12 +34,14 @@ public:
   bool seqResultAppear();
   bool seqResultLeave();
   bool seqResultEnd();
+  static void openResult(GfMenuCallContext *context, const ResultParam &param);
 
   u32 unknown24;                                 // Inferred role: result rank; original member name unknown.
   GfMenuSequence<GfMenuObjSalvage, 8> unknown28; // Inferred role: result steps; original member name unknown.
   bool unknown2b8;                               // Inferred role: animation or control started flag; original member name unknown.
 };
 
+static_assert(sizeof(GfMenuObjSalvage::ResultParam) == 0x04, "");
 static_assert(offsetof(GfMenuObjSalvage::ResultListener, unknown20) == 0x20, "");
 static_assert(sizeof(GfMenuObjSalvage::ResultListener) == 0x28, "");
 static_assert(offsetof(GfMenuObjSalvage, unknown24) == 0x24, "");
