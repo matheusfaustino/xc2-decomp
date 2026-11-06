@@ -1,10 +1,14 @@
 #include "ui/stream/ui_stream_manager.h"
 
+#include <string.h>
+
 #include "bdat.h"
 #include "framework/memory/framework_memory.h"
 #include "fw/fw_render_resource.h"
 #include "mm_mtl/fixstr.h"
 #include "mm_mtl/hash.h"
+#include "mm_mtl/reference_object.h"
+#include "ui/ui_object_acc.h"
 #include "ui/ui_util.h"
 
 namespace ui {
@@ -31,6 +35,25 @@ u32 UIStreamManager::regist(u8 *bdat) {
     return content->unknown10;
   }
   return 0;
+}
+
+void UIStreamManager::deleteImage(const mm::mtl::FixStr<32> &name, u32 object) {
+  ui::UIObjectAcc acc(object);
+  for (mm::mtl::IntrusiveList<ImageContent>::iterator it = unknown40.begin(); it != unknown40.end(); ++it) {
+    ImageContent *content = it.get();
+    if (strcmp(content->unknown18.c_str(), name.c_str()) != 0) {
+      continue;
+    }
+    u32 child = acc.searchChild(name.c_str());
+    if (child != 0) {
+      ui::UIObjectAcc childAcc(child);
+      childAcc.setTerm();
+    }
+    it = unknown40.erase(it);
+    mm::mtl::safeRelease(content->unknown40);
+    mm::mtl::safeRelease(content->unknown48);
+    delete content;
+  }
 }
 
 u32 UIStreamManager::getContentsNum(u32 streamId) {

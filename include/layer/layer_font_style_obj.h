@@ -9,6 +9,7 @@ namespace layer {
 
 class LayerFontManager;
 struct LyrFontStyleData;
+class LayerStrInfo;
 
 class LayerFontStyleObj : public LayerBase {
 public:
@@ -27,8 +28,8 @@ public:
   const char *getStyleName(u32 index) const;
   const char *getFontName(u32 index) const;
   void release() override;
-  void createColorInfo(u32 num);
-  void createIconInfo(u32 num);
+  mm::mtl::Vector<LayerStrInfo> *createColorInfo(u32 num);
+  mm::mtl::Vector<LayerStrInfo> *createIconInfo(u32 num);
 
   static const f32 RUBY_SCALE;
 
@@ -39,8 +40,8 @@ public:
   LayerFontManager *unknown38;       // Inferred role: font manager; original member name unknown.
   f32 unknown40;                     // Inferred role: ruby scale; original member name unknown.
   u8 _44[0x48 - 0x44];
-  mm::mtl::Vector<unknown001> *unknown48; // Inferred role: color info; original member name unknown.
-  mm::mtl::Vector<unknown001> *unknown50; // Inferred role: icon info; original member name unknown.
+  mm::mtl::Vector<LayerStrInfo> *unknown48; // Inferred role: color info; original member name unknown.
+  mm::mtl::Vector<LayerStrInfo> *unknown50; // Inferred role: icon info; original member name unknown.
 };
 
 static_assert(offsetof(LayerFontStyleObj, unknown20) == 0x20, "");

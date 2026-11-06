@@ -4,6 +4,7 @@
 
 #include "layer/layer_acc_font_style.h"
 #include "layer/layer_font_manager.h"
+#include "layer/layer_tag.h"
 #include "mm_mtl/vector.h"
 
 namespace layer {

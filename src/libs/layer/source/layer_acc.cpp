@@ -37,6 +37,7 @@
 #include "mm_math/mm_col4.h"
 #include "mm_math/mm_mat44.h"
 #include "mm_math/mm_vec3.h"
+#include "mm_mtl/vector.h"
 #include "types.h"
 
 namespace grlib {
@@ -52,6 +53,7 @@ struct Col3;
 namespace layer {
 class LayerFontIconObj;
 class LayerFontResObj;
+class LayerStrInfo;
 
 LayerAccManager::LayerAccManager() {}
 
@@ -701,13 +703,13 @@ const char *LayerAccFontStyle::getStyleName(u32 index) const { return m_style->g
 
 const char *LayerAccFontStyle::getFontName(u32 index) const { return m_style->getFontName(index); }
 
-void LayerAccFontStyle::createColorInfo(u32 num) { m_style->createColorInfo(num); }
+mm::mtl::Vector<layer::LayerStrInfo> *LayerAccFontStyle::createColorInfo(u32 num) { return m_style->createColorInfo(num); }
 
 void LayerAccFontStyle::releaseColorInfo() { m_style->releaseColorInfo(); }
 
 void *LayerAccFontStyle::getColorInfo() { return m_style->unknown48; }
 
-void LayerAccFontStyle::createIconInfo(u32 num) { m_style->createIconInfo(num); }
+mm::mtl::Vector<layer::LayerStrInfo> *LayerAccFontStyle::createIconInfo(u32 num) { return m_style->createIconInfo(num); }
 
 void LayerAccFontStyle::releaseIconInfo() { m_style->releaseIconInfo(); }
 

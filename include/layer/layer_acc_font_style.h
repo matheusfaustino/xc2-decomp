@@ -1,12 +1,14 @@
 #pragma once
 #include <stddef.h>
 
+#include "mm_mtl/vector.h"
 #include "types.h"
 
 namespace layer {
 
 class LayerBase;
 class LayerFontStyleObj;
+class LayerStrInfo;
 
 // Inferred layout of a font style row; original type and member names unknown.
 struct LyrFontStyleData {
@@ -43,10 +45,10 @@ public:
   s32 getStyleIndex(const char *name) const;
   const char *getStyleName(u32 index) const;
   const char *getFontName(u32 index) const;
-  void createColorInfo(u32 num);
+  mm::mtl::Vector<LayerStrInfo> *createColorInfo(u32 num);
   void releaseColorInfo();
   void *getColorInfo();
-  void createIconInfo(u32 num);
+  mm::mtl::Vector<LayerStrInfo> *createIconInfo(u32 num);
   void releaseIconInfo();
   void *getIconInfo();
   f32 getRubyScale() const;

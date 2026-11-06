@@ -37,17 +37,22 @@ public:
     f32 unknown18; // Inferred role: alpha; original member name unknown.
   };
 
+  struct Parameter {
+    u16 unknown00; // Inferred role: parameter type; original member name unknown.
+    u16 unknown02; // Inferred role: value kind flags; original member name unknown.
+    u32 unknown04; // Inferred role: value or name index; original member name unknown.
+  };
+
   UIMotionData(mm::mtl::IAllocator *allocator);
   virtual ~UIMotionData();
 
   struct MotionData {
-    u8 _00[0x08];
-    u64 unknown08; // Inferred role: frame count; original member name unknown.
-    u8 _10[0x28 - 0x10];
-    u32 unknown28; // Inferred role: name index; original member name unknown.
+    mm::mtl::Vector<mm::mtl::Vector<Parameter>> unknown00; // Inferred role: frames of parameter values; original member name unknown.
+    u32 unknown28;                                         // Inferred role: name index; original member name unknown.
   };
 
   void initialize();
+  void clear();
   u32 getMotionNum() const;
   u32 getParamType(const char *name) const;
   u32 searchMotion(const char *name) const;
@@ -62,9 +67,9 @@ public:
   mm::mtl::IAllocator *unknown58;          // Inferred role: allocator; original member name unknown.
 };
 
-static_assert(offsetof(UIMotionData::MotionData, unknown08) == 0x08, "");
 static_assert(offsetof(UIMotionData::MotionData, unknown28) == 0x28, "");
 static_assert(sizeof(UIMotionData::MotionData) == 0x30, "");
+static_assert(sizeof(UIMotionData::Parameter) == 0x08, "");
 static_assert(offsetof(UIMotionData, unknown08) == 0x08, "");
 static_assert(offsetof(UIMotionData, unknown30) == 0x30, "");
 static_assert(offsetof(UIMotionData, unknown58) == 0x58, "");

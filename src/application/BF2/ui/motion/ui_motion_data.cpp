@@ -11,6 +11,25 @@ UIMotionData::UIMotionData(mm::mtl::IAllocator *allocator) : unknown58(allocator
 
 void UIMotionData::initialize() {}
 
+void UIMotionData::clear() {
+  for (u32 i = 0; i < unknown08.size(); i++) {
+    if (unknown08[i].unknown00.size() != 0) {
+      for (u32 j = 0; j < unknown08[i].unknown00.size(); j++) {
+        if (unknown08[i].unknown00[j].capacity() != 0) {
+          unknown08[i].unknown00[j].destroy();
+        }
+      }
+      unknown08[i].unknown00.destroy();
+    }
+  }
+  if (unknown08.capacity() != 0) {
+    unknown08.destroy();
+  }
+  if (unknown30.capacity() != 0) {
+    unknown30.destroy();
+  }
+}
+
 u32 UIMotionData::getMotionNum() const { return unknown08.size(); }
 
 u32 UIMotionData::getParamType(const char *name) const { return 0xffff; }
@@ -28,7 +47,7 @@ u32 UIMotionData::searchMotion(const char *name) const {
 
 f32 UIMotionData::getMotionLength(u32 motion) const {
   if (motion < unknown08.size()) {
-    return static_cast<f32>(unknown08[motion].unknown08) * 0.033333335f;
+    return static_cast<f32>(unknown08[motion].unknown00.size()) * 0.033333335f;
   }
   return 0.0f;
 }
