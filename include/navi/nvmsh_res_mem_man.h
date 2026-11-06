@@ -41,6 +41,7 @@ public:
   void releaseFreeObj(NvmshResMemObj *object);
   void clearMemObj(NvmshResMemObj *object);
   void moveMemoryObject(NvmshResMemObj *destination, NvmshResMemObj *source);
+  bool calcPieceMem();
 
   void *unknown00; // Inferred role: allocated block; original member name unknown.
   NvmshResMemObj *unknown08;

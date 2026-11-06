@@ -11,6 +11,18 @@ void NvmshUtil::getConectDirXY(int &x, int &y, const _NvMhMeshAdjacency *adjacen
   y = NAVI_UTIL_OFFY[index];
 }
 
+// The shift halves a triangular number; writing the division adds a signed-division fixup the game does not have.
+int NvmshUtil::getConectPriIdx(int x, int y, int z, const u8 *table) {
+  s32 index;
+  if (x > y) {
+    index = z * y + (x - y - 1 - ((y * (y + 1)) >> 1));
+  } else {
+    index = z * x + (y - x - 1 - ((x * (x + 1)) >> 1));
+  }
+
+  return table[index] + 1;
+}
+
 NvmshUtilConect::NvmshUtilConect() { unknown09 = false; }
 
 void NvmshUtilConect::seachConectAStar(NvmshConectResult *result, bool unknown) {

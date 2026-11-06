@@ -65,4 +65,20 @@ void NvmshAcObjBase::calcNextVec(const _NaviCalcResTbl *resTable, const _NaviTem
 
 void NvmshAcObjBase::resetCache() { unknown28 &= 0xff4fe3e0; }
 
+void NvmshAcObjBaseDef::release() { unknown10 = 0; }
+
+NvmshAcObjBaseDef::~NvmshAcObjBaseDef() { release(); }
+
+NvmshAcObjBaseGbl::~NvmshAcObjBaseGbl() {}
+
+bool NvmshAcObjBaseGbl::update(bool &unknown, NvmshResMan *resMan, bool param3) {
+  m_meshNum = unknown64;
+  if ((unknown65 & 1) != 0) {
+    unknown65 = 0;
+    return true;
+  }
+
+  return false;
+}
+
 } // namespace navi

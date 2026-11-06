@@ -3,9 +3,14 @@
 
 #include "types.h"
 
+namespace mtl {
+class ALLOC_HANDLE;
+} // namespace mtl
+
 namespace navi {
 
 class NvmshAcObjBase;
+class NvmshResMan;
 
 // Intrusive list of navigation mesh agent objects.
 template <typename T> class TNaviListMan {
@@ -20,6 +25,8 @@ public:
   void tail();
   void beginUpdate();
   void releaseObj(NvmshAcObjBase *object);
+  void update(NvmshResMan *resMan);
+  NvmshAcObjBase *createObj(mtl::ALLOC_HANDLE handle, NvmshResMan *resMan);
 
   u8 _00[0x808];
   NvmshAcObjBase *unknown808; // Inferred role: head of the update list; original member name unknown.

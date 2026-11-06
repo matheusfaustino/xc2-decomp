@@ -18,6 +18,7 @@ public:
   int checkNaviFindPos(const mm::Vec3 &position, float radius, float height, float range, float offset, const mm::Vec3 &target, float targetRadius, float targetHeight, float targetRange,
                        float targetOffset, int layer = 0);
   bool isNaviMeshReadCheck(const mm::Vec3 &position);
+  void setAvoidAttr(bool value);
 
   NvmshManager *unknown00; // Inferred role: manager singleton; original member name unknown.
   bool unknown08;          // Inferred role: avoid attribute; original member name unknown.

@@ -1,5 +1,6 @@
 #include "navi/nvmsh_manager.h"
 
+#include "ml/critical_section.h"
 #include "navi/nvmsh_ac_man.h"
 #include "navi/nvmsh_ac_obj_base.h"
 #include "navi/nvmsh_res_man.h"
@@ -26,6 +27,51 @@ void NvmshManager::setAddNavigation(bool value) {
   } else {
     unknown68 &= ~2u;
   }
+}
+
+void NvmshManager::pauseHLv(bool pause, bool highLevel) {
+  if (pause) {
+    unknown68 |= 4;
+    if (highLevel) {
+      unknown68 |= 8;
+    } else {
+      unknown68 &= ~8u;
+    }
+  } else {
+    unknown68 &= ~0xcu;
+  }
+}
+
+bool NvmshManager::jobUpdate(void *param1, void *param2) {
+  unknown68 |= 0x20000;
+  u32 pauseMask = (unknown68 & 4) == 0 ? 1 : 8;
+  if ((unknown68 & pauseMask) == 0) {
+    unknown50->update();
+    unknown58->update(unknown50);
+  }
+
+  unknown68 &= ~0x20000u;
+  return false;
+}
+
+NvmshAcObj *NvmshManager::createObj() {
+  ml::CS lock(getCriticalSection());
+  return unknown58->createObj(unknown60, unknown50);
+}
+
+ml::CriticalSection &NvmshManager::getCriticalSection() {
+  static ml::CriticalSection s_criticalSection;
+  return s_criticalSection;
+}
+
+void NvmshManager::update() {
+  unknown68 |= 0x20000;
+  u32 pauseMask = (unknown68 & 4) == 0 ? 1 : 8;
+  if ((unknown68 & pauseMask) == 0) {
+    unknown50->update();
+    unknown58->update(unknown50);
+  }
+  unknown68 &= ~0x20000u;
 }
 
 void NvmshManager::setDebugDisp(bool param1, bool param2, bool param3, bool param4, int index) {}
