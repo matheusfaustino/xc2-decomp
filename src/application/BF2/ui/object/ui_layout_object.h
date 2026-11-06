@@ -3,8 +3,13 @@
 
 #include "mm_math/mm_pnt.h"
 #include "mm_math/mm_rect.h"
+#include "mm_mtl/fixstr.h"
 #include "types.h"
 #include "ui/ui_object.h"
+
+namespace layer {
+class LayerBase;
+} // namespace layer
 
 namespace mm {
 namespace mtl {
@@ -21,6 +26,7 @@ class UILayoutObject : public UIObject {
 public:
   static mm::mtl::RTTI m_rtti;
 
+  UILayoutObject(layer::LayerBase *layer, const mm::mtl::FixStr<32> &name);
   virtual ~UILayoutObject();
   virtual void update();
   virtual const mm::mtl::RTTI *getRTTI() const;

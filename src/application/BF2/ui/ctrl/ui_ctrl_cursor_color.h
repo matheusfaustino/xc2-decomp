@@ -25,6 +25,8 @@ public:
 
   static UICtrlObject *create(u32 object, const CursorSetting &setting, UISelectObjList *list);
   void open(s32 index);
+  bool inputChange(u32 index);
+  void setDisp(bool disp);
   void setIndex(u32 index);
 
   CursorSetting unknown30;    // Inferred role: setting; original member name unknown.

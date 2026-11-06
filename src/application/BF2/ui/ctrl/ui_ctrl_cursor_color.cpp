@@ -35,6 +35,8 @@ void UICtrlCursorColor::open(s32 index) {
   }
 }
 
+void UICtrlCursorColor::setDisp(bool disp) { inputChange(disp ? unknown50->getIndex(false) : unknown50->getSize() + 1); }
+
 void UICtrlCursorColor::setIndex(u32 index) {
   if (unknown50 != nullptr) {
     unknown50->setIndex(index);

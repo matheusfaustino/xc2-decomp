@@ -1,5 +1,6 @@
 #include "ui/object/ui_layout_object.h"
 
+#include "framework/memory/framework_memory.h"
 #include "layer/layer_acc_layout_obj.h"
 #include "layer/layer_acc_manager.h"
 #include "mm_math/mm_rect.h"
@@ -13,8 +14,19 @@
 #include "ui/ui_object_base.h"
 #include "ui/ui_object_list.h"
 #include "ui/ui_transform.h"
+#include "ui/ui_util.h"
+
+namespace layer {
+class LayerBase;
+} // namespace layer
 
 namespace ui {
+
+UILayoutObject::UILayoutObject(layer::LayerBase *layer, const mm::mtl::FixStr<32> &name) : UIObject(layer, name, 3), unknown108(nullptr), unknown110(nullptr), unknown118(0, 0) {
+  // __LINE__ is the line argument of the operator new call.
+#line 41
+  unknown108 = new (UIUtil::getProgAllocator(), 16, __FILE__, __LINE__) UIObjectList();
+}
 
 UILayoutObject::~UILayoutObject() {
   if (unknown110 != nullptr) {
