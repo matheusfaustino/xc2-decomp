@@ -1914,6 +1914,22 @@ void BattleCharacter::HealDirect(u32 value, int type, BattleCharacter *healer) {
   NotifyDirectDamage(data);
 }
 
+void BattleCharacter::HealByRate(u32 value, f32 rate, int type, BattleCharacter *healer) {
+  f32 total = static_cast<f32>(value) * rate;
+  u32 heal = static_cast<u32>(total);
+  if (total - static_cast<f32>(heal) > 0.998f) {
+    heal++;
+  }
+  DIRECT_DAMAGE_DATA data;
+  data.unknown11 = 0;
+  data.unknown12 = 0;
+  data.unknown00 = healer;
+  data.unknown08 = type;
+  data.unknown0c = mm::max(1u, heal);
+  data.unknown10 = 1;
+  NotifyDirectDamage(data);
+}
+
 void BattleCharacter::LandingCallback() {}
 
 void BattleCharacter::BoundCallback() {}

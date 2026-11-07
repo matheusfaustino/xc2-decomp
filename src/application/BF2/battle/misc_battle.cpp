@@ -18,6 +18,7 @@
 #include "ml/rand.h"
 #include "mm_math/mm_math.h"
 #include "mm_math/mm_pnt.h"
+#include "mm_math/mm_quat.h"
 #include "mm_math/mm_vec3.h"
 #include "scn/scn_obj_acc.h"
 
@@ -47,6 +48,17 @@ bool Misc::CalcDirection(const mm::Vec3 &from, const mm::Vec3 &to, mm::Vec3 &dir
   Normalize(vector);
   direction = vector;
   return true;
+}
+
+void Misc::GetPostureDirection(const mm::Quat &rotation, mm::Vec3 &direction) {
+  const mm::Vec3 &forward = mm::Vec3::unitZ;
+  f32 tx = rotation.y * forward.z - rotation.z * forward.y + rotation.w * forward.x;
+  f32 ty = rotation.z * forward.x - forward.z * rotation.x + forward.y * rotation.w;
+  f32 tz = forward.y * rotation.x - rotation.y * forward.x + forward.z * rotation.w;
+  f32 tw = -forward.x * rotation.x - rotation.y * forward.y - forward.z * rotation.z;
+  direction.x = -(rotation.z * ty) + rotation.y * tz - rotation.x * tw + rotation.w * tx;
+  direction.y = -(rotation.x * tz) + rotation.z * tx - rotation.y * tw + rotation.w * ty;
+  direction.z = -(rotation.y * tx) + rotation.x * ty - rotation.z * tw + rotation.w * tz;
 }
 
 f32 Misc::CalcAngle(const mm::Vec3 &from, const mm::Vec3 &to, bool isSigned) {
