@@ -27,7 +27,7 @@ public:
   virtual size_t getAllocSize(const void *pointer) const = 0;
   virtual void memoryInfo(MemoryInfo *info) const = 0;
   virtual void getMemImage(MEMIMAGE_HEAD *head) const = 0;
-  virtual int getMemInfo1(MemoryInfo1 *info, u32 num) const = 0;
+  virtual bool getMemInfo1(MemoryInfo1 *info, u32 num) const = 0;
   virtual bool empty() const = 0;
   virtual bool valid() const = 0;
   virtual bool dummy() const = 0;

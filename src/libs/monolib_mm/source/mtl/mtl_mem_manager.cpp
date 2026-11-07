@@ -1,6 +1,8 @@
 #include <stddef.h>
 
+#include "ml/critical_section.h"
 #include "mm_mtl/fixstr.h"
+#include "mtl/alloc_handle.h"
 #include "mtl/allocator_wrapper.h"
 #include "mtl/mem_allocator.h"
 #include "mtl/mem_manager.h"
@@ -131,9 +133,9 @@ void AllocatorWrapper::getMemImage(MEMIMAGE_HEAD *head) const {
   }
 }
 
-int AllocatorWrapper::getMemInfo1(MemoryInfo1 *info, u32 num) const {
+bool AllocatorWrapper::getMemInfo1(MemoryInfo1 *info, u32 num) const {
   if (m_allocator == nullptr) {
-    return 0;
+    return false;
   }
   return m_allocator->getMemInfo1(info, num);
 }
@@ -184,7 +186,7 @@ void NullAllocator::memoryInfo(MemoryInfo *info) const {}
 
 void NullAllocator::getMemImage(MEMIMAGE_HEAD *head) const {}
 
-int NullAllocator::getMemInfo1(MemoryInfo1 *info, u32 num) const { return 0; }
+bool NullAllocator::getMemInfo1(MemoryInfo1 *info, u32 num) const { return false; }
 
 bool NullAllocator::empty() const { return m_name.c_str()[0] == '\0'; }
 
@@ -193,5 +195,112 @@ bool NullAllocator::valid() const { return m_name.c_str()[0] != '\0'; }
 bool NullAllocator::dummy() const { return m_name.c_str()[0] != '\0'; }
 
 u32 NullAllocator::getMemSize(const void *pointer) const { return 0; }
+
+bool MemManager::s_bInitialize = false;
+bool MemManager::m_collectCallstack = false;
+
+bool MemManager::isInitialized() { return s_bInitialize; }
+
+bool MemManager::isCollectCallStack() { return m_collectCallstack; }
+
+void MemManager::setCollectCallStack(bool collectCallStack) { m_collectCallstack = collectCallStack; }
+
+void MemManager::tchk() {}
+
+ALLOC_HANDLE MemManager::create(void *buffer, size_t size, const char *name, bool flag) { return create(buffer, size, name, flag, ALLOCATOR_TYPE_PROGRAM); }
+
+MemManager::Region *MemManager::Region::getArea(const void *pointer) {
+  Region *region = this;
+  if (unknown00 == nullptr || unknown08 > reinterpret_cast<size_t>(pointer)) {
+    region = nullptr;
+  } else if (unknown08 + unknown10 <= reinterpret_cast<size_t>(pointer)) {
+    region = nullptr;
+  }
+  return region;
+}
+
+void MemManager::Region::log(MemoryInfo *info, bool isDetail) {
+  if (unknown20 && unknown00 != nullptr) {
+    unknown00->log(info, isDetail);
+  }
+}
+
+void MemManager::Region::log_callSTack(void *callStack) {
+  if (unknown20 && unknown00 != nullptr) {
+    unknown00->log_callSTack(callStack);
+  }
+}
+
+void MemManager::Region::checkLeakMemory() {
+  if (unknown20 && unknown00 != nullptr) {
+    unknown00->checkLeakMemory();
+  }
+}
+
+void MemManager::Region::memoryInfo(MemoryInfo *info) {
+  ml::CSNC guard(unknown80);
+  if (unknown00 != nullptr) {
+    unknown00->memoryInfo(info);
+  }
+  info->unknown30 = m_topAdr;
+}
+
+void MemManager::Region::getMemImage(MEMIMAGE_HEAD *head) {
+  ml::CSNC guard(unknown80);
+  if (unknown00 != nullptr) {
+    unknown00->getMemImage(head);
+  }
+}
+
+bool MemManager::Region::getMemInfo1(MemoryInfo1 *info, u32 num) const {
+  ml::CSNC guard(unknown80);
+  bool result = false;
+  if (unknown00 != nullptr) {
+    result = unknown00->getMemInfo1(info, num);
+  }
+  return result;
+}
+
+int MemManager::Region::getAllocs() const { return m_allocs; }
+
+u64 MemManager::Region::getTopAdr() const { return m_topAdr; }
+
+bool MemManager::Region::empty() const { return unknown00 == nullptr; }
+
+bool MemManager::Region::hasMemory(const void *pointer) const {
+  if (unknown00 == nullptr) {
+    return false;
+  }
+  return unknown00->hasMemory(pointer);
+}
+
+size_t MemManager::Region::getAllocSize(void *pointer) {
+  if (unknown00 == nullptr) {
+    return 0;
+  }
+  return unknown00->getAllocSize(pointer);
+}
+
+void *MemManager::Region::alloc(size_t size) {
+  void *pointer = nullptr;
+  if (unknown00 != nullptr) {
+    pointer = unknown00->allocate(size, 16);
+    if (pointer != nullptr) {
+      m_allocs++;
+    }
+  }
+  return pointer;
+}
+
+void *MemManager::Region::alloc(size_t size, size_t alignment, const char *file, int line) {
+  void *pointer = nullptr;
+  if (unknown00 != nullptr) {
+    pointer = unknown00->allocate(size, alignment, file, line);
+    if (pointer != nullptr) {
+      m_allocs++;
+    }
+  }
+  return pointer;
+}
 
 } // namespace mtl

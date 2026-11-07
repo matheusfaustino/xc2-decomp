@@ -31,7 +31,7 @@ public:
   size_t getCapacity() const;
   void memoryInfo(MemoryInfo *info) const;
   void getMemImage(MEMIMAGE_HEAD *head) const;
-  int getMemInfo1(MemoryInfo1 *info, u32 num) const;
+  bool getMemInfo1(MemoryInfo1 *info, u32 num) const;
   bool valid() const;
   bool empty() const;
   bool dummy() const;
