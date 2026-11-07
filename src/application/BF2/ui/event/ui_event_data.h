@@ -12,9 +12,9 @@ struct EventData {
   u8 _02[0x08 - 0x02];
   union {
     u32 unknown08;     // Inferred role: param0; original member name unknown.
-    f32 unknown08_f32; // Inferred role: param0 read as a float (GfMenuObjZoneTelop::MainListener::reciveEvent).
+    f32 unknown08_f32; // View of the first parameter slot as a float; the repo owner reports GfMenuObjZoneTelop's listener reads it; not matched yet.
     struct {
-      u16 unknown08_u16; // Inferred role: param0 low half, an object or string handle in the gf menu events.
+      u16 unknown08_u16; // Inferred role: param0 low half; original member name unknown.
       u16 unknown0a;     // Inferred role: param0 high half; original member name unknown.
     };
   };
@@ -24,6 +24,7 @@ struct EventData {
 };
 
 static_assert(offsetof(EventData, unknown08) == 0x08, "");
+static_assert(offsetof(EventData, unknown08_f32) == 0x08, "");
 static_assert(offsetof(EventData, unknown08_u16) == 0x08, "");
 static_assert(offsetof(EventData, unknown0a) == 0x0a, "");
 static_assert(offsetof(EventData, unknown0c) == 0x0c, "");

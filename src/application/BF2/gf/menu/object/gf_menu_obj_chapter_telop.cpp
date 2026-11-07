@@ -1,6 +1,7 @@
 #include "gf/menu/object/gf_menu_obj_chapter_telop.h"
 
 #include "gf/gf_allocator.h"
+#include "gf/menu/gf_menu_types.h"
 #include "gf/menu/object/gf_menu_obj_util.h"
 #include "ui/event/ui_event_data.h"
 #include "ui/event/ui_event_manager.h"
@@ -8,7 +9,7 @@
 
 namespace gf {
 
-// Inferred role: call id of the chapter telop; original name unknown.
+// Inferred role: call id passed to attachExternalCall in initialize(); taken from the game disassembly, original name unknown.
 constexpr u32 unknown001 = 0x44;
 
 GfMenuObjChapterTelop::GfMenuObjChapterTelop(u32 handle) : GfMenuObject(handle), unknown28(this) {}
@@ -37,13 +38,14 @@ void GfMenuObjChapterTelop::initialize() {
 
 void GfMenuObjChapterTelop::finalize() { GfMenuObject::finalize(); }
 
-void GfMenuObjChapterTelop::close(u16 title) {
+void GfMenuObjChapterTelop::close(u16 unknown00) {
   u32 handle = getAttachedObject(unknown001);
+  // The game destroys each temporary before the next check; a named local moves the destructor after sendEvent.
   if (ui::UIObjectAcc(handle).isValid()) {
     if (!ui::UIObjectAcc(handle).isTerm()) {
       ui::EventData event;
-      event.unknown00 = 0x22;
-      event.unknown08_u16 = title;
+      event.unknown00 = GfMenuTypes::unknown003_34;
+      event.unknown08_u16 = unknown00;
       sendEvent(handle, event, 0.0f);
     }
   }

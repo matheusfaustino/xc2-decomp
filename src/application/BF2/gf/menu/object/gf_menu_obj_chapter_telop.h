@@ -31,7 +31,7 @@ public:
   static void openBeginTelop(GfMenuCallContext *context, int chapter);
   static void openEndTelop(GfMenuCallContext *context, int chapter);
   static void openAvanTitle(GfMenuCallContext *context, int title);
-  static void close(u16 title);
+  static void close(u16 unknown00);
   bool seqWaitStreamBegin();
   bool seqWaitStreamEnd();
   bool seqOutChapterEnd();

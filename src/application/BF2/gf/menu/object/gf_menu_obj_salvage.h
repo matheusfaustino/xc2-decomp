@@ -23,7 +23,7 @@ public:
   };
 
   struct ResultParam {
-    u32 unknown00; // Inferred role: result rank; original member name unknown.
+    u32 unknown00; // Inferred role: result rank, stored into the event param0 low half like unknown24; original member name unknown.
   };
 
   GfMenuObjSalvage(u32 handle);
@@ -41,6 +41,7 @@ public:
   bool unknown2b8;                               // Inferred role: animation or control started flag; original member name unknown.
 };
 
+static_assert(offsetof(GfMenuObjSalvage::ResultParam, unknown00) == 0x00, "");
 static_assert(sizeof(GfMenuObjSalvage::ResultParam) == 0x04, "");
 static_assert(offsetof(GfMenuObjSalvage::ResultListener, unknown20) == 0x20, "");
 static_assert(sizeof(GfMenuObjSalvage::ResultListener) == 0x28, "");
